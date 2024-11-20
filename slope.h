@@ -1,24 +1,27 @@
+#ifndef SLOPE_H
+#define SLOPE_H
+
 #include <vector>
-#include "game_object.h"
+//#include "game_object.h"
 #include <SFML/Graphics.hpp>
 
-
+struct Game_Object{};
 
 struct Context
 {
     std::vector<Game_Object*> obj_lst{};
 
-    unsigned int speed {};
+    double y_speed {};
 
     bool side {}; // true ger vänster
 
-    std::vector<Game_Object*> mod_lst{};
+    Game_Object* active_mod{};
 
     sf::Clock clock;
 
-    unsigned int snow_count{0};
+    unsigned int snow_count{};
 
-    bool game_finished{false};
+    bool game_finished{};
 
 };
 
@@ -37,3 +40,6 @@ public:
 private:
     void read_track();
 };
+
+
+#endif
