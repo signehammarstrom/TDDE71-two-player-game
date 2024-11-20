@@ -3,31 +3,31 @@
 
 // includes
 /*_______________________________________________________________________________________*/
-include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 
 // GameObject
 /*_______________________________________________________________________________________*/
 
-class GameObject
+class Game_Object
 {
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    GameObject(double xpos, double ypos);
-    GameObject(GameObject const& other) = delete;
-    GameObejct& operator=(GameObject const& other) = delete;
-    GameObject(GameObejct && other) = delete;
-    GameObejct& operator=(GameObject && other) = delete;
-    virtual ~GameObject() = default;
+    Game_Object(double xpos, double ypos);
+    //GameObject(GameObject const& other) = delete;
+    //GameObejct& operator=(GameObject const& other) = delete;
+    //GameObject(GameObejct && other) = delete;
+    //GameObejct& operator=(GameObject && other) = delete;
+    //virtual ~GameObject() = default;
 
     // Medlemsfunktioner
     /*_____________________________________________________*/
-    virtual void handle(sf::Event event) = 0;
-    virtual bool update(sf::Time delta /*...*/) = 0;
-    virtual void render(sf::RenderWindow& window) = 0;
-    virtual bool collides(GameObject const&) const = 0;
-    virtual void perform_collision(GameObject const&) = 0;
+    void handle(sf::Event event);
+    bool update(sf::Time delta /*...*/);
+    void render(sf::RenderWindow& window);
+    //virtual bool collides(GameObject const&) const = 0;
+    //virtual void perform_collision(GameObject const&) = 0;
 
 protected:
     // ...

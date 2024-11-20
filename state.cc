@@ -24,7 +24,15 @@ void Game_State::handle(sf::Event event)
 
 void Game_State::update(sf::Time delta)
 {
-
+    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        left_slope->update(delta);
+    }
+     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+    {
+        right_slope->update(delta);
+    }
 }
 
 void Game_State::render(sf::RenderWindow& window)
