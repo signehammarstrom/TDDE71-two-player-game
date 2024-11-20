@@ -10,15 +10,11 @@ Player::Player(double x, double y, double height,
 {
 }
 
-double Player::get_xpos() const
-{
-    return xpos;
-}
+// Medlemsfunktioner
+/*_____________________________________________________*/
 
-double Player::get_ypos() const
-{
-    return ypos;
-}
+//dessa funktioner skapades
+//för att testa konstruktorn. Låter dem vara kvar här vid behov!
 
 double Player::get_width() const
 {
@@ -29,7 +25,4 @@ double Player::get_height() const
 {
     return height;
 }
-// Medlemsfunktioner
-/*_____________________________________________________*/
-
 // ...
