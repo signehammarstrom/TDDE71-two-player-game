@@ -27,7 +27,8 @@ public:
     //virtual bool update(sf::Time delta /*...*/) = 0;
     //virtual void render(sf::RenderWindow& window) = 0;
     //virtual bool collides(Game_Object const&) const = 0;
-    
+    double get_xpos() const; 
+    double get_ypos() const;
 
 protected:
     // ...
