@@ -2,13 +2,28 @@
 #define MOVING_OBJECT_H
 #include "game_object.h"
 #include "modifier.h"
+#include "slope.h"
 
-class moving_object : public modifier
+class Moving_Object : public Modifier
 {
 public:
-    moving_object(/* args */);
-    ~moving_object();
+    Moving_Object(/* args */);
+    ~Moving_Object();
+
+    virtual void affect_context(Context context&) = 0;
 
 private:
+    double xspeed {};
 };
+
+
+class Snowball_Mod : public Moving_Object
+{
+public:
+   void affect_context(Context context&);
+
+private:
+   double radius{}; 
+};
+
 #endif
