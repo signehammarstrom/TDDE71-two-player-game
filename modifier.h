@@ -2,7 +2,7 @@
 #define MODIFIER_H
 #include "game_object.h"
 
-class Modifier
+class Modifier : public Game_Object 
 {
 public:
     Modifier(/* args */);
