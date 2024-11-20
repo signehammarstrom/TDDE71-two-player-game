@@ -1,1 +1,15 @@
-//headerfil för modifier. Vi får se vad som ska in här
+#ifndef MODIFIER_H
+#define MODIFIER_H
+#include "game_object.h"
+
+class Modifier
+{
+public:
+    Modifier(/* args */);
+    ~Modifier();
+
+private:
+    /* data */
+};
+
+#endif

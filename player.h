@@ -2,10 +2,11 @@
 #define PLAYER_H
 #include "game_object.h"
 
-class player : public game_object
+class Player : public Game_Object
 {
 public:
-
+    Player(/*arg*/);
+    ~Player();
     //bool handle(sf::Event event);
     //void update(sf::Time delta ;
     //void render(sf::RenderWindow& window);
@@ -13,11 +14,9 @@ public:
     //void perform_collision(game_object const&);
     //bool collides(game_object const&) const;
 private:
-   int height{};
-   int weight{};
+   double height{};
+   double width{};
  
 };
-
-
 
 #endif
