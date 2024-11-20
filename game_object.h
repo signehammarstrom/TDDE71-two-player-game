@@ -27,7 +27,7 @@ public:
     virtual bool update(sf::Time delta /*...*/) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
     virtual bool collides(Game_Object const&) const = 0;
-    virtual void perform_collision(Game_Object const&) = 0;
+    
 
 protected:
     // ...
