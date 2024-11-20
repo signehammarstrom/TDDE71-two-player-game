@@ -8,7 +8,7 @@ public:
     Player(/*arg*/);
     ~Player();
     //bool handle(sf::Event event);
-    //void update(sf::Time delta ;
+    void update(sf::Time delta, double x_speed);
     //void render(sf::RenderWindow& window);
     //void throw_snowball();
     //void perform_collision(game_object const&);
