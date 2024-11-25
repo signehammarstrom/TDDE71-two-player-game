@@ -9,6 +9,9 @@ class Static_Obstacle : public Modifier
 {
 
 public:
+    Static_Obstacle(double xpos, double ypos);
+    ~Static_Obstacle() = default;
+
     bool handle(sf::Event event) override;
     void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
@@ -32,8 +35,8 @@ class Tire : public Static_Object
 {
 
 public:
-    Tire(double radius);
-
+    Tire(double xpos, double ypos, double radius);
+    ~Tire() = default;
 
 private:
     double radius;
@@ -51,7 +54,8 @@ class Hole : public Static_Object
 {
 
 public:
-    Hole(double radius);
+    Hole(double xpos, double ypos, double radius);
+    ~Hole() = default;
 
 
 private:
@@ -69,7 +73,9 @@ class Goal : public Static_Object
 {
 
 public:
-    Goal(double width, double height);
+    Goal(double xpos, double ypos, double width, double height);
+    ~Goal() = default;
+ 
     bool handle(sf::Event event) override;
     void update(ef::Time delta) override;
     void render(sf::RenderWindow& window) override;
