@@ -24,7 +24,7 @@ protected:
 
 //Deklaration av den härledda klassen Tire
 /*_____________________________________________________________________*/
-class Tire : public Static_Object
+class Tire : public Static_Obstacle
 {
 
 public:
@@ -50,7 +50,7 @@ protected:
 
 //Deklaration av den härledda klassen Hole
 /*____________________________________________________________________*/
-class Hole : public Static_Object
+class Hole : public Static_Obstacle
 {
 
 public:
@@ -74,7 +74,7 @@ protected:
 
 //Deklaration av den härledda klassen Goal
 /*____________________________________________________________________*/
-class Goal : public Static_Object
+class Goal : public Static_Obstacle
 {
 
 public:
