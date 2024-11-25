@@ -13,6 +13,9 @@ main: main.cc state.cc slope.cc
 player: player.cc game_object.cc player_test.cc test_main.cc
 	$(CXX) $(CXXFLAGS) -o player player.cc game_object.cc player_test.cc test_main.cc $(LIBS)
 
+plmain: player.cc game_object.cc main.cc state.cc slope.cc
+	$(CXX) $(CXXFLAGS) -o plmain player.cc game_object.cc main.cc state.cc slope.cc $(LIBS)
+
 .PHONY: clean
 clean:
 	rm slope

@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "game_object.h"
+#include <SFML/Graphics.hpp>
 
 class Player : public Game_Object
 {
@@ -20,6 +21,8 @@ public:
 private:
    double height{};
    double width{};
+   sf::Sprite sprite;
+   sf::Texture texture;
  
 };
 

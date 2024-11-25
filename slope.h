@@ -4,11 +4,15 @@
 #include <vector>
 #include "game_object.h"
 #include <SFML/Graphics.hpp>
+#include "player.h"
 
 
 struct Context
 {
-    std::vector<Game_Object*> obj_lst{};
+
+    //std::vector<Modifiers*> mod_lst{};
+    Player* player;
+    //std::vector<Snowball_Projectile*> snowball_lst{};
 
     double y_speed {};
 
@@ -38,6 +42,8 @@ public:
     
 private:
     void read_track();
+    float const x_speed { 128.0f };
+
 };
 
 
