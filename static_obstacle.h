@@ -28,10 +28,13 @@ class Tire : public Static_Obstacle
 {
 
 public:
+
     Tire(double xpos, double ypos, double radius);
+        //ritar ut ett däck med höjd 2*radien och bredd 2*radien. 
+        //x och ykoordinat är mittpunkten på däcket. 
     ~Tire() = default;
 
-    // bool handle(sf::Event event) override;
+    // bool handle(sf::Event event) overrßide;
     // void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
@@ -59,12 +62,14 @@ public:
 
     // bool handle(sf::Event event) override;
     // void update(sf::Time delta) override;
-    // void render(sf::RenderWindow& window) override;
+    void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
     // bool collides(GameObject&) override;
 
 private:
     double radius;
+    sf::Texture texture;
+    sf::Sprite sprite;
 
 
 protected:

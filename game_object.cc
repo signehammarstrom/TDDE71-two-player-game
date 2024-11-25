@@ -1,5 +1,5 @@
 #include "game_object.h"
-
+#include <SFML/Graphics.hpp>
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/

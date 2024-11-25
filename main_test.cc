@@ -3,7 +3,6 @@
 #include "game_object.h"
 #include "modifier.h"
 #include "static_obstacle.h"
-
 #include <SFML/Graphics.hpp>
 
 unsigned const screen_width{1136};
@@ -17,7 +16,9 @@ int main() {
 
     State* state {new Game_State()};
 
-    Tire tire(300, 300, 50);
+    Tire tire(1000, 300, 50);
+
+    Hole hole(70, 400, 100);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -36,7 +37,8 @@ int main() {
         window.clear();
         state->render(window);
 
-        tire.draw(window);
+        tire.render(window);
+        hole.render(window);
 
         window.display();
     }
