@@ -26,8 +26,7 @@ int main() {
             state->handle(event);
         }
         state->update(clock.restart());
-
-        window.clear();
+        window.clear(sf::Color(255, 255, 255)); // Ändrat i IdaOskar
         state->render(window);
         window.display();
     }

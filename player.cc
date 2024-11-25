@@ -13,8 +13,8 @@ Player::Player(double x, double y, double height,
     : Game_Object(x,y), height{height}, width{width}, side{side},
         left_bound{left_bound}, right_bound{right_bound}
 {
-    texture.loadFromFile("fighter.png");
-    if (!texture.loadFromFile("fighter.png"))
+    texture.loadFromFile("skier.png");
+    if (!texture.loadFromFile("skier.png"))
     {
         std::cerr << "Kan inte öppna: fighter.png" << std::endl;
     }
@@ -25,7 +25,7 @@ Player::Player(double x, double y, double height,
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     sprite.setPosition((right_bound + left_bound) / 2, window_size.y / 6);
-
+    sprite.setScale(0.1f, 0.1f);
 }
 
 // Medlemsfunktioner
@@ -39,7 +39,7 @@ bool Player::handle(sf::Event event)
 void Player::update(sf::Time delta)
 {
 
-    float distance {delta.asSeconds() * 128.0f};
+    float distance {delta.asSeconds() * 200.0f};
     sf::Vector2f old_position {sprite.getPosition()};
 
     if (side)
