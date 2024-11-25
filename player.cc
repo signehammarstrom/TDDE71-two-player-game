@@ -9,8 +9,9 @@
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
 Player::Player(double x, double y, double height, 
-    double width)
-    : Game_Object(x,y), height{height}, width{width}
+    double width, double left_bound, double right_bound, bool side)
+    : Game_Object(x,y), height{height}, width{width}, side{side},
+        left_bound{left_bound}, right_bound{right_bound}
 {
     texture.loadFromFile("fighter.png");
     if (!texture.loadFromFile("fighter.png"))
@@ -23,8 +24,7 @@ Player::Player(double x, double y, double height,
     sprite.setTexture(texture);
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition(window_size.x / 2, 3 * window_size.y / 4);
-
+    sprite.setPosition((right_bound + left_bound) / 2, window_size.y / 6);
 
 }
 
@@ -37,7 +37,41 @@ bool Player::handle(sf::Event event)
 }
 
 void Player::update(sf::Time delta)
-{}
+{
+
+    float distance {delta.asSeconds() * 128.0f};
+    sf::Vector2f old_position {sprite.getPosition()};
+
+    if (side)
+    {
+         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        {
+            sprite.move({-distance, 0});
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        {
+            sprite.move({distance, 0});
+        }
+    }
+    else
+    {
+         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        {
+            sprite.move({-distance, 0});
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        {
+            sprite.move({distance, 0});
+        }
+    }
+
+    if (out_of_bounds())
+    {
+        sprite.setPosition(old_position);
+    }
+}
+
+
 
 void Player::render(sf::RenderWindow& window)
 {
@@ -55,6 +89,23 @@ bool Player::collides(Game_Object const&) const
 {}
 
 
+bool Player::out_of_bounds()
+{
+    sf::FloatRect bounds {sprite.getGlobalBounds()};
+
+    if (bounds.left < left_bound)
+    {
+        return true;
+    }
+    else if (bounds.left + bounds.width > right_bound)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 
 

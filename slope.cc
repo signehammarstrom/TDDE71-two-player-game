@@ -13,7 +13,20 @@ Slope::Slope(bool side)
     context.game_finished = false;
     read_track();
 
-    context.player = new Player {1,1,1,1};
+    if (side)
+    {
+        context.left_bound = 0;
+        context.right_bound = 1136/2;
+    }
+
+    else
+    {
+        context.left_bound = 1136/2;
+        context.right_bound = 1136;
+    }
+
+    context.player = new Player {1,1,1,1, context.left_bound,
+                                        context.right_bound, context.side};
 };
 
 
@@ -26,19 +39,9 @@ void Slope::handle(sf::Event event)
 }
 
 void Slope::update(sf::Time delta)
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
-        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-    {
-        //move player left
-        //skicka in delta och x_speed
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
-        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    {
-        //Move player right
-        //skicka in delta och x_speed
-    }
+{   
+
+    context.player->update(delta);
 
 
     //Loopa igenom Game_Objects och kolla om nån kolliderar

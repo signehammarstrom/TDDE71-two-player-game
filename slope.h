@@ -14,6 +14,7 @@ struct Context
     Player* player;
     //std::vector<Snowball_Projectile*> snowball_lst{};
 
+
     double y_speed {};
 
     bool side {}; // true ger vänster
@@ -25,6 +26,10 @@ struct Context
     unsigned int snow_count{};
 
     bool game_finished{};
+
+    double left_bound{};
+
+    double right_bound{};
 
 };
 
