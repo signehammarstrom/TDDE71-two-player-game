@@ -12,13 +12,6 @@ public:
     Static_Obstacle(double xpos, double ypos);
     ~Static_Obstacle() = default;
 
-    bool handle(sf::Event event) override;
-    void update(sf::Time delta) override;
-    void render(sf::RenderWindow& window) override;
-    void perform_collision(GameObject&) override;
-    bool collides(GameObject&) override;
-
-
 private:
     //Avvakta
 
@@ -38,9 +31,16 @@ public:
     Tire(double xpos, double ypos, double radius);
     ~Tire() = default;
 
+    // bool handle(sf::Event event) override;
+    // void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+    // void perform_collision(GameObject&) override;
+    // bool collides(GameObject&) override;
+
 private:
     double radius;
-
+    sf::Texture texture;
+    sf::Sprite sprite;
 
 protected:
     //Avvakta
@@ -57,6 +57,11 @@ public:
     Hole(double xpos, double ypos, double radius);
     ~Hole() = default;
 
+    // bool handle(sf::Event event) override;
+    // void update(sf::Time delta) override;
+    // void render(sf::RenderWindow& window) override;
+    // void perform_collision(GameObject&) override;
+    // bool collides(GameObject&) override;
 
 private:
     double radius;
@@ -76,11 +81,11 @@ public:
     Goal(double xpos, double ypos, double width, double height);
     ~Goal() = default;
  
-    bool handle(sf::Event event) override;
-    void update(ef::Time delta) override;
-    void render(sf::RenderWindow& window) override;
-    void perform_collision(GameObject&) override;
-    bool collides(GameObject&) override;
+    // bool handle(sf::Event event) override;
+    // void update(sf::Time delta) override;
+    // void render(sf::RenderWindow& window) override;
+    // void perform_collision(GameObject&) override;
+    // bool collides(GameObject&) override;
 
 
 private:

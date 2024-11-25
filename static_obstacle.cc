@@ -9,7 +9,24 @@ Static_Obstacle::Static_Obstacle(double xpos, double ypos)
 
 Tire::Tire(double xpos, double ypos, double radius)
     :Static_Obstacle(xpos, ypos), radius{radius}
-{}
+{
+    if (!texture.loadFromFile("tire.png"))
+    {
+        throw std::runtime_error{"Couldn't open 'tire.png'"};
+    }
+    sprite.setTexture(texture);
+
+    sf::Vector2u texture_size { texture.getSize() };
+    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    
+    sprite.setPosition(xpos, ypos);
+}
+
+void Tire::render(sf::RenderWindow& window)
+{
+    window.draw(sprite);
+}
+
 
 
 Hole::Hole(double xpos, double ypos, double radius)
