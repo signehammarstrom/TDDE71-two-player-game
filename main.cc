@@ -1,6 +1,7 @@
 #include "state.h"
 #include "slope.h"
 #include <SFML/Graphics.hpp>
+#include <stack>
 
 unsigned const screen_width{1136};
 unsigned const screen_height{640};
@@ -9,9 +10,11 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
                         "EPIC HARDCORE VSR Simulator" };
 
+
 int main() {
 
-    State* state {new Game_State()};
+    std::stack<State*> states{};
+    states.push(new Menu_State{window});
 
     sf::Clock clock;
     while (window.isOpen())
@@ -23,14 +26,20 @@ int main() {
             {
                 window.close();
             }
-            state->handle(event);
+            states.top()->handle(event);
+
         }
-        state->update(clock.restart());
+        
+        states.top()->update(clock.restart(), states);
 
         window.clear();
-        state->render(window);
+        states.top()->render(window);
         window.display();
     }
 
-    delete state;
+    while (!states.empty())
+    {
+        delete states.top();
+        states.pop();
+    }
 }
