@@ -23,10 +23,10 @@ public:
 
     // Medlemsfunktioner
     /*_____________________________________________________*/
-    //virtual void handle(sf::Event event) = 0;
-    //virtual bool update(sf::Time delta /*...*/) = 0;
-    //virtual void render(sf::RenderWindow& window) = 0;
-    //virtual bool collides(Game_Object const&) const = 0;
+    virtual bool handle(sf::Event event) = 0;
+    virtual void update(sf::Time delta /*...*/) = 0;
+    virtual void render(sf::RenderWindow& window) = 0;
+    virtual bool collides(Game_Object const&) const = 0;
     double get_xpos() const; 
     double get_ypos() const;
 

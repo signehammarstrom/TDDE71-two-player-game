@@ -11,6 +11,29 @@ Player::Player(double x, double y, double height,
 }
 
 // Medlemsfunktioner
+
+bool Player::handle(sf::Event event)
+{}
+
+void Player::update(sf::Time delta)
+{}
+
+void Player::render(sf::RenderWindow& window)
+{}
+
+void Player::throw_snowball()
+{}
+
+void Player::perform_collision(Game_Object const&)
+{}
+
+bool Player::collides(Game_Object const&) const
+{}
+
+
+
+
+
 /*_____________________________________________________*/
 
 //dessa funktioner skapades
