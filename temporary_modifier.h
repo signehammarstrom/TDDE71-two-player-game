@@ -40,7 +40,7 @@ public:
     //void update(sf::Time delta, /* ... */);
     //void render(sf::RenderWindow& window);
     //void perform_collision(Game_Object &);
-    //bool collides(Game_Object &) ;
+   // sf::FloatRect bounds() const override;
 
 private: 
 
@@ -59,7 +59,7 @@ public:
     //void update(sf::Time delta, /* ... */);
     //void render(sf::RenderWindow& window);
     //void perform_collision(Game_Object &);
-    //bool collides(Game_Object &) ;
+    // sf::FloatRect bounds() const override;
 
 private: 
 
@@ -78,7 +78,7 @@ public:
     //void update(sf::Time delta, /* ... */);
     //void render(sf::RenderWindow& window);
     //void perform_collision(Game_Object &);
-    //bool collides(Game_Object &) ;
+    // sf::FloatRect bounds() const override;
 
 private: 
 

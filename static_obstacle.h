@@ -38,7 +38,7 @@ public:
     // void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
-    // bool collides(GameObject&) override;
+    // sf::FloatRect bounds() const override;
 
 private:
     double radius;
@@ -64,7 +64,7 @@ public:
     // void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
-    // bool collides(GameObject&) override;
+    // sf::FloatRect bounds() const override;
 
 private:
     double radius;
@@ -90,7 +90,7 @@ public:
     // void update(sf::Time delta) override;
     // void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
-    // bool collides(GameObject&) override;
+    // sf::FloatRect bounds() const override;
 
 
 private:
