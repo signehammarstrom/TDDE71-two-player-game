@@ -1,16 +1,19 @@
 #ifndef STATIC_OBSTACLE_H
 #define STATIC_OBSTACLE_H
+#include "modifier.h"
+#include <SFML/Graphics.hpp>
 
-//Deklaration av basklassen StaticObstacle
+//Deklaration av basklassen Static_Obstacle. Abstrakt datatyp som ärver av Modifier.
 /*_____________________________________________________________________*/
-class StaticObstacle
+class Static_Obstacle : public Modifier
 {
 
 public:
-    virtual bool handle(sf::Event event) = 0;
-    virtual void update(sf::Time delta) = 0; //Parameterlistan behöver justeras
-    virtual void render(sf::RenderWindow& window) = 0;
-    virtual void perform_collision(GameObject&) = 0;
+    bool handle(sf::Event event) override;
+    void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(GameObject&) override;
+    bool collides(GameObject&) override;
 
 
 private:
@@ -25,15 +28,15 @@ protected:
 
 //Deklaration av den härledda klassen Tire
 /*_____________________________________________________________________*/
-class Tire : public StaticObject
+class Tire : public Static_Object
 {
 
 public:
-    //Avvakta
+    Tire(double radius);
 
 
 private:
-    //Avvakta
+    double radius;
 
 
 protected:
@@ -44,15 +47,15 @@ protected:
 
 //Deklaration av den härledda klassen Hole
 /*____________________________________________________________________*/
-class Hole : public StaticObject
+class Hole : public Static_Object
 {
 
 public:
-    //Avvakta
+    Hole(double radius);
 
 
 private:
-    //Avvakta
+    double radius;
 
 
 protected:
@@ -62,15 +65,21 @@ protected:
 
 //Deklaration av den härledda klassen Goal
 /*____________________________________________________________________*/
-class Goal : public StaticObject
+class Goal : public Static_Object
 {
 
 public:
-    //Avvakta
+    Goal(double width, double height);
+    bool handle(sf::Event event) override;
+    void update(ef::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(GameObject&) override;
+    bool collides(GameObject&) override;
 
 
 private:
-    //Avvakta
+    double width;
+    double height;
 
 
 protected:

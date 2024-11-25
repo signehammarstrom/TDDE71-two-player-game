@@ -1,1 +1,2 @@
-#include static_obstacle.h
+#include "static_obstacle.h"
+#include <SFML/Graphics.hpp>
