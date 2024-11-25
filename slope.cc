@@ -1,5 +1,5 @@
 #include <vector>
-//#include "game_object.h"
+#include "game_object.h"
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "slope.h"
@@ -37,4 +37,8 @@ void Slope::read_track()
     std::ifstream ifs {"track.txt"};
     ifs >> context.y_speed;
     //Loopa igenom resten å lägg in i Game_Objects.
+    //För varje rad i filen
+    //Typ av objekt, var den är
+    //Skapa instans av Objektet - skicka in koordinater
+    //Lägg in i en lista.
 }

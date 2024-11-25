@@ -2,10 +2,9 @@
 #define SLOPE_H
 
 #include <vector>
-//#include "game_object.h"
+#include "game_object.h"
 #include <SFML/Graphics.hpp>
 
-struct Game_Object{};
 
 struct Context
 {
