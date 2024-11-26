@@ -29,6 +29,11 @@ void Tire::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
+void Tire::update(sf::Time delta)
+{
+    
+}
+
 Hole::Hole(double xpos, double ypos, double radius)
     :Static_Obstacle(xpos, ypos), radius{radius}
 {
@@ -54,4 +59,6 @@ void Hole::render(sf::RenderWindow& window)
 Goal::Goal(double xpos, double ypos, double width, double height)
     :Static_Obstacle(xpos, ypos), width{width}, height{height}
 {}
+
+
 
