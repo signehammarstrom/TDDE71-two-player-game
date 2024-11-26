@@ -25,8 +25,7 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
 
-    context.player = new Player {1,1,1,1, context.left_bound,
-                                        context.right_bound, context.side};
+    context.player = new Player {1,1, context};
 };
 
 
@@ -41,7 +40,7 @@ void Slope::handle(sf::Event event)
 void Slope::update(sf::Time delta)
 {   
 
-    context.player->update(delta);
+    context.player->update(delta, context);
 
 
     //Loopa igenom Game_Objects och kolla om nån kolliderar

@@ -3,15 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include "context.h"
 
 
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, double height, 
-    double width, double left_bound, double right_bound, bool side)
-    : Game_Object(x,y), height{height}, width{width}, side{side},
-        left_bound{left_bound}, right_bound{right_bound}
+Player::Player(double x, double y, Context context)
+    : Game_Object(x,y), side{context.side},
+        left_bound{context.left_bound}, right_bound{context.right_bound}
 {
     texture.loadFromFile("skier.png");
     if (!texture.loadFromFile("skier.png"))
@@ -30,13 +30,17 @@ Player::Player(double x, double y, double height,
 
 // Medlemsfunktioner
 
-bool Player::handle(sf::Event event)
+bool Player::handle(sf::Event event, Context& context)
 {
-
+    sf::Vector2f curr_position {sprite.getPosition()};
+    //Kolla om snöbollscount > 0
+    //Skapa en snöboll med sina egna koordinater.
+    //Lägg till en pekare till snöbollen i listan i context
+    //Minska antalet snöbollar i snöbollscountern i context
 
 }
 
-void Player::update(sf::Time delta)
+void Player::update(sf::Time delta, Context& context)
 {
 
     float distance {delta.asSeconds() * 200.0f};
