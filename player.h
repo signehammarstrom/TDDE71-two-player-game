@@ -20,16 +20,13 @@ public:
     bool collides(Game_Object const&) const override;
     double get_width() const;
     double get_height() const;
-    bool out_of_bounds();
+    bool out_of_bounds(Context const& context);
 
 private:
    double height{};
    double width{};
    sf::Sprite sprite;
    sf::Texture texture;
-   double side{};
-   double left_bound{};
-   double right_bound{};
  
 };
 

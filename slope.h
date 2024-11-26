@@ -21,7 +21,9 @@ public:
     
 private:
     void read_track();
-    float const x_speed { 128.0f };
+    float const x_speed { 200.0f };
+    //sf::Font font{};
+    //sf::Text text{};
 
 };
 

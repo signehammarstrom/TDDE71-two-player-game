@@ -11,13 +11,12 @@
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
 Player::Player(double x, double y, Context context)
-    : Game_Object(x,y), side{context.side},
-        left_bound{context.left_bound}, right_bound{context.right_bound}
+    : Game_Object(x,y)
 {
     texture.loadFromFile("skier.png");
     if (!texture.loadFromFile("skier.png"))
     {
-        std::cerr << "Kan inte öppna: fighter.png" << std::endl;
+        std::cerr << "Kan inte öppna: skier.png" << std::endl;
     }
 
     sf::Vector2u window_size {1136, 640};
@@ -25,7 +24,7 @@ Player::Player(double x, double y, Context context)
     sprite.setTexture(texture);
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition((right_bound + left_bound) / 2, window_size.y / 6);
+    sprite.setPosition((context.right_bound + context.left_bound) / 2, window_size.y / 6);
     sprite.setScale(0.1f, 0.1f);
 }
 
@@ -47,7 +46,7 @@ void Player::update(sf::Time delta, Context& context)
     float distance {delta.asSeconds() * 200.0f};
     sf::Vector2f old_position {sprite.getPosition()};
 
-    if (side)
+    if (context.side)
     {
          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
         {
@@ -70,7 +69,7 @@ void Player::update(sf::Time delta, Context& context)
         }
     }
 
-    if (out_of_bounds())
+    if (out_of_bounds(context))
     {
         sprite.setPosition(old_position);
     }
@@ -94,15 +93,15 @@ bool Player::collides(Game_Object const&) const
 {}
 
 
-bool Player::out_of_bounds()
+bool Player::out_of_bounds(Context const& context)
 {
     sf::FloatRect bounds {sprite.getGlobalBounds()};
 
-    if (bounds.left < left_bound)
+    if (bounds.left < context.left_bound)
     {
         return true;
     }
-    else if (bounds.left + bounds.width > right_bound)
+    else if (bounds.left + bounds.width > context.right_bound)
     {
         return true;
     }

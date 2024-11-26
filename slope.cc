@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "slope.h"
+#include <string>
+#include <iostream>
 
 
 Slope::Slope(bool side)
@@ -26,6 +28,22 @@ Slope::Slope(bool side)
     }
 
     context.player = new Player {1,1, context};
+/*
+    if (!font.loadFromFile("font.ttf"))
+    {
+        throw std::runtime_error { "Kan inte öppna: font.ttf" };
+    }
+
+    text.setFont(font);
+
+    std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
+    text.setString(snow_text);
+
+    sf::FloatRect bounds { text.getGlobalBounds() };
+    
+    text.setOrigin(bounds.width / 2, bounds.height / 2);
+    text.setPosition(context.left_bound/ 2, context.right_bound/2);
+    */
 };
 
 
@@ -65,6 +83,8 @@ void Slope::render(sf::RenderWindow& window)
     {
         context.snowball_lst[i]->render(window);
     }
+
+    //window.draw(text);
 
 }
 
