@@ -1,4 +1,5 @@
 #include "static_obstacle.h"
+#include "context.h"
 #include <SFML/Graphics.hpp>
 
 
@@ -29,9 +30,14 @@ void Tire::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
-void Tire::update(sf::Time delta)
+void Tire::update(sf::Time delta, Context& context) 
 {
     
+    float distance {delta.asSeconds() * context.y_speed};
+    sf::Vector2f old_position {sprite.getPosition()};
+    
+    sprite.move({0, -distance});
+
 }
 
 Hole::Hole(double xpos, double ypos, double radius)
@@ -49,6 +55,16 @@ Hole::Hole(double xpos, double ypos, double radius)
     sprite.setPosition(xpos, ypos);
     double scale {radius/(texture_size.x/2)};
     sprite.setScale(scale, scale);
+}
+
+void Hole::update(sf::Time delta, Context& context) 
+{
+    
+    float distance {delta.asSeconds() * context.y_speed};
+    sf::Vector2f old_position {sprite.getPosition()};
+    
+    sprite.move({0, -distance});
+
 }
 
 void Hole::render(sf::RenderWindow& window)

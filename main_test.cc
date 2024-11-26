@@ -2,6 +2,7 @@
 #include "slope.h"
 #include "game_object.h"
 #include "modifier.h"
+#include "context.h"
 #include "static_obstacle.h"
 #include <SFML/Graphics.hpp>
 
@@ -15,6 +16,10 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
 int main() {
 
     State* state {new Game_State()};
+
+    std::vector<Game_Object*> obj_lst{};
+    Context gameContext{};
+    gameContext.y_speed = 100; 
 
     Tire tire(1000, 300, 50);
 
@@ -33,10 +38,12 @@ int main() {
             state->handle(event);
         }
         state->update(clock.restart());
-
+        
+        
         window.clear();
         state->render(window);
-
+        tire.update(clock.getElapsedTime(), gameContext);
+        hole.update(clock.getElapsedTime(), gameContext);
         tire.render(window);
         hole.render(window);
 

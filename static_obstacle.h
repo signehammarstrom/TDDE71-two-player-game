@@ -1,6 +1,7 @@
 #ifndef STATIC_OBSTACLE_H
 #define STATIC_OBSTACLE_H
 #include "modifier.h"
+#include "context.h"
 #include <SFML/Graphics.hpp>
 
 //Deklaration av basklassen Static_Obstacle. Abstrakt datatyp som ärver av Modifier.
@@ -35,7 +36,7 @@ public:
     ~Tire() = default;
 
     // bool handle(sf::Event event) overrßide;
-    // void update(sf::Time delta) override;
+    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
     // sf::FloatRect bounds() const override;
@@ -61,7 +62,7 @@ public:
     ~Hole() = default;
 
     // bool handle(sf::Event event) override;
-    // void update(sf::Time delta) override;
+    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     // void perform_collision(GameObject&) override;
     // sf::FloatRect bounds() const override;
