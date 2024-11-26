@@ -8,7 +8,8 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, Context context); //ändra sen så den tar fil som inparameter!!
+    Player(double xpos, double ypos, Context context); //x och ypos behövs inte!!
+                                                        //ändra sen så den tar fil som inparameter!!
     ~Player() = default;
 
     bool handle(sf::Event event, Context& context) override;

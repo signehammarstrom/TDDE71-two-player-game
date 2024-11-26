@@ -13,7 +13,7 @@ struct Context
 
     //std::vector<Game_Object*> mod_lst{};
     Game_Object* player;
-    //std::vector<Game_Object*> snowball_lst{}; //aktiva snöbollar
+    std::vector<Game_Object*> snowball_lst{}; //aktiva snöbollar
 
 
     double y_speed {};

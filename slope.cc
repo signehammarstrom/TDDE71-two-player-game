@@ -9,7 +9,7 @@ Slope::Slope(bool side)
     :context{}
 {
     context.side = side;
-    context.snow_count = 0;
+    context.snow_count = 3;
     context.game_finished = false;
     read_track();
 
@@ -33,7 +33,7 @@ void Slope::handle(sf::Event event)
 {
     if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
     {
-        // Kasta snöboll
+        context.player->handle(event, context);
     }
 }
 
@@ -41,9 +41,17 @@ void Slope::update(sf::Time delta)
 {   
 
     context.player->update(delta, context);
-
-
+    for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    {
+        context.snowball_lst[i]->update(delta, context);
+    }
+    /*for (unsigned int i=0;i<context.mod_lst.size();i++)
+    {
+        context.mod_lst[i]->update(delta, context);
+    }*/
     //Loopa igenom Game_Objects och kolla om nån kolliderar
+
+    //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
 
 }
@@ -53,6 +61,10 @@ void Slope::render(sf::RenderWindow& window)
 {
     //loopa igenom alla object och rita upp dem!!
     context.player->render(window);
+    for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    {
+        context.snowball_lst[i]->render(window);
+    }
 
 }
 

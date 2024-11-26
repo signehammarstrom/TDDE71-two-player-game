@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include "context.h"
+#include "snowball_projectile.h"
 
 
 
@@ -33,11 +34,11 @@ Player::Player(double x, double y, Context context)
 bool Player::handle(sf::Event event, Context& context)
 {
     sf::Vector2f curr_position {sprite.getPosition()};
-    //Kolla om snöbollscount > 0
-    //Skapa en snöboll med sina egna koordinater.
-    //Lägg till en pekare till snöbollen i listan i context
-    //Minska antalet snöbollar i snöbollscountern i context
-
+    if (context.snow_count > 0)
+    {
+        context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y));
+        context.snow_count = context.snow_count - 1;
+    }
 }
 
 void Player::update(sf::Time delta, Context& context)

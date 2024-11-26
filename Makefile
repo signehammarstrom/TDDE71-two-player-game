@@ -1,21 +1,41 @@
-CXX:=g++
-CXXFLAGS:=-std=c++17 -Wall -Wextra -Wpedantic
-LIBS:=-lsfml-graphics -lsfml-window -lsfml-system
+CXX := g++
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
+LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
-all: slope
+# Lista över alla objektfiler som ska länkas
+OBJS := player.o game_object.o main.o state.o slope.o snowball_projectile.o
 
-slope_test: slope.cc test_main.cc test.cc
-	$(CXX) $(CXXFLAGS) -o slope_test slope.cc test_main.cc test.cc $(LIBS)
+# Huvudmål
+all: plmain
 
-main: main.cc state.cc slope.cc
-	$(CXX) $(CXXFLAGS) -o main main.cc state.cc slope.cc $(LIBS)
+# Bygg exekverbara filer
+plmain: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o plmain $(OBJS) $(LIBS)
 
-player: player.cc game_object.cc player_test.cc test_main.cc
-	$(CXX) $(CXXFLAGS) -o player player.cc game_object.cc player_test.cc test_main.cc $(LIBS)
+# Regler för att skapa objektfiler från källkod
+player.o: player.cc player.h
+	$(CXX) $(CXXFLAGS) -c player.cc
 
-plmain: player.cc game_object.cc main.cc state.cc slope.cc
-	$(CXX) $(CXXFLAGS) -o plmain player.cc game_object.cc main.cc state.cc slope.cc $(LIBS)
+game_object.o: game_object.cc game_object.h
+	$(CXX) $(CXXFLAGS) -c game_object.cc
 
+main.o: main.cc
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+state.o: state.cc state.h
+	$(CXX) $(CXXFLAGS) -c state.cc
+
+slope.o: slope.cc slope.h
+	$(CXX) $(CXXFLAGS) -c slope.cc
+
+snowball_projectile.o: snowball_projectile.cc snowball_projectile.h
+	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
+
+# Regel för att bygga övriga program
+player_test: player.o game_object.o player_test.o test_main.o
+	$(CXX) $(CXXFLAGS) -o player_test player.o game_object.o player_test.o test_main.o $(LIBS)
+
+# Rensningsregel
 .PHONY: clean
 clean:
-	rm slope
+	rm -f *.o plmain player_test slope_test main
