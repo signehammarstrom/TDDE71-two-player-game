@@ -2,6 +2,7 @@
 #define MODIFIER_H
 #include "game_object.h"
 #include "player.h"
+#include <SFML/Graphics.hpp>
 
 class Modifier : public Game_Object 
 {

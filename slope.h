@@ -4,8 +4,28 @@
 #include <vector>
 #include "context.h"
 #include "game_object.h"
+#include "context.h"
 #include <SFML/Graphics.hpp>
 #include "player.h"
+
+
+// struct Context
+// {
+//     std::vector<Game_Object*> obj_lst{};
+
+//     double y_speed {};
+
+//     bool side {}; // true ger vänster
+
+//     Game_Object* active_mod{};
+
+//     sf::Clock clock;
+
+//     unsigned int snow_count{};
+
+//     bool game_finished{};
+
+// };
 
 
 class Slope

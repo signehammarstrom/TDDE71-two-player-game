@@ -1,4 +1,5 @@
 #include "state.h"
+#include <SFML/Graphics.hpp>
 
 Game_State::Game_State()
 : left_slope{new Slope(true)}, right_slope{new Slope(false)}
