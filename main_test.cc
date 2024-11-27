@@ -19,7 +19,7 @@ int main() {
 
     std::vector<Game_Object*> obj_lst{};
     Context gameContext{};
-    gameContext.y_speed = 100; 
+    gameContext.y_speed = 300; 
 
     Tire tire(1000, 300, 50);
 
