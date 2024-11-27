@@ -26,11 +26,12 @@ int main() {
             {
                 window.close();
             }
-            states.top()->handle(event);
+            states.top()->handle(event, states);
 
         }
         
-        states.top()->update(clock.restart(), states);
+
+        states.top()->update(clock.restart());
 
         window.clear();
         states.top()->render(window);

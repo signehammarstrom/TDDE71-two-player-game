@@ -11,8 +11,8 @@ public:
     
     virtual ~State() = default;
 
-    virtual void handle(sf::Event event) = 0;
-    virtual void update(sf::Time delta, std::stack<State*>& stack) = 0;
+    virtual void handle(sf::Event event, std::stack<State*>& stack) = 0;
+    virtual void update(sf::Time delta) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
 
 }; 
@@ -23,8 +23,8 @@ public:
 
     Game_State(sf::RenderWindow& window);
     
-    void handle(sf::Event event) override;
-    void update(sf::Time delta, std::stack<State*>& stack) override;
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
 
     Slope* left_slope{};
@@ -40,8 +40,8 @@ public:
 
     Menu_State(sf::RenderWindow& window);
     
-    void handle(sf::Event event) override;
-    void update(sf::Time delta, std::stack<State*>& stack) override;
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
     
 private:

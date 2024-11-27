@@ -6,7 +6,7 @@ Game_State::Game_State(sf::RenderWindow& window)
 
 }
 
-void Game_State::handle(sf::Event event)
+void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
         {
@@ -22,7 +22,7 @@ void Game_State::handle(sf::Event event)
 
 }
 
-void Game_State::update(sf::Time delta, std::stack<State*>& stack)
+void Game_State::update(sf::Time delta)
 {
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
@@ -61,17 +61,20 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     text.setPosition(window_size.x / 2, window_size.y / 2);
 }
 
-void Menu_State::handle(sf::Event event)
+void Menu_State::handle(sf::Event event, std::stack<State*>& stack )
 {
-
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+    {
+        stack.push(new Game_State{window});
+    }
 }
 
-void Menu_State::update(sf::Time delta, std::stack<State*>& stack)
+void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
 {
 
 }
 
 void Menu_State::render(sf::RenderWindow& window)
 {
-
+    window.draw(text);
 }
