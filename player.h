@@ -8,7 +8,8 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, Context context); //ändra sen så den tar fil som inparameter!!
+    Player(double xpos, double ypos, Context context); //x och ypos behövs inte!!
+                                                        //ändra sen så den tar fil som inparameter!!
     ~Player() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -19,16 +20,13 @@ public:
     bool collides(Game_Object const&) const override;
     double get_width() const;
     double get_height() const;
-    bool out_of_bounds();
+    bool out_of_bounds(Context const& context);
 
 private:
    double height{};
    double width{};
    sf::Sprite sprite;
    sf::Texture texture;
-   double side{};
-   double left_bound{};
-   double right_bound{};
  
 };
 
