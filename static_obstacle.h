@@ -12,7 +12,8 @@ class Static_Obstacle : public Modifier
 public:
     Static_Obstacle(double xpos, double ypos);
     ~Static_Obstacle() = default;
-
+    bool handle(sf::Event event, Context& context);
+    bool collides(Game_Object const&) const;
 private:
     //Avvakta
 

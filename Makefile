@@ -31,9 +31,16 @@ slope.o: slope.cc slope.h
 snowball_projectile.o: snowball_projectile.cc snowball_projectile.h
 	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
 
+modifier.o: modifier.cc modifier.h
+	$(CXX) $(CXXFLAGS) -c modifier.cc
+
+static_obstacle.o: static_obstacle.cc static_obstacle.h
+	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
+
 # Regel för att bygga övriga program
 player_test: player.o game_object.o player_test.o test_main.o
-	$(CXX) $(CXXFLAGS) -o player_test player.o game_object.o player_test.o test_main.o $(LIBS)
+	$(CXX) $(CXXFLAGS) -o player_test player.o game_object.o
+	 player_test.o test_main.o modifier.cc static_obstacle.cc $(LIBS)
 
 # Rensningsregel
 .PHONY: clean

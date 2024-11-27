@@ -5,6 +5,8 @@
 #include "slope.h"
 #include <string>
 #include <iostream>
+#include "modifier.h"
+#include "static_obstacle.h"
 
 
 Slope::Slope(bool side)
@@ -28,6 +30,13 @@ Slope::Slope(bool side)
     }
 
     context.player = new Player {1,1, context};
+   context.y_speed = 300; 
+
+
+    context.mod_lst.push_back(new Hole(70, 400, 100));
+    context.mod_lst.push_back(new Tire (1000, 300, 50));
+
+
 /*
     if (!font.loadFromFile("font.ttf"))
     {

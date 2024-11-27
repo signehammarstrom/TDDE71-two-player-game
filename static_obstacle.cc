@@ -7,6 +7,12 @@ Static_Obstacle::Static_Obstacle(double xpos, double ypos)
     :Modifier(xpos, ypos)
 {}
 
+bool Static_Obstacle::handle(sf::Event event, Context& context)
+{}
+
+bool Static_Obstacle::collides(Game_Object const&) const
+{}
+
 
 Tire::Tire(double xpos, double ypos, double radius)
     :Static_Obstacle(xpos, ypos), radius{radius}
