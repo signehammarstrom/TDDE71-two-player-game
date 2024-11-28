@@ -46,3 +46,47 @@ player_test: player.o game_object.o player_test.o test_main.o
 .PHONY: clean
 clean:
 	rm -f *.o plmain player_test slope_test main
+
+
+
+# --------------------------------------------------
+
+# Lista över alla objektfiler som ska länkas
+NEWOBJS := game_object.o main.o state.o slope.o modifier.o static_obstacle.o moving_object.o temporary_modifier.o
+
+# Huvudmål
+all: elvsig
+
+# Bygg exekverbara filer
+elvsig: $(NEWOBJS)
+	$(CXX) $(CXXFLAGS) -o elvsig $(NEWOBJS) $(LIBS)
+
+# Regler för att skapa objektfiler från källkod
+game_object.o: game_object.cc game_object.h
+	$(CXX) $(CXXFLAGS) -c game_object.cc
+
+main.o: main.cc
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+state.o: state.cc state.h
+	$(CXX) $(CXXFLAGS) -c state.cc
+
+slope.o: slope.cc slope.h
+	$(CXX) $(CXXFLAGS) -c slope.cc
+
+modifier.o: modifier.cc modifier.h
+	$(CXX) $(CXXFLAGS) -c modifier.cc
+
+static_obstacle.o: static_obstacle.cc static_obstacle.h
+	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
+
+temporary_modifier.o: temporary_modifier.cc temporary_modifier.h
+	$(CXX) $(CXXFLAGS) -c temporary_modifier.cc
+
+moving_object.o: moving_object.cc moving_object.h
+	$(CXX) $(CXXFLAGS) -c moving_object.cc
+
+# Rensningsregel
+.PHONY: clean
+clean:
+	rm -f *.o elvsig

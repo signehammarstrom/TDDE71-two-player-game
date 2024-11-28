@@ -30,8 +30,7 @@ public:
     bool handle(sf::Event event, Context& context) override;
     void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    bool collides(Game_Object const&) const override;
-    void perform_collision(Game_Object const&);
+    void perform_collision(Game_Object* const& other) override;
     
 private:
     float radius;

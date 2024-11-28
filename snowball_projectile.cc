@@ -40,8 +40,6 @@ void Snowball_Projectile::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
-bool Snowball_Projectile::collides(Game_Object const&) const
-{}
 
-void Snowball_Projectile::perform_collision(Game_Object const&)
+void Snowball_Projectile::perform_collision(Game_Object* const& other)
 {}

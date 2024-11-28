@@ -1,34 +1,30 @@
+#include <SFML/Graphics.hpp>
+#include <string>
+
+#include "game_object.h"
+#include "modifier.h"
 #include "static_obstacle.h"
 #include "context.h"
-#include <SFML/Graphics.hpp>
 
-
-Static_Obstacle::Static_Obstacle(double xpos, double ypos)
-    :Modifier(xpos, ypos)
+// Static_Obstacle
+///////////////////////////////
+Static_Obstacle::Static_Obstacle(double xpos, double ypos, std::string filename)
+    :Modifier(xpos, ypos, filename)
 {}
 
-bool Static_Obstacle::handle(sf::Event event, Context& context)
-{}
+// Tire
+///////////////////////////////
 
-bool Static_Obstacle::collides(Game_Object const&) const
-{}
+Tire::Tire(double xpos, double ypos, double radius, std::string filename)
+    :Static_Obstacle(xpos, ypos, filename), radius{radius}
+{   
+    // double scale {radius/(texture_size.x/2)};
+    // sprite.setScale(scale, scale);
+}
 
-
-Tire::Tire(double xpos, double ypos, double radius)
-    :Static_Obstacle(xpos, ypos), radius{radius}
+bool Tire::handle(sf::Event event, Context& context)
 {
-    if (!texture.loadFromFile("tire.png"))
-    {
-        throw std::runtime_error{"Couldn't open 'tire.png'"};
-    }
-    sprite.setTexture(texture);
-
-    sf::Vector2u texture_size { texture.getSize() };
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    
-    sprite.setPosition(xpos, ypos);
-    double scale {radius/(texture_size.x/2)};
-    sprite.setScale(scale, scale);
+    return false;
 }
 
 void Tire::render(sf::RenderWindow& window)
@@ -43,24 +39,28 @@ void Tire::update(sf::Time delta, Context& context)
     sf::Vector2f old_position {sprite.getPosition()};
     
     sprite.move({0, -distance});
-
 }
 
-Hole::Hole(double xpos, double ypos, double radius)
-    :Static_Obstacle(xpos, ypos), radius{radius}
+void Tire::perform_collision(Game_Object* const& other)
 {
-    if (!texture.loadFromFile("hole.png"))
-    {
-        throw std::runtime_error{"Couldn't open 'hole.png'"};
-    }
-    sprite.setTexture(texture);
+    return;
+}
 
-    sf::Vector2u texture_size { texture.getSize() };
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    
-    sprite.setPosition(xpos, ypos);
-    double scale {radius/(texture_size.x/2)};
-    sprite.setScale(scale, scale);
+// Hole
+///////////////////////////////
+
+Hole::Hole(double xpos, double ypos, double radius, std::string filename)
+    :Static_Obstacle(xpos, ypos, filename), radius{radius}
+{}
+
+bool Hole::handle(sf::Event event, Context& context)
+{
+    return false;
+}
+
+void Hole::render(sf::RenderWindow& window)
+{
+    window.draw(sprite);
 }
 
 void Hole::update(sf::Time delta, Context& context) 
@@ -70,17 +70,41 @@ void Hole::update(sf::Time delta, Context& context)
     sf::Vector2f old_position {sprite.getPosition()};
     
     sprite.move({0, -distance});
-
 }
 
-void Hole::render(sf::RenderWindow& window)
+void Hole::perform_collision(Game_Object* const& other)
+{
+    return;
+}
+
+// Goal
+///////////////////////////////
+
+Goal::Goal(double xpos, double ypos, double width, double height, std::string filename)
+    :Static_Obstacle(xpos, ypos, filename), width{width}, height{height}
+{}
+
+bool Goal::handle(sf::Event event, Context& context)
+{
+    return false;
+}
+
+void Goal::render(sf::RenderWindow& window)
 {
     window.draw(sprite);
 }
 
-Goal::Goal(double xpos, double ypos, double width, double height)
-    :Static_Obstacle(xpos, ypos), width{width}, height{height}
-{}
+void Goal::update(sf::Time delta, Context& context) 
+{
+    
+    float distance {delta.asSeconds() * context.y_speed};
+    sf::Vector2f old_position {sprite.getPosition()};
+    
+    sprite.move({0, -distance});
+}
 
-
+void Goal::perform_collision(Game_Object* const& other)
+{
+    return;
+}
 

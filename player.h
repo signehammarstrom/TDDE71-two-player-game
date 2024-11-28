@@ -16,8 +16,7 @@ public:
     void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void throw_snowball();
-    void perform_collision(Game_Object const&);
-    bool collides(Game_Object const&) const override;
+    void perform_collision(Game_Object* const& other) override;
     double get_width() const;
     double get_height() const;
     bool out_of_bounds(Context const& context);

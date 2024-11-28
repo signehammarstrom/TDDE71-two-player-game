@@ -1,12 +1,15 @@
 #include <vector>
-#include "game_object.h"
 #include <SFML/Graphics.hpp>
 #include <fstream>
-#include "slope.h"
 #include <string>
 #include <iostream>
+
+#include "slope.h"
+#include "game_object.h"
 #include "modifier.h"
 #include "static_obstacle.h"
+#include "moving_object.h"
+#include "temporary_modifier.h"
 
 
 Slope::Slope(bool side)
@@ -29,8 +32,8 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
 
-    context.player = new Player {1,1, context};
-   context.y_speed = 300; 
+    // context.player = new Player {1,1, context};
+    // context.y_speed = 300; 
 
 
     context.mod_lst.push_back(new Hole(70, 400, 100));
@@ -58,24 +61,25 @@ Slope::Slope(bool side)
 
 void Slope::handle(sf::Event event)
 {
-    if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
-    {
-        context.player->handle(event, context);
-    }
+    // if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
+    // {
+    //     context.player->handle(event, context);
+    // }
 }
 
 void Slope::update(sf::Time delta)
 {   
 
-    context.player->update(delta, context);
-    for (unsigned int i=0;i<context.snowball_lst.size();i++)
-    {
-        context.snowball_lst[i]->update(delta, context);
-    }
-    /*for (unsigned int i=0;i<context.mod_lst.size();i++)
+    // context.player->update(delta, context);
+    // for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    // {
+    //     context.snowball_lst[i]->update(delta, context);
+    // }
+    for (unsigned int i=0;i<context.mod_lst.size();i++)
     {
         context.mod_lst[i]->update(delta, context);
-    }*/
+    }
+
     //Loopa igenom Game_Objects och kolla om nån kolliderar
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
@@ -87,10 +91,15 @@ void Slope::update(sf::Time delta)
 void Slope::render(sf::RenderWindow& window)
 {
     //loopa igenom alla object och rita upp dem!!
-    context.player->render(window);
-    for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    // context.player->render(window);
+    // for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    // {
+    //     context.snowball_lst[i]->render(window);
+    // }
+
+    for (unsigned int i=0;i<context.mod_lst.size();i++)
     {
-        context.snowball_lst[i]->render(window);
+        context.mod_lst[i]->render(window);
     }
 
     //window.draw(text);

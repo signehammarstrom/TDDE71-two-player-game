@@ -1,9 +1,14 @@
 #ifndef TEMPORARY_MODIFIER_H
 #define TEMPORARY_MODIFIER_H
+
+#include <SFML/Graphics.hpp>
+#include <string>
+
 #include "game_object.h"
+#include "context.h"
 #include "modifier.h"
 #include "moving_object.h"
-#include "slope.h"
+
 
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
@@ -12,10 +17,9 @@ class Temporary_Modifier : public Moving_Object
 {
 public:
     Temporary_Modifier(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier);
+        double width, double height, double speedmodifier, std::string filename);
     ~Temporary_Modifier() = default;
 
-    //void affect_context(Context context&);
     double get_width() const;
     double get_height() const;
     double get_speedmodifier() const; 
@@ -34,13 +38,13 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier);
+        double width, double height, double speedmodifier, std::string filename = "tire.png");
     ~Chalmerist() = default;
-    //bool handle(sf::Event event);
-    //void update(sf::Time delta, /* ... */);
-    //void render(sf::RenderWindow& window);
-    //void perform_collision(Game_Object &);
-   // sf::FloatRect bounds() const override;
+
+    bool handle(sf::Event event, Context& context) override;
+    void update(sf::Time delta, Context& context) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(Game_Object* const& other) override;
 
 private: 
 
@@ -53,13 +57,13 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier);
+        double width, double height, double speedmodifier, std::string filename = "tire.png");
     ~Can() = default;
-    //bool handle(sf::Event event);
-    //void update(sf::Time delta, /* ... */);
-    //void render(sf::RenderWindow& window);
-    //void perform_collision(Game_Object &);
-    // sf::FloatRect bounds() const override;
+
+    bool handle(sf::Event event, Context& context) override;
+    void update(sf::Time delta, Context& context) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(Game_Object* const& other) override;
 
 private: 
 
@@ -72,13 +76,13 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier);
+        double width, double height, double speedmodifier, std::string filename = "tire.png");
     ~Kir() = default;
-    //bool handle(sf::Event event);
-    //void update(sf::Time delta, /* ... */);
-    //void render(sf::RenderWindow& window);
-    //void perform_collision(Game_Object &);
-    // sf::FloatRect bounds() const override;
+
+    bool handle(sf::Event event, Context& context) override;
+    void update(sf::Time delta, Context& context) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(Game_Object* const& other) override;
 
 private: 
 

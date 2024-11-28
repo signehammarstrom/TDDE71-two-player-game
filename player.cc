@@ -86,10 +86,7 @@ void Player::render(sf::RenderWindow& window)
 void Player::throw_snowball()
 {}
 
-void Player::perform_collision(Game_Object const&)
-{}
-
-bool Player::collides(Game_Object const&) const
+void Player::perform_collision(Game_Object* const& other)
 {}
 
 
