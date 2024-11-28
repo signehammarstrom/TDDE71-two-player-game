@@ -47,6 +47,12 @@ public:
 private:
     sf::Font font;
     sf::Text text;
+    sf::Text header;
+    sf::Texture texture;
+    sf::Sprite sprite;
+
+    //  Test för periodicitet
+    float elapsed_time { 0.0f };
     sf::RenderWindow& window;
 
 };
