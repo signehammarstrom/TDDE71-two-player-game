@@ -24,11 +24,33 @@ void Slope::handle(sf::Event event)
 }
 
 void Slope::update(sf::Time delta)
-{}
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+    {
+        //move player left
+        //skicka in delta och x_speed
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+    {
+        //Move player right
+        //skicka in delta och x_speed
+    }
+
+
+    //Loopa igenom Game_Objects och kolla om nån kolliderar
+
+
+}
 
 
 void Slope::render(sf::RenderWindow& window)
-{}
+{
+    //loopa igenom alla object och rita upp dem!!
+
+
+}
 
 
 

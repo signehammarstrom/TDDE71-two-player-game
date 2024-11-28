@@ -10,6 +10,14 @@ struct Context
 {
     std::vector<Game_Object*> obj_lst{};
 
+    /*
+    std::vector<Modifiers*> mod_lst{};
+    Player* player;
+    std::vector<Snowball_Projectile*> snowball_lst{};
+    
+
+    */
+
     double y_speed {};
 
     bool side {}; // true ger vänster
@@ -38,6 +46,8 @@ public:
     
 private:
     void read_track();
+    float const x_speed { 128.0f };
+
 };
 
 
