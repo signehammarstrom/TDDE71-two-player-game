@@ -38,6 +38,7 @@ Slope::Slope(bool side)
 
     context.mod_lst.push_back(new Hole(70, 400, 100));
     context.mod_lst.push_back(new Tire (1000, 300, 50));
+    context.mod_lst.push_back(new Goal (1000, 300, 50, 60));
 
 
 /*
