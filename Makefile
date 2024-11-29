@@ -51,42 +51,44 @@ clean:
 
 # --------------------------------------------------
 
-# Lista över alla objektfiler som ska länkas
-NEWOBJS := game_object.o main.o state.o slope.o modifier.o static_obstacle.o moving_object.o temporary_modifier.o
+# Makefile for compiling the project
 
-# Huvudmål
-all: elvsig
+# Compiler
+CXX = g++
 
-# Bygg exekverbara filer
-elvsig: $(NEWOBJS)
-	$(CXX) $(CXXFLAGS) -o elvsig $(NEWOBJS) $(LIBS)
+# Compiler flags
+CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+# Linker flags for SFML
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-# Regler för att skapa objektfiler från källkod
-game_object.o: game_object.cc game_object.h
-	$(CXX) $(CXXFLAGS) -c game_object.cc
+# Source files
+SRCS = main.cc game_object.cc modifier.cc moving_object.cc static_obstacle.cc temporary_modifier.cc slope.cc state.cc player.cc snowball_projectile.cc
 
-main.o: main.cc
-	$(CXX) $(CXXFLAGS) -c main.cc
+# Header files
+HEADERS = game_object.h modifier.h moving_object.h static_obstacle.h temporary_modifier.h slope.h state.h player.h snowball_projectile.h
 
-state.o: state.cc state.h
-	$(CXX) $(CXXFLAGS) -c state.cc
+# Object files (compiled from source files)
+OBJS = $(SRCS:.cc=.o)
 
-slope.o: slope.cc slope.h
-	$(CXX) $(CXXFLAGS) -c slope.cc
+# Output binary name
+TARGET = game
 
-modifier.o: modifier.cc modifier.h
-	$(CXX) $(CXXFLAGS) -c modifier.cc
+# Default target
+all: $(TARGET)
 
-static_obstacle.o: static_obstacle.cc static_obstacle.h
-	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
+# Linking the object files to create the final executable
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
 
-temporary_modifier.o: temporary_modifier.cc temporary_modifier.h
-	$(CXX) $(CXXFLAGS) -c temporary_modifier.cc
+# Compile the source files into object files
+%.o: %.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-moving_object.o: moving_object.cc moving_object.h
-	$(CXX) $(CXXFLAGS) -c moving_object.cc
-
-# Rensningsregel
-.PHONY: clean
+# Clean up object files and the executable
 clean:
-	rm -f *.o elvsig
+	rm -f $(OBJS) $(TARGET)
+
+# Rebuild the project (force make to run)
+rebuild: clean all
+
+.PHONY: all clean rebuild
