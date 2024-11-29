@@ -20,8 +20,9 @@ Static_Obstacle::Static_Obstacle(double xpos, double ypos, std::string filename)
 Tire::Tire(double xpos, double ypos, double radius, std::string filename)
     :Static_Obstacle(xpos, ypos, filename), radius{radius}
 {   
-    // double scale {radius/(texture_size.x/2)};
-    // sprite.setScale(scale, scale);
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {radius/(texture_size.x/2)};
+    sprite.setScale(scale, scale);
 }
 
 bool Tire::handle(sf::Event event, Context& context)
@@ -48,7 +49,11 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
 
 Hole::Hole(double xpos, double ypos, double radius, std::string filename)
     :Static_Obstacle(xpos, ypos, filename), radius{radius}
-{}
+{
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {radius/(texture_size.x/2)};
+    sprite.setScale(scale, scale);
+}
 
 bool Hole::handle(sf::Event event, Context& context)
 {
@@ -67,7 +72,7 @@ void Hole::update(sf::Time delta, Context& context)
 
 void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
-    context.y_speed = 0;
+    return;
 }
 
 // Goal
@@ -75,7 +80,11 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
 
 Goal::Goal(double xpos, double ypos, double width, double height, std::string filename)
     :Static_Obstacle(xpos, ypos, filename), width{width}, height{height}
-{}
+{
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {width/(texture_size.x/2)};
+    sprite.setScale(scale, scale);
+}
 
 bool Goal::handle(sf::Event event, Context& context)
 {

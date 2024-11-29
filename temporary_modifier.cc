@@ -16,7 +16,8 @@ Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, double xspeed,
         double width, double height, double speedmodifier, std::string filename)
     : Moving_Object(xpos, ypos, xspeed, filename), width{width}, 
     height{height}, speedmodifier{speedmodifier}
-{}
+{
+}
 
 
  double Temporary_Modifier::get_width() const
@@ -40,7 +41,12 @@ double Temporary_Modifier::get_speedmodifier() const
 Chalmerist::Chalmerist(double xpos, double ypos, double xspeed,
         double width, double height, double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
-{}
+{
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {width/(texture_size.x/2)};
+    double scale2 {height/(texture_size.y/2)};
+    sprite.setScale(scale, scale2);
+}
 
 bool Chalmerist::handle(sf::Event event, Context& context)
 {
@@ -69,7 +75,12 @@ void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 Can::Can(double xpos, double ypos, double xspeed,
         double width, double height, double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
-{}
+{
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {width/(texture_size.x/2)};
+    double scale2 {height/(texture_size.y/2)};
+    sprite.setScale(scale, scale2);
+}
 
 bool Can::handle(sf::Event event, Context& context)
 {
@@ -97,7 +108,12 @@ void Can::perform_collision(Game_Object* const& other, Context& context)
 Kir::Kir(double xpos, double ypos, double xspeed,
         double width, double height, double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
-{}
+{
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {width/(texture_size.x/2)};
+    double scale2 {height/(texture_size.y/2)};
+    sprite.setScale(scale, scale2);
+}
 
 bool Kir::handle(sf::Event event, Context& context)
 {

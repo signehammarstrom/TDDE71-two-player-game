@@ -26,7 +26,9 @@ double Moving_Object::get_xspeed() const
 
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, double xspeed, double radius, std::string filename)
    : Moving_Object(xpos, ypos, xspeed, filename), radius{radius}
-{}
+{
+   sprite.setScale(0.05f, 0.05f);
+}
 
 bool Snowball_Mod::handle(sf::Event event, Context& context)
 {

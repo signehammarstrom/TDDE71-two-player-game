@@ -6,7 +6,7 @@
 Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, std::string filename)
 :Game_Object(xpos,ypos, filename), radius{}, y_speed{50}
 {
-
+    sprite.setScale(0.05f, 0.05f); 
 }
 
 

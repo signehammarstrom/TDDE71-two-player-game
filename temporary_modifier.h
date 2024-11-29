@@ -38,7 +38,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+        double width, double height, double speedmodifier, std::string filename = "Chalmerist.png");
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -56,7 +56,7 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+        double width, double height, double speedmodifier, std::string filename = "can.png");
     ~Can() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -74,7 +74,7 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+        double width, double height, double speedmodifier, std::string filename = "kir.png");
     ~Kir() = default;
 
     bool handle(sf::Event event, Context& context) override;

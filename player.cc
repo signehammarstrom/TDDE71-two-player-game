@@ -13,7 +13,7 @@
 Player::Player(double x, double y, std::string filename )
     : Game_Object(x,y, filename)
 {
-  
+    sprite.setScale(0.05f, 0.05f);
 }
 
 // Medlemsfunktioner
