@@ -31,8 +31,8 @@ Slope::Slope(bool side)
         context.left_bound = 1136/2;
         context.right_bound = 1136;
     }
-
-    context.player = new Player {1,1, context};
+    sf::Vector2u window_size {1136, 640};
+    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
     context.y_speed = 300; 
 
 
@@ -124,6 +124,8 @@ void Slope::render(sf::RenderWindow& window)
     {
         snowball->render(window);
     }
+
+    context.mod_lst[0]->render(window);
 
     for(Game_Object* modifier : context.mod_lst)
     {

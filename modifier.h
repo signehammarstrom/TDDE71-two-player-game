@@ -13,8 +13,7 @@ public:
     ~Modifier() = default;
 
 protected:
-    sf::Sprite sprite;
-    sf::Texture texture;
+   
 
 private:
     

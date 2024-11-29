@@ -5,6 +5,8 @@
 #include "modifier.h"
 #include "static_obstacle.h"
 #include "context.h"
+#include <iostream>
+#include <iomanip>
 
 // Static_Obstacle
 ///////////////////////////////
@@ -25,11 +27,6 @@ Tire::Tire(double xpos, double ypos, double radius, std::string filename)
 bool Tire::handle(sf::Event event, Context& context)
 {
     return false;
-}
-
-void Tire::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
 }
 
 void Tire::update(sf::Time delta, Context& context) 
@@ -58,10 +55,6 @@ bool Hole::handle(sf::Event event, Context& context)
     return false;
 }
 
-void Hole::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
 
 void Hole::update(sf::Time delta, Context& context) 
 {
@@ -89,10 +82,6 @@ bool Goal::handle(sf::Event event, Context& context)
     return false;
 }
 
-void Goal::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
 
 void Goal::update(sf::Time delta, Context& context) 
 {
