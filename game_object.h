@@ -4,6 +4,7 @@
 // includes
 /*_______________________________________________________________________________________*/
 #include <SFML/Graphics.hpp>
+#include "context.h"
 
 
 // Game_Object
@@ -23,11 +24,13 @@ public:
 
     // Medlemsfunktioner
     /*_____________________________________________________*/
-    void handle(sf::Event event);
-    bool update(sf::Time delta /*...*/);
-    void render(sf::RenderWindow& window);
-    //virtual bool collides(GameObject const&) const = 0;
-    //virtual void perform_collision(GameObject const&) = 0;
+    virtual bool handle(sf::Event event, Context& context) = 0;
+    virtual void update(sf::Time delta, Context& context) = 0;
+    virtual void render(sf::RenderWindow& window) = 0;
+    virtual void perform_collision(Game_Object* const& other) = 0;
+    bool collides(Game_Object* const&) const;
+    double get_xpos() const; 
+    double get_ypos() const;
 
 protected:
     // ...
@@ -39,4 +42,5 @@ private:
 };
 
 #endif
+
 

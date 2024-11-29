@@ -2,35 +2,31 @@
 #define SLOPE_H
 
 #include <vector>
+#include "context.h"
 #include "game_object.h"
+#include "context.h"
 #include <SFML/Graphics.hpp>
+#include "player.h"
 
 
-struct Context
-{
-    std::vector<Game_Object*> obj_lst{};
 
-    /*
-    std::vector<Modifiers*> mod_lst{};
-    Player* player;
-    std::vector<Snowball_Projectile*> snowball_lst{};
-    
+// struct Context
+// {
+//     std::vector<Game_Object*> obj_lst{};
 
-    */
+//     double y_speed {};
 
-    double y_speed {};
+//     bool side {}; // true ger vänster
 
-    bool side {}; // true ger vänster
+//     Game_Object* active_mod{};
 
-    Game_Object* active_mod{};
+//     sf::Clock clock;
 
-    sf::Clock clock;
+//     unsigned int snow_count{};
 
-    unsigned int snow_count{};
+//     bool game_finished{};
 
-    bool game_finished{};
-
-};
+// };
 
 
 class Slope
@@ -46,7 +42,9 @@ public:
     
 private:
     void read_track();
-    float const x_speed { 128.0f };
+    float const x_speed { 200.0f };
+    //sf::Font font{};
+    //sf::Text text{};
 
 };
 

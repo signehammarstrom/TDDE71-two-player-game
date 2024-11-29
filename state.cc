@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 Game_State::Game_State(sf::RenderWindow& window)
 : left_slope{new Slope(true)}, right_slope{new Slope(false)}, window {window}

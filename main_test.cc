@@ -1,7 +1,10 @@
 #include "state.h"
 #include "slope.h"
+#include "game_object.h"
+#include "modifier.h"
+#include "context.h"
+#include "static_obstacle.h"
 #include <SFML/Graphics.hpp>
-#include <stack>
 
 unsigned const screen_width{1136};
 unsigned const screen_height{640};
@@ -10,11 +13,17 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
                         "EPIC HARDCORE VSR Simulator" };
 
-
 int main() {
 
-    std::stack<State*> states{};
-    states.push(new Menu_State{window});
+    State* state {new Game_State()};
+
+    std::vector<Game_Object*> obj_lst{};
+    Context gameContext{};
+    gameContext.y_speed = 300; 
+
+    Tire tire(1000, 300, 50);
+
+    Hole hole(70, 400, 100);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -26,21 +35,20 @@ int main() {
             {
                 window.close();
             }
-            states.top()->handle(event, states);
-
+            state->handle(event);
         }
+        state->update(clock.restart());
         
-
-        states.top()->update(clock.restart());
-
+        
         window.clear();
-        states.top()->render(window);
+        state->render(window);
+        tire.update(clock.getElapsedTime(), gameContext);
+        hole.update(clock.getElapsedTime(), gameContext);
+        tire.render(window);
+        hole.render(window);
+
         window.display();
     }
 
-    while (!states.empty())
-    {
-        delete states.top();
-        states.pop();
-    }
+    delete state;
 }
