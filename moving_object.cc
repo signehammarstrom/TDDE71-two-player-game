@@ -44,7 +44,7 @@ void Snowball_Mod::update(sf::Time delta, Context& context)
    return;
 }
 
-void Snowball_Mod::perform_collision(Game_Object* const& other)
+void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {
    return;
 }

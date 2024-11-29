@@ -97,16 +97,16 @@ void Slope::update(sf::Time delta)
     for (Game_Object* obstacle : context.mod_lst)
         if (obstacle -> collides(context.player))
         {
-            obstacle -> perform_collision(context.player);
-            context.player -> perform_collision(obstacle);
+            obstacle -> perform_collision(context.player, context);
+            context.player -> perform_collision(obstacle, context);
         }
 
     for (Game_Object* obstacle : context.mod_lst)
         for(Game_Object* projectile : context.snowball_lst)
             if (obstacle -> collides(projectile))
             {
-                obstacle -> perform_collision(projectile);
-                projectile -> perform_collision(obstacle);
+                obstacle -> perform_collision(projectile, context);
+                projectile -> perform_collision(obstacle, context);
             }
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??

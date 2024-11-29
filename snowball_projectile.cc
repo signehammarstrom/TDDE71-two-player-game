@@ -24,5 +24,5 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
 }
 
 
-void Snowball_Projectile::perform_collision(Game_Object* const& other)
+void Snowball_Projectile::perform_collision(Game_Object* const& other, Context& context)
 {}

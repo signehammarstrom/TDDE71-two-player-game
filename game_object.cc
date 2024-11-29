@@ -7,11 +7,6 @@
 Game_Object::Game_Object(double x, double y, std::string filename)
     : xpos {x}, ypos {y}, texture{}, sprite{}
 {
-    // texture.loadFromFile("snowball.png");
-    // if (!texture.loadFromFile("snowball.png"))
-    // {
-    //     throw std::logic_error{"Kan inte Öppna texturefil"};
-    // }
 
     texture.loadFromFile(filename);
     if (!texture.loadFromFile(filename))
@@ -36,16 +31,15 @@ void Game_Object::render(sf::RenderWindow& window)
 }
 
 
-bool Game_Object::collides(Game_Object* const&) const
+bool Game_Object::collides(Game_Object* const& object2) const
 {
-    // return bounds().intersects(object2->bounds());
-    return false;
+    return bounds().intersects(object2->bounds());
 }
 
-// sf::FloatRect Game_Object::bounds() const
-// {
-//     return sprite.getGlobalbounds();
-// }
+sf::FloatRect Game_Object::bounds() const
+{
+    return sprite.getGlobalBounds();
+}
 
 double Game_Object::get_xpos() const
 {

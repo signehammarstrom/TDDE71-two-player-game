@@ -58,7 +58,7 @@ void Chalmerist::update(sf::Time delta, Context& context)
    return;
 }
 
-void Chalmerist::perform_collision(Game_Object* const& other)
+void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 {
    return;
 }
@@ -86,7 +86,7 @@ void Can::update(sf::Time delta, Context& context)
    return;
 }
 
-void Can::perform_collision(Game_Object* const& other)
+void Can::perform_collision(Game_Object* const& other, Context& context)
 {
    return;
 }
@@ -115,7 +115,7 @@ void Kir::update(sf::Time delta, Context& context)
    return;
 }
 
-void Kir::perform_collision(Game_Object* const& other)
+void Kir::perform_collision(Game_Object* const& othe, Context& contextr)
 {
    return;
 }

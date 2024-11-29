@@ -38,7 +38,7 @@ void Tire::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Tire::perform_collision(Game_Object* const& other)
+void Tire::perform_collision(Game_Object* const& other, Context& context)
 {
     return;
 }
@@ -65,9 +65,9 @@ void Hole::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Hole::perform_collision(Game_Object* const& other)
+void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    context.y_speed = 0;
 }
 
 // Goal
@@ -92,7 +92,7 @@ void Goal::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Goal::perform_collision(Game_Object* const& other)
+void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
     return;
 }
