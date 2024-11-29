@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "slope.h"
 #include <stack>
+#include <vector>
+#include <string>
 
 #define Max_Menu 3
 
@@ -48,15 +50,18 @@ public:
 
     void move_up();
     void move_down();
+
+protected:
+    sf::Texture texture_background;
+    sf::Sprite background;
+    sf::RenderWindow& window;
+    sf::Font font;
+    sf::Vector2u window_size;
     
 private:
     int selected_menu;
     sf::Text menu[Max_Menu];
 
-    sf::Texture texture_background;
-    sf::Sprite background;
-
-    sf::Font font;
     sf::Text text;
     sf::Text header;
     sf::Texture texture;
@@ -64,7 +69,36 @@ private:
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
-    sf::RenderWindow& window;
+    
+
+};
+
+class Highscore : public Menu_State
+{
+public:
+    Highscore(sf::RenderWindow& window);
+
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+
+private:
+    std::vector<std::string> read_highscore();
+    sf::Text score[6];
+    sf::Text instruction;
+};
+
+class Controls : public Menu_State
+{
+public:
+    Controls(sf::RenderWindow& window);
+
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+
+private:
+    sf::Text instruction;
 
 };
 
