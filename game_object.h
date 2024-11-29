@@ -27,7 +27,8 @@ public:
     virtual bool handle(sf::Event event, Context& context) = 0;
     virtual void update(sf::Time delta, Context& context) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
-    virtual bool collides(Game_Object const&) const = 0;
+    virtual void perform_collision(Game_Object* const& other) = 0;
+    bool collides(Game_Object* const&) const;
     double get_xpos() const; 
     double get_ypos() const;
 

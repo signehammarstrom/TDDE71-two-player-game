@@ -2,9 +2,12 @@
 #define SLOPE_H
 
 #include <vector>
+#include "context.h"
 #include "game_object.h"
 #include "context.h"
 #include <SFML/Graphics.hpp>
+#include "player.h"
+
 
 
 // struct Context
@@ -39,6 +42,10 @@ public:
     
 private:
     void read_track();
+    float const x_speed { 200.0f };
+    //sf::Font font{};
+    //sf::Text text{};
+
 };
 
 

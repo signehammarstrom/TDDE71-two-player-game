@@ -25,7 +25,8 @@ void Game_State::handle(sf::Event event)
 
 void Game_State::update(sf::Time delta)
 {
-
+    left_slope->update(delta); // Har ändrat i IdaOskar branch
+    right_slope->update(delta);
 }
 
 void Game_State::render(sf::RenderWindow& window)
