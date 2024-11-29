@@ -66,6 +66,16 @@ void Slope::handle(sf::Event event)
     {
         context.player->handle(event, context);
     }
+
+    for( Game_Object* snowball : context.snowball_lst)
+    {
+        snowball->handle(event, context);
+    }
+
+    for(Game_Object* modifier : context.mod_lst)
+    {
+        modifier -> handle(event, context);
+    }
 }
 
 void Slope::update(sf::Time delta)
@@ -73,13 +83,14 @@ void Slope::update(sf::Time delta)
 
     context.player->update(delta, context);
 
-    for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    for( Game_Object* snowball : context.snowball_lst)
     {
-        context.snowball_lst[i]->update(delta, context);
+        snowball->update(delta, context);
     }
-    for (unsigned int i=0;i<context.mod_lst.size();i++)
+
+    for(Game_Object* modifier : context.mod_lst)
     {
-        context.mod_lst[i]->update(delta, context);
+        modifier -> update(delta, context);
     }
 
 
@@ -97,8 +108,6 @@ void Slope::update(sf::Time delta)
                 obstacle -> perform_collision(projectile);
                 projectile -> perform_collision(obstacle);
             }
-        
-    //Loopa igenom Game_Objects och kolla om nån kolliderar
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
@@ -111,15 +120,16 @@ void Slope::render(sf::RenderWindow& window)
     //loopa igenom alla object och rita upp dem!!
     context.player->render(window);
 
-    for (unsigned int i=0;i<context.snowball_lst.size();i++)
+    for( Game_Object* snowball : context.snowball_lst)
     {
-        context.snowball_lst[i]->render(window);
+        snowball->render(window);
     }
 
-    for (unsigned int i=0;i<context.mod_lst.size();i++)
+    for(Game_Object* modifier : context.mod_lst)
     {
-        context.mod_lst[i]->render(window);
+        modifier -> render(window);
     }
+
 
     //window.draw(text);
 
