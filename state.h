@@ -5,6 +5,8 @@
 #include "slope.h"
 #include <stack>
 
+#define Max_Menu 3
+
 class State
 {
 public:
@@ -43,8 +45,17 @@ public:
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
+
+    void move_up();
+    void move_down();
     
 private:
+    int selected_menu;
+    sf::Text menu[Max_Menu];
+
+    sf::Texture texture_background;
+    sf::Sprite background;
+
     sf::Font font;
     sf::Text text;
     sf::Text header;
