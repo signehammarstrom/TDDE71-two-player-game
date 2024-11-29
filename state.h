@@ -28,7 +28,6 @@ public:
 
     Slope* left_slope{};
     Slope* right_slope{};
-
 };
 
 

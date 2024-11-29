@@ -1,15 +1,92 @@
-CXX:=g++
-CXXFLAGS:=-std=c++17 -Wall -Wextra -Wpedantic
-LIBS:=-lsfml-graphics -lsfml-window -lsfml-system
+CXX := g++
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
+LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
-all: slope
+# Lista över alla objektfiler som ska länkas
+OBJS := player.o game_object.o main.o state.o slope.o snowball_projectile.o
 
-slope_test: slope.cc test_main.cc test.cc
-	$(CXX) $(CXXFLAGS) -o slope_test slope.cc test_main.cc test.cc $(LIBS)
+# Huvudmål
+all: plmain
 
-main: main.cc state.cc slope.cc
-	$(CXX) $(CXXFLAGS) -o main main.cc state.cc slope.cc $(LIBS)
+# Bygg exekverbara filer
+plmain: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o plmain $(OBJS) $(LIBS)
 
+# Regler för att skapa objektfiler från källkod
+player.o: player.cc player.h
+	$(CXX) $(CXXFLAGS) -c player.cc
+
+game_object.o: game_object.cc game_object.h
+	$(CXX) $(CXXFLAGS) -c game_object.cc
+
+main.o: main.cc
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+state.o: state.cc state.h
+	$(CXX) $(CXXFLAGS) -c state.cc
+
+slope.o: slope.cc slope.h
+	$(CXX) $(CXXFLAGS) -c slope.cc
+
+snowball_projectile.o: snowball_projectile.cc snowball_projectile.h
+	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
+
+modifier.o: modifier.cc modifier.h
+	$(CXX) $(CXXFLAGS) -c modifier.cc
+
+static_obstacle.o: static_obstacle.cc static_obstacle.h
+	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
+
+# Regel för att bygga övriga program
+player_test: player.o game_object.o player_test.o test_main.o
+	$(CXX) $(CXXFLAGS) -o player_test player.o game_object.o
+	 player_test.o test_main.o modifier.cc static_obstacle.cc $(LIBS)
+
+# Rensningsregel
 .PHONY: clean
 clean:
-	rm slope
+	rm -f *.o plmain player_test slope_test main
+
+
+
+# --------------------------------------------------
+
+# Lista över alla objektfiler som ska länkas
+NEWOBJS := game_object.o main.o state.o slope.o modifier.o static_obstacle.o moving_object.o temporary_modifier.o
+
+# Huvudmål
+all: elvsig
+
+# Bygg exekverbara filer
+elvsig: $(NEWOBJS)
+	$(CXX) $(CXXFLAGS) -o elvsig $(NEWOBJS) $(LIBS)
+
+# Regler för att skapa objektfiler från källkod
+game_object.o: game_object.cc game_object.h
+	$(CXX) $(CXXFLAGS) -c game_object.cc
+
+main.o: main.cc
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+state.o: state.cc state.h
+	$(CXX) $(CXXFLAGS) -c state.cc
+
+slope.o: slope.cc slope.h
+	$(CXX) $(CXXFLAGS) -c slope.cc
+
+modifier.o: modifier.cc modifier.h
+	$(CXX) $(CXXFLAGS) -c modifier.cc
+
+static_obstacle.o: static_obstacle.cc static_obstacle.h
+	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
+
+temporary_modifier.o: temporary_modifier.cc temporary_modifier.h
+	$(CXX) $(CXXFLAGS) -c temporary_modifier.cc
+
+moving_object.o: moving_object.cc moving_object.h
+	$(CXX) $(CXXFLAGS) -c moving_object.cc
+
+# Rensningsregel
+.PHONY: clean
+clean:
+	rm -f *.o elvsig

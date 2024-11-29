@@ -4,34 +4,39 @@
 // includes
 /*_______________________________________________________________________________________*/
 #include <SFML/Graphics.hpp>
+#include "game_object.h"
+#include <iostream>
+#include <cmath>
 
 
 // GameObject
 /*_______________________________________________________________________________________*/
 
-class Snowball_Projectile
+class Snowball_Projectile: public Game_Object
 {
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    Snowball_Projectile(Snowball_Projectile const& other) = delete;
+    Snowball_Projectile(double xpos, double ypos);
+
+    /*Snowball_Projectile(Snowball_Projectile const& other) = delete;
     Snowball_Projectile& operator=(Snowball_Projectile const& other) = delete;
     Snowball_Projectile(Snowball_Projectile && other) = delete;
-    Snowball_Projectile& operator=(Snowball_Projectile && other) = delete;
-    virtual ~Snowball_Projectile() = default;
+    Snowball_Projectile& operator=(Snowball_Projectile && other) = delete;*/
+    ~Snowball_Projectile() = default;
 
     // Medlemsfunktioner
     /*_____________________________________________________*/
-    virtual void handle(sf::Event event) = 0;
-    virtual bool update(sf::Time delta /*...*/) = 0;
-    virtual void render(sf::RenderWindow& window) = 0;
-    virtual bool collides(GameObject const&) const = 0;
-    virtual void perform_collision(GameObject const&) = 0;
+    bool handle(sf::Event event, Context& context) override;
+    void update(sf::Time delta, Context& context) override;
+    void render(sf::RenderWindow& window) override;
+    void perform_collision(Game_Object* const& other) override;
     
 private:
     float radius;
-    float yspeed;
+    float y_speed;
+    sf::Sprite sprite;
+    sf::Texture texture;
 };
 
 #endif
-

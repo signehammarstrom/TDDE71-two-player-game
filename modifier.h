@@ -1,15 +1,20 @@
 #ifndef MODIFIER_H
 #define MODIFIER_H
+
+#include <SFML/Graphics.hpp>
+#include <string>
+
 #include "game_object.h"
-#include "player.h"
 
 class Modifier : public Game_Object 
 {
 public:
-    Modifier(double xpos, double ypos);
+    Modifier(double xpos, double ypos, std::string filename);
     ~Modifier() = default;
-    //virtual void perform_collision(Player player const&) = 0;
-    //virtual void perform_collision(Snowball_Projectile snowball const&) = 0;
+
+protected:
+    sf::Sprite sprite;
+    sf::Texture texture;
 
 private:
     
