@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <cmath> //För sinusberäkningar.
 
 #include "game_object.h"
 #include "context.h"
@@ -24,7 +25,7 @@ double Moving_Object::get_xspeed() const
 
 
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, double xspeed, float scale, std::string filename)
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename)
    : Moving_Object(xpos, ypos, scale, xspeed, filename), radius{radius}
 {}
 
@@ -51,7 +52,8 @@ void Snowball_Mod::update(sf::Time delta, Context& context)
 
 void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {
-   return;
+   context.snow_count += 3;
+   remove();
 }
 
 double Snowball_Mod::get_radius() const

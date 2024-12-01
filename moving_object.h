@@ -29,7 +29,7 @@ private:
 class Snowball_Mod : public Moving_Object
 {
 public:
-   Snowball_Mod(double xpos, double ypos, double xspeed, float scale, std::string filename = "snowball.png");
+   Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename = "snowball_pile.png");
    ~Snowball_Mod() = default;
 
     bool handle(sf::Event event, Context& context) override;

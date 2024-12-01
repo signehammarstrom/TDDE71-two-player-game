@@ -43,7 +43,7 @@ void Game_State::update(sf::Time delta)
     {
         sf::Time left_time =  left_slope->context.goal_time;
         sf::Time right_time = right_slope->context.goal_time;
-        //AVSLUTA SPELET!!!!!!
+        std::cout << left_time.asSeconds() << std::endl;
     }
 }
 

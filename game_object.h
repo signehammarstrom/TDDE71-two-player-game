@@ -32,6 +32,8 @@ public:
     double get_xpos() const; 
     double get_ypos() const;
     virtual sf::FloatRect bounds() const = 0;
+    bool is_removed() const;
+    void remove();
 
 protected:
     // ...
@@ -39,6 +41,7 @@ protected:
     double ypos;
     sf::Sprite sprite;
     sf::Texture texture;
+    bool removed{false};
     
 private:
     // ...

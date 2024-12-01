@@ -20,6 +20,16 @@ bool Game_Object::collides(Game_Object* const& object) const
     //return false;
 }
 
+bool Game_Object::is_removed() const
+{
+    return removed;
+}
+
+void Game_Object::remove()
+{
+    removed = true;
+}
+
 double Game_Object::get_xpos() const
 {
     return xpos;

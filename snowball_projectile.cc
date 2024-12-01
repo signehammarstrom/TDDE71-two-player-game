@@ -42,7 +42,9 @@ void Snowball_Projectile::render(sf::RenderWindow& window)
 
 
 void Snowball_Projectile::perform_collision(Game_Object* const& other, Context& context)
-{}
+{
+    remove();
+}
 
 sf::FloatRect Snowball_Projectile::bounds() const
 {

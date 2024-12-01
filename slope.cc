@@ -16,7 +16,7 @@ Slope::Slope(bool side)
     :context{}
 {
     context.side = side;
-    context.snow_count = 3;
+    context.snow_count = 0;
     context.game_finished = false;
     read_track();
 
@@ -39,9 +39,10 @@ Slope::Slope(bool side)
     context.coll_count = 0;
 
 
-    context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 600, 0.1f));
-    context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 1200, 0.1f));
+    context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 1000, 0.1f));
+    context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2000, 0.1f));
     context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3000, 0.5f));
+    context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.3, 200));
 
 
 /*
@@ -65,24 +66,29 @@ Slope::Slope(bool side)
 
 void Slope::handle(sf::Event event)
 {
-    if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
+    if (!context.game_finished)
     {
-        context.player->handle(event, context);
-    }
+        if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
+        {
+            context.player->handle(event, context);
+        }
 
-    for( Game_Object* snowball : context.snowball_lst)
-    {
-        snowball->handle(event, context);
-    }
+        for( Game_Object* snowball : context.snowball_lst)
+        {
+            snowball->handle(event, context);
+        }
 
-    for(Game_Object* modifier : context.mod_lst)
-    {
-        modifier -> handle(event, context);
+        for(Game_Object* modifier : context.mod_lst)
+        {
+            modifier -> handle(event, context);
+        }
     }
 }
 
 void Slope::update(sf::Time delta)
 {   
+    if (!context.game_finished)
+    {
     context.coll_count = 0;
     for (Game_Object* obstacle : context.mod_lst)
     {
@@ -104,15 +110,33 @@ void Slope::update(sf::Time delta)
 
     for (Game_Object* obstacle : context.mod_lst)
     {
-        for(unsigned int i=0; i<context.snowball_lst.size(); i++)
+        for(Game_Object* snowball_projectile : context.snowball_lst)
         {
-            if (obstacle -> collides(context.snowball_lst[i]))
+            if (obstacle -> collides(snowball_projectile))
             {
-                obstacle -> perform_collision(context.snowball_lst[i], context);
-                context.snowball_lst[i] = nullptr;
-                std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
-                context.snowball_lst.pop_back();
+                obstacle -> perform_collision(snowball_projectile, context);
+                snowball_projectile -> perform_collision(obstacle, context);
             }
+        }
+    }
+    //Ta bort inaktuella modifiers
+    for (unsigned int i=0; i<context.mod_lst.size(); i++)
+    {
+        if (context.mod_lst.at(i)->is_removed())
+        {
+            std::swap(context.mod_lst.at(i), context.mod_lst.back());
+            delete context.mod_lst.back();
+            context.mod_lst.pop_back();
+        }
+    }
+    //Ta bort inaktuella snöbollar
+    for (unsigned int i=0; i<context.snowball_lst.size(); i++)
+    {
+        if (context.snowball_lst.at(i)->is_removed())
+        {
+            std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
+            delete context.snowball_lst.back();
+            context.snowball_lst.pop_back();
         }
     }
 
@@ -144,7 +168,7 @@ void Slope::update(sf::Time delta)
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
-
+    }
 }
 
 
