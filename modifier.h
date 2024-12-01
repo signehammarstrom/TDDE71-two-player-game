@@ -9,7 +9,7 @@
 class Modifier : public Game_Object 
 {
 public:
-    Modifier(double xpos, double ypos, std::string filename);
+    Modifier(double xpos, double ypos, float scale, std::string filename);
     ~Modifier() = default;
     sf::FloatRect bounds() const;
 

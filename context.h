@@ -37,6 +37,8 @@ struct Context
     bool is_colliding{};
 
     int coll_count{};
+
+    sf::Time goal_time{};
 };
 
 #endif

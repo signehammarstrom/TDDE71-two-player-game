@@ -12,10 +12,9 @@
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
 
-Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Moving_Object(xpos, ypos, xspeed, filename), width{width}, 
-    height{height}, speedmodifier{speedmodifier}
+Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
+       double speedmodifier, std::string filename)
+    : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}
 {}
 
 
@@ -37,9 +36,9 @@ double Temporary_Modifier::get_speedmodifier() const
 //Chalmerist
 /*_______________________________________________________________________________________*/
 
-Chalmerist::Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Chalmerist::handle(sf::Event event, Context& context)
@@ -71,9 +70,9 @@ void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 //Can
 /*_______________________________________________________________________________________*/
 
-Can::Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Can::Can(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Can::handle(sf::Event event, Context& context)
@@ -105,9 +104,9 @@ void Can::perform_collision(Game_Object* const& other, Context& context)
 //Kir
 /*_______________________________________________________________________________________*/
 
-Kir::Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Kir::Kir(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Kir::handle(sf::Event event, Context& context)

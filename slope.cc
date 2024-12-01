@@ -39,9 +39,9 @@ Slope::Slope(bool side)
     context.coll_count = 0;
 
 
-    context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 600, 100));
-    context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 1200, 50));
-    context.mod_lst.push_back(new Goal (1000, 300, 50, 60));
+    context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 600, 0.1f));
+    context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 1200, 0.1f));
+    context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3000, 0.5f));
 
 
 /*

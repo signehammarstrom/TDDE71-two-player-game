@@ -16,8 +16,8 @@
 class Temporary_Modifier : public Moving_Object
 {
 public:
-    Temporary_Modifier(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename);
+    Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename);
     ~Temporary_Modifier() = default;
 
     double get_width() const;
@@ -37,8 +37,8 @@ protected:
 class Chalmerist : public Temporary_Modifier
 {
 public: 
-    Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Chalmerist(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename = "tire.png");
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -56,8 +56,8 @@ private:
 class Can : public Temporary_Modifier
 {
 public: 
-    Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Can(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename = "tire.png");
     ~Can() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -75,8 +75,8 @@ private:
 class Kir : public Temporary_Modifier
 {
 public: 
-    Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Kir(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename = "tire.png");
     ~Kir() = default;
 
     bool handle(sf::Event event, Context& context) override;

@@ -14,7 +14,7 @@ class Static_Obstacle : public Modifier
 {
 
 public:
-    Static_Obstacle(double xpos, double ypos, std::string filename);
+    Static_Obstacle(double xpos, double ypos, float scale, std::string filename);
     ~Static_Obstacle() = default;
 
 };
@@ -27,7 +27,7 @@ class Tire : public Static_Obstacle
 
 public:
 
-    Tire(double xpos, double ypos, double radius, std::string filename = "tire.png");
+    Tire(double xpos, double ypos, float scale, std::string filename = "tire.png");
         //ritar ut ett däck med höjd 2*radien och bredd 2*radien. 
         //x och ykoordinat är mittpunkten på däcket. 
     ~Tire() = default;
@@ -49,7 +49,7 @@ class Hole : public Static_Obstacle
 {
 
 public:
-    Hole(double xpos, double ypos, double radius, std::string filename = "hole.png");
+    Hole(double xpos, double ypos, float scale, std::string filename = "hole.png");
     ~Hole() = default;
 
     bool handle(sf::Event event, Context& context) override;
@@ -68,7 +68,7 @@ class Goal : public Static_Obstacle
 {
 
 public:
-    Goal(double xpos, double ypos, double width, double height, std::string filename = "finish.png");
+    Goal(double xpos, double ypos, float scale, std::string filename = "finish.png");
     ~Goal() = default;
  
     bool handle(sf::Event event, Context& context) override;

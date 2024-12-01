@@ -10,8 +10,8 @@
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, double xspeed, std::string filename)
-   : Modifier(xpos, ypos, filename), xspeed{xspeed}
+Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename)
+   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}
 {}
 
 double Moving_Object::get_xspeed() const
@@ -24,8 +24,8 @@ double Moving_Object::get_xspeed() const
 
 
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, double xspeed, double radius, std::string filename)
-   : Moving_Object(xpos, ypos, xspeed, filename), radius{radius}
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, double xspeed, float scale, std::string filename)
+   : Moving_Object(xpos, ypos, scale, xspeed, filename), radius{radius}
 {}
 
 bool Snowball_Mod::handle(sf::Event event, Context& context)
