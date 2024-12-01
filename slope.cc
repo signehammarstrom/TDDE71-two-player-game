@@ -104,12 +104,14 @@ void Slope::update(sf::Time delta)
 
     for (Game_Object* obstacle : context.mod_lst)
     {
-        for(Game_Object* projectile : context.snowball_lst)
+        for(unsigned int i=0; i<context.snowball_lst.size(); i++)
         {
-            if (obstacle -> collides(projectile))
+            if (obstacle -> collides(context.snowball_lst[i]))
             {
-                obstacle -> perform_collision(projectile, context);
-                projectile -> perform_collision(obstacle, context);
+                obstacle -> perform_collision(context.snowball_lst[i], context);
+                context.snowball_lst[i] = nullptr;
+                std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
+                context.snowball_lst.pop_back();
             }
         }
     }
