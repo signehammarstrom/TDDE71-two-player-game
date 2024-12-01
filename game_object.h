@@ -34,6 +34,8 @@ public:
     virtual sf::FloatRect bounds() const = 0;
     bool is_removed() const;
     void remove();
+    virtual void update_time(sf::Time delta); //Används för kiren
+    virtual void remove_if_inactual(Context& context); //Används för kiren
 
 protected:
     // ...

@@ -43,6 +43,7 @@ Slope::Slope(bool side)
     context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2000, 0.1f));
     context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3000, 0.5f));
     context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.2f, 700));
+    context.mod_lst.push_back(new Kir((context.left_bound+context.right_bound)/2, 750, 0.1f, 700, 3));
 
 
 /*
@@ -125,7 +126,7 @@ void Slope::update(sf::Time delta)
         if (context.mod_lst.at(i)->is_removed())
         {
             std::swap(context.mod_lst.at(i), context.mod_lst.back());
-            delete context.mod_lst.back();
+            delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
             context.mod_lst.pop_back();
         }
     }
@@ -139,6 +140,23 @@ void Slope::update(sf::Time delta)
             context.snowball_lst.pop_back();
         }
     }
+
+    //Ta bort inaktuella temporary modifiers
+    if(context.active_temp_mods.size() != 0)
+    {
+        for(unsigned int i=0; i<context.active_temp_mods.size(); i++)
+        {
+            context.active_temp_mods.at(i)->update_time(delta);
+            context.active_temp_mods.at(i)->remove_if_inactual(context);
+            if(context.active_temp_mods.at(i)->is_removed())
+            {
+                std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
+                //delete context.active_temp_mods.back();
+                context.active_temp_mods.pop_back();
+            }
+        }
+    }
+
 
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
@@ -163,7 +181,7 @@ void Slope::update(sf::Time delta)
 
     for(Game_Object* modifier : context.mod_lst)
     {
-        modifier -> update(delta, context);
+        modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
     }
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??

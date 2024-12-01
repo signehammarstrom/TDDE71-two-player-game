@@ -40,4 +40,10 @@ double Game_Object::get_ypos() const
     return ypos;
 }
 
+void Game_Object::update_time(sf::Time delta)
+{}
+
+void Game_Object::remove_if_inactual(Context& context)
+{}
+
 // ..
