@@ -18,6 +18,8 @@ struct Context
 
     double y_speed {};
 
+    double base_speed{};
+
     bool side {}; // true ger vänster
 
     Game_Object* active_mod{};
@@ -32,6 +34,9 @@ struct Context
 
     double right_bound{};
 
+    bool is_colliding{};
+
+    int coll_count{};
 };
 
 #endif

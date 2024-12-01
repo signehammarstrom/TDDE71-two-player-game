@@ -49,6 +49,8 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
     if (player)
     {
         context.y_speed = 0;
+        context.is_colliding = true;
+        context.coll_count += 1;
         player = nullptr;
     }
     Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
@@ -56,6 +58,7 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
     {
   //      delete snowball;
         snowball = nullptr;
+        //Oklar implementering, behövs den ens?
     }
 }
 
@@ -87,7 +90,21 @@ void Hole::update(sf::Time delta, Context& context)
 
 void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+        context.y_speed = 0;
+        context.is_colliding = true;
+        context.coll_count += 1;
+        player = nullptr;
+    }
+    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+    if (snowball)
+    {
+  //      delete snowball;
+        snowball = nullptr;
+        //Oklar implementering, behövs den ens?
+    }
 }
 
 // Goal
