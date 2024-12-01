@@ -5,6 +5,8 @@
 #include "modifier.h"
 #include "static_obstacle.h"
 #include "context.h"
+#include "player.h"
+#include "snowball_projectile.h"
 
 // Static_Obstacle
 ///////////////////////////////
@@ -41,9 +43,20 @@ void Tire::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Tire::perform_collision(Game_Object* const& other)
+void Tire::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+        context.y_speed = 0;
+        player = nullptr;
+    }
+    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+    if (snowball)
+    {
+  //      delete snowball;
+        snowball = nullptr;
+    }
 }
 
 // Hole
@@ -72,7 +85,7 @@ void Hole::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Hole::perform_collision(Game_Object* const& other)
+void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
     return;
 }
@@ -103,7 +116,7 @@ void Goal::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Goal::perform_collision(Game_Object* const& other)
+void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
     return;
 }

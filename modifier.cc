@@ -20,3 +20,9 @@ Modifier::Modifier(double xpos, double ypos, std::string filename)
     sprite.setScale(0.1f, 0.1f);
 
 }
+
+
+sf::FloatRect Modifier::bounds() const
+{
+    return sprite.getGlobalBounds();
+}

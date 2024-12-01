@@ -36,8 +36,8 @@ Slope::Slope(bool side)
     context.y_speed = 300; 
 
 
-    context.mod_lst.push_back(new Hole(70, 400, 100));
-    context.mod_lst.push_back(new Tire (1000, 300, 50));
+    context.mod_lst.push_back(new Hole(290, 600, 100));
+    context.mod_lst.push_back(new Tire (850, 600, 50));
     context.mod_lst.push_back(new Goal (1000, 300, 50, 60));
 
 
@@ -80,6 +80,28 @@ void Slope::handle(sf::Event event)
 
 void Slope::update(sf::Time delta)
 {   
+    for (Game_Object* obstacle : context.mod_lst)
+    {
+        if (obstacle -> collides(context.player))
+        {
+            obstacle -> perform_collision(context.player, context);
+            context.player -> perform_collision(obstacle, context);
+        }
+    }
+
+    for (Game_Object* obstacle : context.mod_lst)
+    {
+        for(Game_Object* projectile : context.snowball_lst)
+        {
+            if (obstacle -> collides(projectile))
+            {
+                obstacle -> perform_collision(projectile, context);
+                projectile -> perform_collision(obstacle, context);
+            }
+        }
+    }
+
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         if (context.side)
@@ -104,22 +126,6 @@ void Slope::update(sf::Time delta)
     {
         modifier -> update(delta, context);
     }
-
-
-    for (Game_Object* obstacle : context.mod_lst)
-        if (obstacle -> collides(context.player))
-        {
-            obstacle -> perform_collision(context.player);
-            context.player -> perform_collision(obstacle);
-        }
-
-    for (Game_Object* obstacle : context.mod_lst)
-        for(Game_Object* projectile : context.snowball_lst)
-            if (obstacle -> collides(projectile))
-            {
-                obstacle -> perform_collision(projectile);
-                projectile -> perform_collision(obstacle);
-            }
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 

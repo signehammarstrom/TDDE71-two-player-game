@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "game_object.h"
 
@@ -13,10 +14,10 @@ Game_Object::Game_Object(double x, double y)
 /*_____________________________________________________*/
 
 
-bool Game_Object::collides(Game_Object* const&) const
+bool Game_Object::collides(Game_Object* const& object) const
 {
-    // return bounds().intersects(object2->bounds());
-    return false;
+    return bounds().intersects(object->bounds());
+    //return false;
 }
 
 double Game_Object::get_xpos() const
