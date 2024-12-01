@@ -16,6 +16,43 @@ Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspee
    : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, right_direction{right_direction}
 {}
 
+void Moving_Object::update(sf::Time delta, Context& context) 
+{
+   float dx{};
+   dx = 2.f;
+   float distance_y {delta.asSeconds() * context.y_speed};
+   sf::Vector2f old_position {sprite.getPosition()};
+
+   float distance_x{delta.asSeconds() * xspeed};
+   if(right_direction)
+   {
+      if(context.right_bound - old_position.x < dx)
+      {
+         right_direction = false;
+         sprite.move(-distance_x, -distance_y);
+      }
+      else
+      {
+         sprite.move(distance_x, -distance_y);
+      }
+   }
+
+   if(!right_direction)
+   {
+      if(old_position.x - context.left_bound < dx)
+      {
+         right_direction = true;
+         sprite.move(distance_x, -distance_y);
+      }
+      else
+      {
+         sprite.move(-distance_x, -distance_y);
+      }
+   }
+   return;
+
+}
+
 double Moving_Object::get_xspeed() const
 {
    return xspeed;
@@ -27,7 +64,7 @@ double Moving_Object::get_xspeed() const
 
 
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
-   : Moving_Object(xpos, ypos, scale, xspeed, filename, right_direction), radius{radius}
+   : Moving_Object(xpos, ypos, scale, xspeed, filename, right_direction)
 {}
 
 bool Snowball_Mod::handle(sf::Event event, Context& context)
@@ -41,7 +78,7 @@ void Snowball_Mod::render(sf::RenderWindow& window)
    return;
 }
 
-void Snowball_Mod::update(sf::Time delta, Context& context) 
+/*void Snowball_Mod::update(sf::Time delta, Context& context) 
 {
 
    float distance_y {delta.asSeconds() * context.y_speed};
@@ -75,7 +112,7 @@ void Snowball_Mod::update(sf::Time delta, Context& context)
    }
    return;
 
-}
+}*/
 
 void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -83,7 +120,9 @@ void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context
    remove();
 }
 
+/*
 double Snowball_Mod::get_radius() const
 {
    return radius;
 }
+*/

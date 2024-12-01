@@ -16,6 +16,7 @@ class Moving_Object : public Modifier
 public:
     Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction=true);
     ~Moving_Object() = default;
+    virtual void update(sf::Time delta, Context& context);
 
     double get_xspeed() const;
 
@@ -34,13 +35,13 @@ public:
    ~Snowball_Mod() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+   // void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
-    double get_radius() const;
+  //  double get_radius() const;
 private:
-   double radius{}; 
+  // double radius{}; 
 };
 
 #endif

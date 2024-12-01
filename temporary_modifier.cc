@@ -52,6 +52,7 @@ void Chalmerist::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Chalmerist::update(sf::Time delta, Context& context) 
 {
     
@@ -61,6 +62,7 @@ void Chalmerist::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
 void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -86,6 +88,7 @@ void Can::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Can::update(sf::Time delta, Context& context) 
 {
     
@@ -95,6 +98,7 @@ void Can::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
 void Can::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -120,6 +124,7 @@ void Kir::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Kir::update(sf::Time delta, Context& context) 
 {
     
@@ -129,6 +134,7 @@ void Kir::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
 void Kir::perform_collision(Game_Object* const& other, Context& context)
 {

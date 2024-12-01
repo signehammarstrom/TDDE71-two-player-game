@@ -42,7 +42,7 @@ public:
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+ //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
@@ -61,7 +61,7 @@ public:
     ~Can() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+ //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
@@ -76,11 +76,11 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename = "tire.png");
+        double speedmodifier, std::string filename = "kir.png");
     ~Kir() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+//    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
