@@ -14,13 +14,14 @@
 class Moving_Object : public Modifier
 {
 public:
-    Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename);
+    Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction=true);
     ~Moving_Object() = default;
 
     double get_xspeed() const;
 
-private:
+protected:
     double xspeed {};
+    bool right_direction{};
 };
 
 //Snowball_Mod
@@ -29,7 +30,7 @@ private:
 class Snowball_Mod : public Moving_Object
 {
 public:
-   Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename = "snowball_pile.png");
+   Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename = "snowball_pile.png", bool right_direction=true);
    ~Snowball_Mod() = default;
 
     bool handle(sf::Event event, Context& context) override;

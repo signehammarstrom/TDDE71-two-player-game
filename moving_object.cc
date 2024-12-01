@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <cmath> //För sinusberäkningar.
+#include <iostream>
 
 #include "game_object.h"
 #include "context.h"
@@ -11,8 +12,8 @@
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename)
-   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}
+Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
+   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, right_direction{right_direction}
 {}
 
 double Moving_Object::get_xspeed() const
@@ -25,8 +26,8 @@ double Moving_Object::get_xspeed() const
 
 
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename)
-   : Moving_Object(xpos, ypos, scale, xspeed, filename), radius{radius}
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
+   : Moving_Object(xpos, ypos, scale, xspeed, filename, right_direction), radius{radius}
 {}
 
 bool Snowball_Mod::handle(sf::Event event, Context& context)
@@ -42,12 +43,38 @@ void Snowball_Mod::render(sf::RenderWindow& window)
 
 void Snowball_Mod::update(sf::Time delta, Context& context) 
 {
-    
-   float distance {delta.asSeconds() * context.y_speed};
+
+   float distance_y {delta.asSeconds() * context.y_speed};
    sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
+
+   float distance_x{delta.asSeconds() * xspeed};
+   if(right_direction)
+   {
+      if(context.right_bound - old_position.x < 2.f)
+      {
+         right_direction = false;
+         sprite.move(-distance_x, -distance_y);
+      }
+      else
+      {
+         sprite.move(distance_x, -distance_y);
+      }
+   }
+
+   if(!right_direction)
+   {
+      if(old_position.x - context.left_bound < 2.f)
+      {
+         right_direction = true;
+         sprite.move(distance_x, -distance_y);
+      }
+      else
+      {
+         sprite.move(-distance_x, -distance_y);
+      }
+   }
    return;
+
 }
 
 void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)

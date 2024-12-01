@@ -33,7 +33,7 @@ Slope::Slope(bool side)
     }
 
     context.player = new Player {1,1, context};
-    context.y_speed = 300; 
+    context.y_speed = 100; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
     context.coll_count = 0;
@@ -42,7 +42,7 @@ Slope::Slope(bool side)
     context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 1000, 0.1f));
     context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2000, 0.1f));
     context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3000, 0.5f));
-    context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.3, 200));
+    context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.2f, 700));
 
 
 /*
