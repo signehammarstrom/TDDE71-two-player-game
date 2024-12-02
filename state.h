@@ -68,6 +68,8 @@ protected:
 private:
     int selected_menu;
     sf::Text menu[Max_Menu];
+    //sf::Sprite menu_background[Max_Menu];
+    //sf::Texture menu_texture;
 
     sf::Text text;
     sf::Text header;

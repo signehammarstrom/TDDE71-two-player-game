@@ -54,10 +54,17 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
             {
                 left_slope->handle(event);
             }
+            
             if (left_slope->context.game_finished && right_slope->context.game_finished 
             && event.key.code == sf::Keyboard::Enter)
             {
+                delete stack.top();
                 stack.pop();
+                /*delete left_slope;
+                delete right_slope;
+                delete stack.top();
+                stack.pop();
+                stack.push(new Menu_State{window});*/
             }
         }
 
@@ -65,6 +72,7 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 
 void Game_State::update(sf::Time delta)
 {
+    
     if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
     {
         left_slope->update(delta);
@@ -77,7 +85,7 @@ void Game_State::update(sf::Time delta)
 void Game_State::render(sf::RenderWindow& window)
 {
     sf::Vector2u const window_size { window.getSize() };
-
+    
     left_slope->render(window);
     right_slope->render(window);
 
@@ -122,6 +130,12 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     {
         throw std::runtime_error("Kan inte öppna: background.png");
     }
+    /*if (!menu_texture.loadFromFile("background.png"))
+    {
+        throw std::runtime_error("Kan inte öppna: background.png");
+    }*/
+
+
 
     // BAKGRUND
     window_size = window.getSize();
@@ -140,6 +154,10 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     sf::FloatRect play_bounds { menu[0].getGlobalBounds() };
     menu[0].setOrigin(play_bounds.width / 2, play_bounds.height / 2);
     menu[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
+
+    //menu_background[0].setTexture(menu_texture);
+    //menu_background[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
+    //menu_background[0].setTextureRect(sf::IntRect(0, 0, play_bounds.width + 10, play_bounds.height + 10));
 
     menu[1].setFont(font);
     menu[1].setFillColor(sf::Color::Black);
@@ -180,6 +198,7 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setOrigin(header_bounds.width / 2, header_bounds.height / 2);
     header.setPosition(window_size.x / 2, window_size.y / 8);
 }
+
 
 void Menu_State::move_up()
 {
@@ -259,6 +278,7 @@ void Menu_State::render(sf::RenderWindow& window)
     window.draw(background);
     for (int i = 0; i < Max_Menu ; ++i)
     {
+        //window.draw(menu_background[0]);
         window.draw(menu[i]);
     }
     if ( selected_menu == 0 )
@@ -303,6 +323,7 @@ void Highscore::handle(sf::Event event, std::stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            delete stack.top();
             stack.pop();
         }
     }
@@ -371,6 +392,7 @@ void Controls::handle(sf::Event event, std::stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            delete stack.top();
             stack.pop();
         }
     }
