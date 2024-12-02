@@ -7,10 +7,33 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+
+// GAME_STATE
+/*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
 : left_slope{new Slope(true)}, right_slope{new Slope(false)}, window {window}
 {
-    
+    if (!font.loadFromFile("font.ttf"))
+    {
+        throw std::runtime_error("Kan inte öppna: font.ttf");
+    }
+
+    // BAKGRUND
+    window_size = window.getSize();
+
+    p2_text.setFont(font);
+    p2_text.setString("SPELARE 2 VINNER!!!");
+    p2_text.setFillColor(sf::Color(255, 20, 147));
+    sf::FloatRect p2_text_bounds {p2_text.getGlobalBounds()};
+    p2_text.setOrigin(p2_text_bounds.width / 2, p2_text_bounds.height / 2);
+    p2_text.setPosition(window_size.x / 2, window_size.y / 2);
+
+    p1_text.setFont(font);
+    p1_text.setString("SPELARE 1 VINNER!!!");
+    p1_text.setFillColor(sf::Color(255, 20, 147));
+    sf::FloatRect p1_text_bounds {p1_text.getGlobalBounds()};
+    p1_text.setOrigin(p1_text_bounds.width / 2, p1_text_bounds.height / 2);
+    p1_text.setPosition(window_size.x / 2, window_size.y / 2);
 }
 
 Game_State::~Game_State()
@@ -42,24 +65,24 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 
 void Game_State::update(sf::Time delta)
 {
-    left_slope->update(delta);
-    right_slope->update(delta);
-
-    if(left_slope->context.game_finished == true && right_slope->context.game_finished == true)
+    if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
     {
-        sf::Time left_time =  left_slope->context.goal_time;
-        sf::Time right_time = right_slope->context.goal_time;
+        left_slope->update(delta);
+        right_slope->update(delta);
+        //sf::Time left_time =  left_slope->context.goal_time;
+        //sf::Time right_time = right_slope->context.goal_time;
     }
 }
 
 void Game_State::render(sf::RenderWindow& window)
 {
+    sf::Vector2u const window_size { window.getSize() };
 
     left_slope->render(window);
     right_slope->render(window);
 
     if (left_slope->context.game_finished && right_slope->context.game_finished)
-    {
+    {   
         sf::Sprite background;
         sf::Texture texture_background;
 
@@ -67,10 +90,22 @@ void Game_State::render(sf::RenderWindow& window)
         background.setTexture(texture_background);
 
         window.draw(background);
+
+        if ( left_slope->context.goal_time < right_slope->context.goal_time )
+        {
+            window.draw(p1_text);
+        }
+        else
+        {
+            window.draw(p2_text);
+        }
     }
+
+
 }
 
-
+// MENU_STATE
+/*___________________________________________________________________________________________________________*/
 Menu_State::Menu_State(sf::RenderWindow& window)
 : window {window}
 {
@@ -97,9 +132,8 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     // Y6 logo
     sprite.setTexture(texture);
     sprite.setScale(0.1f, 0.1f);
-
     
-
+    // Menyalternativ
     menu[0].setFont(font);
     menu[0].setFillColor(sf::Color::Blue);
     menu[0].setString("PLAY");
@@ -132,8 +166,6 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setFont(font);
     header.setString("EPIC HARDCORE VSR SIMULATOR");
     header.setFillColor(sf::Color(255, 20, 147));
-
-
 
     sf::Vector2u texture_size { texture.getSize() };
     sf::FloatRect text_bounds { text.getGlobalBounds() };
@@ -214,7 +246,7 @@ void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
     // Periodiciteten för texten ska vara 1.5 sek
     float const period { 1.0f };
 
-    // Omskalningsfaktorn ska vara i intervallet [0.8, 1.2], 
+    // Omskalningsfaktorn ska vara i intervallet [0.9, 1.1], 
     // använder sin för det periodiska beteendet.
     // ANM: std::sin() använder radianer medan SFML använder grader.
 
@@ -238,6 +270,8 @@ void Menu_State::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
+// HIGHSCORE
+/*___________________________________________________________________________________________________________*/
 Highscore::Highscore(sf::RenderWindow& window)
     :  Menu_State{window}
 {
@@ -252,7 +286,6 @@ Highscore::Highscore(sf::RenderWindow& window)
         score[i].setOrigin(bounds.width / 2, bounds.height / 2);
         score[i].setPosition(window_size.x / 2, window_size.y * 1 / 7 * (i + 1));
     }
-
 
     instruction.setFont(font);
     instruction.setString("Tryck 'esc' för att gå tillbaka");
@@ -312,6 +345,13 @@ std::vector<std::string> Highscore::read_highscore()
     return scores;
 }
 
+void Highscore::sort_highscores(std::vector<std::string>) const
+{
+}
+
+
+// CONTROLS
+/*___________________________________________________________________________________________________________*/
 Controls::Controls(sf::RenderWindow& window)
     :  Menu_State{window}
 {

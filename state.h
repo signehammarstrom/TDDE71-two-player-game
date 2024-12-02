@@ -36,6 +36,11 @@ public:
     Slope* right_slope{};
 private:
     sf::RenderWindow& window;
+    sf::Vector2u window_size;
+    sf::Font font;
+    sf::Text p1_text;
+    sf::Text p2_text;
+
 };
 
 
@@ -71,8 +76,6 @@ private:
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
-    
-
 };
 
 class Highscore : public Menu_State
@@ -87,10 +90,14 @@ public:
 
 private:
     std::vector<std::string> read_highscore();
+    void sort_highscores(std::vector<std::string>) const;
     sf::Text score[6];
     sf::Text instruction;
 };
 
+
+// CONTROLS
+/*___________________________________________________________________________________________________________*/
 class Controls : public Menu_State
 {
 public:
