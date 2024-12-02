@@ -10,3 +10,23 @@ Tire  182 2450
 Tire  37 2700
 Tire  319 2950
 Goal 284 3000
+
+Tire 284 500
+
+Hole 284 800
+
+Kir 284 1000
+
+Can 284 1200
+
+Chalmerist 284 1400 
+
+Snowball 284 350
+
+Tire 284 2000
+
+Goal 284 2500
+
+
+
+

@@ -16,6 +16,19 @@ Static_Obstacle::Static_Obstacle(double xpos, double ypos, float scale, std::str
     :Modifier(xpos, ypos, scale, filename)
 {}
 
+void Static_Obstacle::update(sf::Time delta, Context& context) 
+{   
+    float distance {delta.asSeconds() * context.y_speed};
+    sf::Vector2f old_position {sprite.getPosition()};
+    
+    sprite.move({0, -distance});
+}
+
+float Static_Obstacle::get_position() const
+{
+    return sprite.getPosition().y - sprite.getGlobalBounds().height/2;
+}
+
 // Tire
 ///////////////////////////////
 
@@ -32,14 +45,6 @@ bool Tire::handle(sf::Event event, Context& context)
     return false;
 }
 
-void Tire::update(sf::Time delta, Context& context) 
-{
-    
-    float distance {delta.asSeconds() * context.y_speed};
-    sf::Vector2f old_position {sprite.getPosition()};
-    
-    sprite.move({0, -distance});
-}
 void Tire::render(sf::RenderWindow& window)
 {
     window.draw(sprite);
@@ -58,10 +63,10 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
     Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
     if (snowball)
     {
-  //      delete snowball;
-        snowball = nullptr;
         //Oklar implementering, behövs den ens?
     }
+    player = nullptr;
+    snowball = nullptr;
 }
 
 // Hole
@@ -81,16 +86,6 @@ void Hole::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
-
-void Hole::update(sf::Time delta, Context& context) 
-{
-    
-    float distance {delta.asSeconds() * context.y_speed};
-    sf::Vector2f old_position {sprite.getPosition()};
-    
-    sprite.move({0, -distance});
-}
-
 void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
@@ -99,15 +94,14 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
         context.y_speed = 0;
         context.is_colliding = true;
         context.coll_count += 1;
-        player = nullptr;
     }
     Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
     if (snowball)
     {
-  //      delete snowball;
-        snowball = nullptr;
         //Oklar implementering, behövs den ens?
     }
+    player = nullptr;
+    snowball = nullptr;
 }
 
 // Goal
@@ -127,16 +121,6 @@ void Goal::render(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
-
-void Goal::update(sf::Time delta, Context& context) 
-{
-    
-    float distance {delta.asSeconds() * context.y_speed};
-    sf::Vector2f old_position {sprite.getPosition()};
-    
-    sprite.move({0, -distance});
-}
-
 void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
@@ -145,8 +129,7 @@ void Goal::perform_collision(Game_Object* const& other, Context& context)
         context.y_speed = 0;
         context.game_finished = true;
         context.goal_time = context.clock.getElapsedTime();
-
-        player = nullptr;
     }
+    player = nullptr;
 }
 

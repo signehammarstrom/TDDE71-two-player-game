@@ -6,7 +6,7 @@
 
 
 Modifier::Modifier(double xpos, double ypos, float scale, std::string filename)
-    :Game_Object(xpos, ypos, filename)
+    :Game_Object(xpos, ypos, scale, filename)
 {
     // texture.loadFromFile(filename);
     // if (!texture.loadFromFile(filename))
@@ -17,7 +17,6 @@ Modifier::Modifier(double xpos, double ypos, float scale, std::string filename)
     // sf::Vector2u texture_size{texture.getSize()};
     // sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     // sprite.setPosition(xpos, ypos);
-    sprite.setScale(scale, scale);
 
 }
 

@@ -65,10 +65,10 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Source files
-SRCS = main.cc game_object.cc modifier.cc moving_object.cc static_obstacle.cc temporary_modifier.cc slope.cc state.cc player.cc snowball_projectile.cc
+SRCS = main.cc game_object.cc modifier.cc moving_object.cc static_obstacle.cc temporary_modifier.cc slope.cc state.cc player.cc snowball_projectile.cc slope_objects.cc
 
 # Header files
-HEADERS = game_object.h modifier.h moving_object.h static_obstacle.h temporary_modifier.h slope.h state.h player.h snowball_projectile.h
+HEADERS = game_object.h modifier.h moving_object.h static_obstacle.h temporary_modifier.h slope.h state.h player.h snowball_projectile.h slope_objects.h
 
 # Object files (compiled from source files)
 OBJS = $(SRCS:.cc=.o)

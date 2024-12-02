@@ -3,10 +3,9 @@
 #include "game_object.h"
 
 
-Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, std::string filename)
-:Game_Object(xpos,ypos, filename), radius{}, y_speed{50}
+Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float scale, std::string filename)
+:Game_Object(xpos,ypos, scale, filename), radius{}, y_speed{50}
 {
-    sprite.setScale(0.05f, 0.05f); 
 }
 
 
