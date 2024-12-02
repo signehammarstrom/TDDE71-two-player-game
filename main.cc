@@ -24,11 +24,6 @@ int main() {
         {
             if (event.type == sf::Event::Closed)
             {
-                while (!states.empty())
-                {
-                    delete states.top();
-                    states.pop();
-                }
                 window.close();
             }
             states.top()->handle(event, states);
