@@ -7,6 +7,7 @@
 #include "context.h"
 #include <SFML/Graphics.hpp>
 #include "player.h"
+#include "slope_objects.h"
 
 
 
@@ -43,9 +44,8 @@ public:
 private:
     void read_track(Context& context);
     float const x_speed { 200.0f };
-    //sf::Font font{};
-    //sf::Text text{};
-
+    Snow_Text snow_text;
+    Background background;
 };
 
 

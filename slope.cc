@@ -14,11 +14,12 @@
 #include "moving_object.h"
 #include "temporary_modifier.h"
 #include "player.h"
+#include "slope_objects.h"
 
 using namespace std;
 
 Slope::Slope(bool side)
-    :context{}
+    :context{}, snow_text{side}, background{side}
 {
     context.side = side;
     context.snow_count = 0;
@@ -54,26 +55,7 @@ Slope::Slope(bool side)
     // context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2700, 0.1f));
     // context.mod_lst.push_back(new Chalmerist((context.left_bound+context.right_bound)/2, 3000, 0.2f, 700, 0.75f));
 
-
-
-
-
-/*
-    if (!font.loadFromFile("font.ttf"))
-    {
-        throw std::runtime_error { "Kan inte öppna: font.ttf" };
-    }
-
-    text.setFont(font);
-
-    std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
-    text.setString(snow_text);
-update_time
-    sf::FloatRect bounds { text.getGlobalBounds() };
     
-    text.setOrigin(bounds.width / 2, bounds.height / 2);
-    text.setPosition(context.left_bound/ 2, context.right_bound/2);
-    */
 };
 
 
@@ -199,11 +181,14 @@ void Slope::update(sf::Time delta)
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
     }
+
+    snow_text.update(context);
 }
 
 
 void Slope::render(sf::RenderWindow& window)
 {
+    background.render(window);
     //loopa igenom alla object och rita upp dem!!
     context.player->render(window);
 
@@ -218,7 +203,7 @@ void Slope::render(sf::RenderWindow& window)
         modifier -> render(window);
     }
 
-    //window.draw(text);
+    snow_text.render(window);
 
 }
 
