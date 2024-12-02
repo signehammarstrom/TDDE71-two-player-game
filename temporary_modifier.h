@@ -25,6 +25,10 @@ public:
     double get_speedmodifier() const; 
     virtual void active(sf::Time time);
     void update_time(sf::Time delta) override;
+    void remove_if_inactual(Context& context) override;
+    void perform_collision(Game_Object* const& other, Context& context) override;
+    
+
     
     
 protected:
@@ -43,13 +47,12 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float scale, double xspeed,
-         double speedmodifier, std::string filename = "tire.png", bool is_active=false);
+         double speedmodifier, std::string filename = "man.png", bool is_active=false);
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;
  //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other, Context& context) override;
  //   void remove_if_inactual() override;
 
 private: 
@@ -63,14 +66,13 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename = "tire.png", bool is_active=false);
+        double speedmodifier, std::string filename = "eybro.png", bool is_active=false);
     ~Can() = default;
 
     bool handle(sf::Event event, Context& context) override;
  //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other, Context& context) override;
- //   void remove_if_inactual() override;
+ //   void remove_if_inactual(Contect& context) override;
 
 private: 
 
@@ -89,8 +91,6 @@ public:
     bool handle(sf::Event event, Context& context) override;
 //    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other, Context& context) override;
-    void remove_if_inactual(Context& context) override;
 
 private: 
 

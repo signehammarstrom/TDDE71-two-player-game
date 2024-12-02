@@ -7,6 +7,8 @@
 #include "modifier.h"
 #include "moving_object.h"
 #include "temporary_modifier.h"
+#include "player.h"
+#include "snowball_projectile.h"
 
 
 
@@ -41,9 +43,38 @@ void Temporary_Modifier::update_time(sf::Time delta)
    time_passed += delta;
 }
 
+void Temporary_Modifier::remove_if_inactual(Context& context)
+{
+   if(time_passed.asSeconds() >= 3.f)
+   {
+      
+      context.y_speed = context.base_speed;
+      remove();
+   }
+}
+
 void Temporary_Modifier::active(sf::Time time)
 {
    return;
+}
+
+void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& context)
+{
+   Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+      context.y_speed = context.y_speed * get_speedmodifier();
+      context.active_temp_mods.push_back(this);
+      sprite.setScale(0, 0);
+      player = nullptr;
+    }
+    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+    if (snowball)
+    {
+      remove();
+      snowball = nullptr;
+    }
+
 }
 
 //Chalmerist
@@ -77,12 +108,6 @@ void Chalmerist::update(sf::Time delta, Context& context)
 }
 */
 
-void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
-{
-   sprite.setScale(0, 0);
-   return;
-}
-
 //Can
 /*_______________________________________________________________________________________*/
 
@@ -114,11 +139,6 @@ void Can::update(sf::Time delta, Context& context)
 }
 */
 
-void Can::perform_collision(Game_Object* const& other, Context& context)
-{
-   sprite.setScale(0, 0);
-   return;
-}
 
 //Kir
 /*_______________________________________________________________________________________*/
@@ -150,20 +170,3 @@ void Kir::update(sf::Time delta, Context& context)
    return;
 }
 */
-
-void Kir::perform_collision(Game_Object* const& other, Context& context)
-{
-   context.y_speed = context.y_speed * get_speedmodifier();
-   context.active_temp_mods.push_back(this);
-   sprite.setScale(0, 0);
-}
-
-void Kir::remove_if_inactual(Context& context)
-{
-   if(time_passed.asSeconds() >= 3.f)
-   {
-      
-      context.y_speed = context.base_speed;
-      remove();
-   }
-}
