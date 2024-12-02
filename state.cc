@@ -10,7 +10,7 @@
 Game_State::Game_State(sf::RenderWindow& window)
 : left_slope{new Slope(true)}, right_slope{new Slope(false)}, window {window}
 {
-
+    
 }
 
 Game_State::~Game_State()
@@ -42,14 +42,13 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 
 void Game_State::update(sf::Time delta)
 {
-    
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    left_slope->update(delta);
+    right_slope->update(delta);
+
+    if(left_slope->context.game_finished == true && right_slope->context.game_finished == true)
     {
-        left_slope->update(delta);
-    }
-     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    {
-        right_slope->update(delta);
+        sf::Time left_time =  left_slope->context.goal_time;
+        sf::Time right_time = right_slope->context.goal_time;
     }
 }
 
