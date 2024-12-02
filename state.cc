@@ -42,8 +42,12 @@ void Game_State::update(sf::Time delta)
 
 void Game_State::render(sf::RenderWindow& window)
 {
-    left_slope->render(window);
-    right_slope->render(window);
+    if ( !left_slope->context.game_finished && !right_slope->context.game_finished )
+    {
+        left_slope->render(window);
+        right_slope->render(window);
+    }
+    
 }
 
 
