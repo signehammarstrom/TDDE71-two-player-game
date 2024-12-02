@@ -5,7 +5,7 @@
 #include "modifier.h"
 
 
-Modifier::Modifier(double xpos, double ypos, std::string filename)
+Modifier::Modifier(double xpos, double ypos, float scale, std::string filename)
     :Game_Object(xpos, ypos), texture{}, sprite{}
 {
     texture.loadFromFile(filename);
@@ -17,6 +17,12 @@ Modifier::Modifier(double xpos, double ypos, std::string filename)
     sf::Vector2u texture_size{texture.getSize()};
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     sprite.setPosition(xpos, ypos);
-    sprite.setScale(0.1f, 0.1f);
+    sprite.setScale(scale, scale);
 
+}
+
+
+sf::FloatRect Modifier::bounds() const
+{
+    return sprite.getGlobalBounds();
 }

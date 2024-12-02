@@ -12,6 +12,9 @@ all: plmain
 plmain: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o plmain $(OBJS) $(LIBS)
 
+menu: state.o main.o
+	$(CXX) $(CXXFLAGS) -o menu state.o main.o $(LIBS)
+
 # Regler för att skapa objektfiler från källkod
 player.o: player.cc player.h
 	$(CXX) $(CXXFLAGS) -c player.cc

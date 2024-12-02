@@ -86,7 +86,7 @@ void Player::render(sf::RenderWindow& window)
 void Player::throw_snowball()
 {}
 
-void Player::perform_collision(Game_Object* const& other)
+void Player::perform_collision(Game_Object* const& other, Context& context)
 {}
 
 
@@ -108,6 +108,11 @@ bool Player::out_of_bounds(Context const& context)
     }
 }
 
+
+sf::FloatRect Player::bounds() const
+{
+    return sprite.getGlobalBounds();
+}
 
 
 /*_____________________________________________________*/

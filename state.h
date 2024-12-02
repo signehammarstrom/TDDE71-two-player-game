@@ -26,6 +26,7 @@ class Game_State : public State
 public:
 
     Game_State(sf::RenderWindow& window);
+    ~Game_State();
     
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;
@@ -43,6 +44,7 @@ class Menu_State : public State
 public:
 
     Menu_State(sf::RenderWindow& window);
+    ~Menu_State() = default;
     
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;
@@ -77,6 +79,7 @@ class Highscore : public Menu_State
 {
 public:
     Highscore(sf::RenderWindow& window);
+    ~Highscore() = default;
 
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;
@@ -92,6 +95,7 @@ class Controls : public Menu_State
 {
 public:
     Controls(sf::RenderWindow& window);
+    ~Controls() = default;
 
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;

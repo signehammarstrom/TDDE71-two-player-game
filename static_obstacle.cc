@@ -5,18 +5,20 @@
 #include "modifier.h"
 #include "static_obstacle.h"
 #include "context.h"
+#include "player.h"
+#include "snowball_projectile.h"
 
 // Static_Obstacle
 ///////////////////////////////
-Static_Obstacle::Static_Obstacle(double xpos, double ypos, std::string filename)
-    :Modifier(xpos, ypos, filename)
+Static_Obstacle::Static_Obstacle(double xpos, double ypos, float scale, std::string filename)
+    :Modifier(xpos, ypos, scale, filename)
 {}
 
 // Tire
 ///////////////////////////////
 
-Tire::Tire(double xpos, double ypos, double radius, std::string filename)
-    :Static_Obstacle(xpos, ypos, filename), radius{radius}
+Tire::Tire(double xpos, double ypos, float scale, std::string filename)
+    :Static_Obstacle(xpos, ypos, scale, filename)
 {   
     // double scale {radius/(texture_size.x/2)};
     // sprite.setScale(scale, scale);
@@ -41,16 +43,30 @@ void Tire::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Tire::perform_collision(Game_Object* const& other)
+void Tire::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+        context.y_speed = 0;
+        context.is_colliding = true;
+        context.coll_count += 1;
+        player = nullptr;
+    }
+    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+    if (snowball)
+    {
+  //      delete snowball;
+        snowball = nullptr;
+        //Oklar implementering, behövs den ens?
+    }
 }
 
 // Hole
 ///////////////////////////////
 
-Hole::Hole(double xpos, double ypos, double radius, std::string filename)
-    :Static_Obstacle(xpos, ypos, filename), radius{radius}
+Hole::Hole(double xpos, double ypos, float scale, std::string filename)
+    :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
 bool Hole::handle(sf::Event event, Context& context)
@@ -72,16 +88,30 @@ void Hole::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Hole::perform_collision(Game_Object* const& other)
+void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+        context.y_speed = 0;
+        context.is_colliding = true;
+        context.coll_count += 1;
+        player = nullptr;
+    }
+    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+    if (snowball)
+    {
+  //      delete snowball;
+        snowball = nullptr;
+        //Oklar implementering, behövs den ens?
+    }
 }
 
 // Goal
 ///////////////////////////////
 
-Goal::Goal(double xpos, double ypos, double width, double height, std::string filename)
-    :Static_Obstacle(xpos, ypos, filename), width{width}, height{height}
+Goal::Goal(double xpos, double ypos, float scale, std::string filename)
+    :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
 bool Goal::handle(sf::Event event, Context& context)
@@ -103,8 +133,18 @@ void Goal::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-void Goal::perform_collision(Game_Object* const& other)
+void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
-    return;
+    Player* player = dynamic_cast<Player*>(other);
+    if (player)
+    {
+        context.y_speed = 0;
+        context.game_finished = true;
+        context.goal_time = context.clock.getElapsedTime();
+
+
+
+        player = nullptr;
+    }
 }
 
