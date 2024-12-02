@@ -58,8 +58,9 @@ void Background::render(sf::RenderWindow& window)
 
 
 Progress_Bar::Progress_Bar(bool side)
+: width{300}
 {
-    background.setSize(sf::Vector2f(20,300));
+    background.setSize(sf::Vector2f(20,width));
     background.setFillColor(sf::Color::Black);
     double left_bound{0};
     if (!side)
@@ -74,7 +75,6 @@ Progress_Bar::Progress_Bar(bool side)
 
     total_distance = 0;
 
-    this->width = 300;
 }
 
 void Progress_Bar::update(Game_Object*& player, Game_Object*& goal) 
