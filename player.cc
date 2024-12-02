@@ -27,6 +27,10 @@ bool Player::handle(sf::Event event, Context& context)
         context.snow_count = context.snow_count - 1;
     }
 }
+void Player::render(sf::RenderWindow& window)
+{
+    window.draw(sprite);
+}
 
 void Player::update(sf::Time delta, Context& context)
 {

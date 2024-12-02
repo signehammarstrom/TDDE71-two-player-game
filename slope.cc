@@ -13,6 +13,7 @@
 #include "static_obstacle.h"
 #include "moving_object.h"
 #include "temporary_modifier.h"
+#include "player.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
 
-    context.player = new Player {1,1, context};
+    context.player = new Player {1,1};
     context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
@@ -111,7 +112,7 @@ void Slope::update(sf::Time delta)
     {
         if (obstacle -> collides(context.player))
         {
-            obstacle -> perform_collision(context.plupdate_timeayer, context);
+            obstacle -> perform_collision(context.player, context);
             context.player -> perform_collision(obstacle, context);
         }
     }
@@ -247,53 +248,53 @@ void Slope::render(sf::RenderWindow& window)
 void Slope::read_track(Context& context)
 {
     //behöver ändras, just nu hårdkodas alla variabler utom x och y koordinater in till objecten
-    string line {};
-    ifstream trackinfo_file {"track.txt"};
-    if (!trackinfo_file.is_open())
-    {
-        throw runtime_error{"trackinfo_file couldn't be opened!"};
-    }
-    else 
-    {
-        while ( getline (trackinfo_file, line))
-        {
-            string modifier_name {};
-            int modifier_xpos{};
-            int modifier_ypos{};
+    // string line {};
+    // ifstream trackinfo_file {"track.txt"};
+    // if (!trackinfo_file.is_open())
+    // {
+    //     throw runtime_error{"trackinfo_file couldn't be opened!"};
+    // }
+    // else 
+    // {
+    //     while ( getline (trackinfo_file, line))
+    //     {
+    //         string modifier_name {};
+    //         int modifier_xpos{};
+    //         int modifier_ypos{};
 
-            istringstream modifierinfo(line); 
-            modifierinfo >> modifier_name >> modifier_xpos>> modifier_ypos;
-            if (modifier_name == "Tire")
-            {
-                context.mod_lst.push_back(new Tire(modifier_xpos, modifier_ypos, 50));
-            }
-            else if (modifier_name == "Goal")
-            {
-                context.mod_lst.push_back(new Goal(modifier_xpos, modifier_ypos, 50, 30));
-            }
-            else if (modifier_name == "Hole")
-            {
-                context.mod_lst.push_back(new Hole(modifier_xpos, modifier_ypos, 50));
-            }
-            else if (modifier_name == "Chalmerist")
-            {
-                context.mod_lst.push_back(new Chalmerist(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
-            }
-            else if (modifier_name == "Kir")
-            {
-                context.mod_lst.push_back(new Kir(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
-            }
-            else if (modifier_name == "Can")
-            {
-                context.mod_lst.push_back(new Can(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
-            }
-            else if (modifier_name == "Snowball")
-            {
-                context.mod_lst.push_back(new Snowball_Mod(modifier_xpos, modifier_ypos, 50, 20));
-            }
-       }
-       trackinfo_file.close();
-    }
+    //         istringstream modifierinfo(line); 
+    //         modifierinfo >> modifier_name >> modifier_xpos>> modifier_ypos;
+    //         if (modifier_name == "Tire")
+    //         {
+    //             context.mod_lst.push_back(new Tire(modifier_xpos, modifier_ypos, 50));
+    //         }
+    //         else if (modifier_name == "Goal")
+    //         {
+    //             context.mod_lst.push_back(new Goal(modifier_xpos, modifier_ypos, 50, 30));
+    //         }
+    //         else if (modifier_name == "Hole")
+    //         {
+    //             context.mod_lst.push_back(new Hole(modifier_xpos, modifier_ypos, 50));
+    //         }
+    //         else if (modifier_name == "Chalmerist")
+    //         {
+    //             context.mod_lst.push_back(new Chalmerist(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
+    //         }
+    //         else if (modifier_name == "Kir")
+    //         {
+    //             context.mod_lst.push_back(new Kir(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
+    //         }
+    //         else if (modifier_name == "Can")
+    //         {
+    //             context.mod_lst.push_back(new Can(modifier_xpos, modifier_ypos, 50, 50, 50, 20));
+    //         }
+    //         else if (modifier_name == "Snowball")
+    //         {
+    //             context.mod_lst.push_back(new Snowball_Mod(modifier_xpos, modifier_ypos, 50, 20));
+    //         }
+    //    }
+    //    trackinfo_file.close();
+    // }
     //Loopa igenom resten å lägg in i Game_Objects.
     //För varje rad i filen
     //Typ av objekt, var den är

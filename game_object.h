@@ -29,7 +29,7 @@ public:
     virtual void render(sf::RenderWindow& window) = 0;
     virtual void perform_collision(Game_Object* const& other, Context& context) = 0;
     bool collides(Game_Object* const&) const;
-    sf::FloatRect bounds() const;
+
 
     double get_xpos() const; 
     double get_ypos() const;

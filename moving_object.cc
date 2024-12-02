@@ -72,6 +72,12 @@ bool Snowball_Mod::handle(sf::Event event, Context& context)
    return false;
 }
 
+void Snowball_Mod::render(sf::RenderWindow& window)
+{
+   window.draw(sprite);
+}
+
+
 
 /*void Snowball_Mod::update(sf::Time delta, Context& context) 
 {

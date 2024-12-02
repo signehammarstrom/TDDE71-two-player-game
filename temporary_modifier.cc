@@ -72,6 +72,11 @@ void Chalmerist::update(sf::Time delta, Context& context)
 }
 */
 
+void Chalmerist::render(sf::RenderWindow& window)
+{
+   window.draw(sprite);
+}
+
 void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 {
    sprite.setScale(0, 0);
@@ -128,6 +133,10 @@ bool Kir::handle(sf::Event event, Context& context)
    return false;
 }
 
+void Kir::render(sf::RenderWindow& window)
+{
+   window.draw(sprite);
+}
 
 /*
 void Kir::update(sf::Time delta, Context& context) 
