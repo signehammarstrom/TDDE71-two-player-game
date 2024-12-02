@@ -17,7 +17,7 @@ public:
     Static_Obstacle(double xpos, double ypos, float scale, std::string filename);
     ~Static_Obstacle() = default;
     void update(sf::Time delta, Context& context) override;
-    float get_top_position() const override;
+    float get_position() const override;
 
 };
 

@@ -13,6 +13,7 @@ struct Context
 
     std::vector<Game_Object*> mod_lst{};
     Game_Object* player;
+    Game_Object* goal;
     std::vector<Game_Object*> snowball_lst{}; //aktiva snöbollar
     std::vector<Game_Object*> active_temp_mods{}; //aktiva temporary_modifiers
 

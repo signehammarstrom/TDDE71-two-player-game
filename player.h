@@ -21,6 +21,7 @@ public:
     double get_height() const;
     bool out_of_bounds(Context const& context);
     sf::FloatRect bounds() const;
+    float get_position() const override;
 
 private:
    double height{};

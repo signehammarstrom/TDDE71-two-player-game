@@ -1,6 +1,8 @@
 #ifndef SLOPE_OBJECTS_H
 #define SLOPE_OBJECTS_H
 #include "context.h"
+#include "player.h"
+#include "static_obstacle.h"
 
 class Snow_Text
 {
@@ -24,6 +26,25 @@ class Background
     private:
         sf::Texture texture_background;
         sf::Sprite background;
+};
+
+
+
+class Progress_Bar {
+
+public:
+    Progress_Bar(bool side);
+
+    // Uppdaterar framsteg (0.0 - 1.0)
+    void update(Game_Object*& player, Game_Object*& goal);
+    void render(sf::RenderWindow &window);
+
+private:
+    sf::RectangleShape background;
+    sf::RectangleShape foreground;
+    float width;
+    float total_distance;
+
 };
 
 

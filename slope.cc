@@ -19,7 +19,7 @@
 using namespace std;
 
 Slope::Slope(bool side)
-    :context{}, snow_text{side}, background{side}
+    :context{}, snow_text{side}, background{side}, progress_bar{side}
 {
     context.side = side;
     context.snow_count = 0;
@@ -183,6 +183,7 @@ void Slope::update(sf::Time delta)
     }
 
     snow_text.update(context);
+    progress_bar.update(context.player, context.goal);
 }
 
 
@@ -204,6 +205,7 @@ void Slope::render(sf::RenderWindow& window)
     }
 
     snow_text.render(window);
+    progress_bar.render(window);
 
 }
 
@@ -234,6 +236,7 @@ void Slope::read_track(Context& context)
             else if (modifier_name == "Goal")
             {
                 context.mod_lst.push_back(new Goal(modifier_xpos + context.left_bound, modifier_ypos, 1));
+                context.goal = context.mod_lst.back();
             }
             else if (modifier_name == "Hole")
             {

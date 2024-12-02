@@ -58,6 +58,6 @@ void Game_Object::update_time(sf::Time delta)
 void Game_Object::remove_if_inactual(Context& context)
 {}
 
-float Game_Object::get_top_position() const
+float Game_Object::get_position() const
 {}
 // ..

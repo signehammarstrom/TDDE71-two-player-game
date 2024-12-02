@@ -46,6 +46,7 @@ private:
     float const x_speed { 200.0f };
     Snow_Text snow_text;
     Background background;
+    Progress_Bar progress_bar;
 };
 
 

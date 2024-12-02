@@ -24,7 +24,7 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-float Static_Obstacle::get_top_position() const
+float Static_Obstacle::get_position() const
 {
     return sprite.getPosition().y - sprite.getGlobalBounds().height/2;
 }

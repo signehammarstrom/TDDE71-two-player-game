@@ -38,7 +38,7 @@ public:
     void remove();
     virtual void update_time(sf::Time delta); //Används för kiren
     virtual void remove_if_inactual(Context& context); //Används för kiren
-    virtual float get_top_position() const;
+    virtual float get_position() const;
 
 
 protected:
