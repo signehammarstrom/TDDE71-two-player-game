@@ -1,18 +1,25 @@
 
 Tire 284 500
+Tire 4 500
 
-Hole 284 800
+Hole 28 650
+
+Hole 102 890
+Chalmerist 102 1350
+Tire 270 875
 
 Kir 284 1000
 
+Hole 28 1100
+Tire 430 1365
 Can 284 1200
 
+Hole 320 1050
+Tire 284 1560
 Chalmerist 284 1400 
 
 Snowball 284 350
-
 Goal 284 2000
-
 
 
 
