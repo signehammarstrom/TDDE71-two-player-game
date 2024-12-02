@@ -44,6 +44,17 @@ void Game_State::render(sf::RenderWindow& window)
 {
     left_slope->render(window);
     right_slope->render(window);
+
+    if (left_slope->context.game_finished && right_slope->context.game_finished)
+    {
+        sf::Sprite background;
+        sf::Texture texture_background;
+
+        texture_background.loadFromFile("background.png");
+        background.setTexture(texture_background);
+
+        window.draw(background);
+    }
 }
 
 
