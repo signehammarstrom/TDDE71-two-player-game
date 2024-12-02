@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <random>
 
+
 #include "slope.h"
 #include "game_object.h"
 #include "modifier.h"
@@ -57,6 +58,28 @@ Slope::Slope(bool side)
 
     
 };
+
+void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
+{
+    for (Game_Object* object : object_vector)
+    {
+        if (del)
+        {
+        delete object;
+        }
+        object = nullptr;
+    }
+}
+
+Slope::~Slope()
+{
+    delete context.player;
+    context.player = nullptr;
+    context.goal = nullptr;
+    delete_vector(context.active_temp_mods, false);
+    delete_vector(context.mod_lst);
+    delete_vector(context.snowball_lst);
+}
 
 
 void Slope::handle(sf::Event event)
@@ -263,4 +286,5 @@ void Slope::read_track(Context& context)
     }
 
 }
+
 

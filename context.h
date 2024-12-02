@@ -23,8 +23,6 @@ struct Context
 
     bool side {}; // true ger vänster
 
-    Game_Object* active_mod{};
-
     sf::Clock clock;
 
     unsigned int snow_count{};
