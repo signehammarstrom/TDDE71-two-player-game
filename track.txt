@@ -1,32 +1,12 @@
-Tire  531 450
-Tire  434 700
-Tire  108 950
-Tire  35 1200
-Tire  326 1450
-Tire  291 1700
-Tire  41 1950
-Tire  418 2200
-Tire  182 2450
-Tire  37 2700
-Tire  319 2950
+Tire  435 450
+Tire  80 700
+Tire  444 950
+Tire  381 1200
+Tire  484 1450
+Tire  131 1700
+Tire  484 1950
+Tire  295 2200
+Tire  269 2450
+Tire  567 2700
+Tire  367 2950
 Goal 284 3000
-
-Tire 284 500
-
-Hole 284 800
-
-Kir 284 1000
-
-Can 284 1200
-
-Chalmerist 284 1400 
-
-Snowball 284 350
-
-Tire 284 2000
-
-Goal 284 2500
-
-
-
-

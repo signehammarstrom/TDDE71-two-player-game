@@ -52,20 +52,17 @@ Slope::Slope(bool side)
 
 
 
-//     if (!font.loadFromFile("font.ttf"))
-//     {
-//         throw std::runtime_error { "Kan inte öppna: font.ttf" };
-//     }
+    if (!font.loadFromFile("font.ttf"))
+    {
+        throw std::runtime_error { "Kan inte öppna: font.ttf" };
+    }
 
-//     text.setFont(font);
+    text.setFont(font);
 
-//     std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
-//     text.setString(snow_text);
-// update_time
-//     sf::FloatRect bounds { text.getGlobalBounds() };
-
-
-    
+    std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
+    text.setString(snow_text);
+    //  update_time
+    sf::FloatRect bounds { text.getGlobalBounds() };
 };
 
 void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
@@ -213,8 +210,8 @@ void Slope::update(sf::Time delta)
 
         //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
-        snow_text.update(context);
-        progress_bar.update(context.player, context.goal);
+        // snow_text.update(context);
+        // progress_bar.update(context.player, context.goal);
     }
 
 }
