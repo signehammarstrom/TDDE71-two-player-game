@@ -41,7 +41,7 @@ public:
     Context context;
     
 private:
-    void read_track();
+    void read_track(Context& context);
     float const x_speed { 200.0f };
     //sf::Font font{};
     //sf::Text text{};

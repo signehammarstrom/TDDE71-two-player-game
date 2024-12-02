@@ -5,9 +5,21 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Game_Object::Game_Object(double x, double y)
-    : xpos {x}, ypos {y}
+Game_Object::Game_Object(double x, double y, std::string filename)
+    : xpos {x}, ypos {y}, texture{}, sprite{}
 {
+
+    texture.loadFromFile(filename);
+    if (!texture.loadFromFile(filename))
+    {
+        throw std::runtime_error{"Couldn't open filename"};
+    }
+
+    sprite.setTexture(texture);
+    sf::Vector2u texture_size { texture.getSize() };
+    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    sprite.setPosition(xpos, ypos);
+    
 }
 
 // Medlemsfunktioner

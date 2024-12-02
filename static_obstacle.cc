@@ -7,6 +7,8 @@
 #include "context.h"
 #include "player.h"
 #include "snowball_projectile.h"
+#include <iostream>
+#include <iomanip>
 
 // Static_Obstacle
 ///////////////////////////////
@@ -20,18 +22,14 @@ Static_Obstacle::Static_Obstacle(double xpos, double ypos, float scale, std::str
 Tire::Tire(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {   
-    // double scale {radius/(texture_size.x/2)};
-    // sprite.setScale(scale, scale);
+    sf::Vector2u texture_size { texture.getSize() };
+    double scale {radius/(texture_size.x/2)};
+    sprite.setScale(scale, scale);
 }
 
 bool Tire::handle(sf::Event event, Context& context)
 {
     return false;
-}
-
-void Tire::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
 }
 
 void Tire::update(sf::Time delta, Context& context) 
@@ -74,10 +72,6 @@ bool Hole::handle(sf::Event event, Context& context)
     return false;
 }
 
-void Hole::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
 
 void Hole::update(sf::Time delta, Context& context) 
 {
@@ -119,10 +113,6 @@ bool Goal::handle(sf::Event event, Context& context)
     return false;
 }
 
-void Goal::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
 
 void Goal::update(sf::Time delta, Context& context) 
 {

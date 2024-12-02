@@ -14,8 +14,7 @@ public:
     sf::FloatRect bounds() const;
 
 protected:
-    sf::Sprite sprite;
-    sf::Texture texture;
+   
 
 private:
 

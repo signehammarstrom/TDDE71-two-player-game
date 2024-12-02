@@ -15,7 +15,7 @@ class Game_Object
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    Game_Object(double xpos, double ypos);
+    Game_Object(double xpos, double ypos, std::string filename);
     //Game_Object(Game_Object const& other) = delete;
     //Game_Object& operator=(Game_Object const& other) = delete;
     //Game_Object(Game_Object && other) = delete;
@@ -29,6 +29,8 @@ public:
     virtual void render(sf::RenderWindow& window) = 0;
     virtual void perform_collision(Game_Object* const& other, Context& context) = 0;
     bool collides(Game_Object* const&) const;
+    sf::FloatRect bounds() const;
+
     double get_xpos() const; 
     double get_ypos() const;
     virtual sf::FloatRect bounds() const = 0;
@@ -36,6 +38,7 @@ public:
     void remove();
     virtual void update_time(sf::Time delta); //Används för kiren
     virtual void remove_if_inactual(Context& context); //Används för kiren
+
 
 protected:
     // ...

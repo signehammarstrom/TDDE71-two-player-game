@@ -17,7 +17,7 @@ class Snowball_Projectile: public Game_Object
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    Snowball_Projectile(double xpos, double ypos);
+    Snowball_Projectile(double xpos, double ypos, std::string filename = "snowball.png");
 
     /*Snowball_Projectile(Snowball_Projectile const& other) = delete;
     Snowball_Projectile& operator=(Snowball_Projectile const& other) = delete;
@@ -36,8 +36,7 @@ public:
 private:
     float radius;
     float y_speed;
-    sf::Sprite sprite;
-    sf::Texture texture;
+
 };
 
 #endif

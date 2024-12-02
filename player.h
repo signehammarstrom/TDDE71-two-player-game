@@ -8,13 +8,13 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, Context context); //x och ypos behövs inte!!
+    Player(double xpos, double ypos, std::string filename = "skier.png"); //x och ypos behövs inte!!
                                                         //ändra sen så den tar fil som inparameter!!
     ~Player() = default;
 
     bool handle(sf::Event event, Context& context) override;
     void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
+
     void throw_snowball();
     void perform_collision(Game_Object* const& other, Context& context) override;
     double get_width() const;
@@ -25,8 +25,6 @@ public:
 private:
    double height{};
    double width{};
-   sf::Sprite sprite;
-   sf::Texture texture;
  
 };
 

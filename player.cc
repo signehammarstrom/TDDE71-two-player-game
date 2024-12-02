@@ -10,22 +10,10 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, Context context)
-    : Game_Object(x,y)
+Player::Player(double x, double y, std::string filename )
+    : Game_Object(x,y, filename)
 {
-    texture.loadFromFile("skier.png");
-    if (!texture.loadFromFile("skier.png"))
-    {
-        std::cerr << "Kan inte öppna: skier.png" << std::endl;
-    }
-
-    sf::Vector2u window_size {1136, 640};
-
-    sprite.setTexture(texture);
-    sf::Vector2u texture_size { texture.getSize() };
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition((context.right_bound + context.left_bound) / 2, window_size.y / 6);
-    sprite.setScale(0.1f, 0.1f);
+    sprite.setScale(0.05f, 0.05f);
 }
 
 // Medlemsfunktioner
@@ -75,13 +63,6 @@ void Player::update(sf::Time delta, Context& context)
     }
 }
 
-
-
-void Player::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-
-}
 
 void Player::throw_snowball()
 {}
