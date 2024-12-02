@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
+#include <random>
 
 #include "slope.h"
 #include "game_object.h"
@@ -36,12 +38,6 @@ Slope::Slope(bool side)
     sf::Vector2u window_size {1136, 640};
     context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
     context.y_speed = 300; 
-
-
-    // context.mod_lst.push_back(new Tire(1, 400, 50));
-    // context.mod_lst.push_back(new Tire (1, 300, 50));
-    // context.mod_lst.push_back(new Tire (1000, 300, 50));
-    //  context.mod_lst.push_back(new Goal (500, 2560, 50, 60));
 
 
 /*
