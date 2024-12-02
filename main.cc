@@ -29,7 +29,6 @@ int main() {
             states.top()->handle(event, states);
 
         }
-        
 
         states.top()->update(clock.restart());
 

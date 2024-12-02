@@ -54,8 +54,11 @@ void Game_State::update(sf::Time delta)
 
 void Game_State::render(sf::RenderWindow& window)
 {
+
     left_slope->render(window);
     right_slope->render(window);
+
+    
 }
 
 
