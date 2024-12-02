@@ -107,7 +107,6 @@ void Slope::update(sf::Time delta)
             context.is_colliding = false;
         }
     }
-
     for (Game_Object* obstacle : context.mod_lst)
     {
         for(Game_Object* snowball_projectile : context.snowball_lst)
