@@ -13,6 +13,12 @@ Game_State::Game_State(sf::RenderWindow& window)
 
 }
 
+Game_State::~Game_State()
+{
+    delete left_slope;
+    delete right_slope;
+}
+
 void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
