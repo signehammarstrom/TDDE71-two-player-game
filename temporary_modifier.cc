@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <iostream>
 
 #include "game_object.h"
 #include "context.h"
@@ -12,11 +13,12 @@
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
 
-Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Moving_Object(xpos, ypos, xspeed, filename), width{width}, 
-    height{height}, speedmodifier{speedmodifier}
-{}
+Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
+       double speedmodifier, std::string filename, bool is_active)
+    : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}
+{
+   time_passed = sf::Time::Zero;
+}
 
 
  double Temporary_Modifier::get_width() const
@@ -34,12 +36,22 @@ double Temporary_Modifier::get_speedmodifier() const
     return speedmodifier;
 }
 
+void Temporary_Modifier::update_time(sf::Time delta)
+{
+   time_passed += delta;
+}
+
+void Temporary_Modifier::active(sf::Time time)
+{
+   return;
+}
+
 //Chalmerist
 /*_______________________________________________________________________________________*/
 
-Chalmerist::Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename, bool is_active)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Chalmerist::handle(sf::Event event, Context& context)
@@ -53,6 +65,7 @@ void Chalmerist::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Chalmerist::update(sf::Time delta, Context& context) 
 {
     
@@ -62,18 +75,20 @@ void Chalmerist::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
-void Chalmerist::perform_collision(Game_Object* const& other)
+void Chalmerist::perform_collision(Game_Object* const& other, Context& context)
 {
+   sprite.setScale(0, 0);
    return;
 }
 
 //Can
 /*_______________________________________________________________________________________*/
 
-Can::Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Can::Can(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename, bool is_active)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Can::handle(sf::Event event, Context& context)
@@ -87,6 +102,7 @@ void Can::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Can::update(sf::Time delta, Context& context) 
 {
     
@@ -96,18 +112,20 @@ void Can::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
-void Can::perform_collision(Game_Object* const& other)
+void Can::perform_collision(Game_Object* const& other, Context& context)
 {
+   sprite.setScale(0, 0);
    return;
 }
 
 //Kir
 /*_______________________________________________________________________________________*/
 
-Kir::Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, xspeed, width, height, speedmodifier, filename)
+Kir::Kir(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename, bool is_active)
+    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
 bool Kir::handle(sf::Event event, Context& context)
@@ -121,6 +139,7 @@ void Kir::render(sf::RenderWindow& window)
    return;
 }
 
+/*
 void Kir::update(sf::Time delta, Context& context) 
 {
     
@@ -130,8 +149,21 @@ void Kir::update(sf::Time delta, Context& context)
    sprite.move({0, -distance});
    return;
 }
+*/
 
-void Kir::perform_collision(Game_Object* const& other)
+void Kir::perform_collision(Game_Object* const& other, Context& context)
 {
-   return;
+   context.y_speed = context.y_speed * get_speedmodifier();
+   context.active_temp_mods.push_back(this);
+   sprite.setScale(0, 0);
+}
+
+void Kir::remove_if_inactual(Context& context)
+{
+   if(time_passed.asSeconds() >= 3.f)
+   {
+      
+      context.y_speed = context.base_speed;
+      remove();
+   }
 }

@@ -13,6 +13,12 @@ Game_State::Game_State(sf::RenderWindow& window)
     
 }
 
+Game_State::~Game_State()
+{
+    delete left_slope;
+    delete right_slope;
+}
+
 void Game_State::handle(sf::Event event, std::stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
@@ -38,6 +44,12 @@ void Game_State::update(sf::Time delta)
 {
     left_slope->update(delta);
     right_slope->update(delta);
+
+    if(left_slope->context.game_finished == true && right_slope->context.game_finished == true)
+    {
+        sf::Time left_time =  left_slope->context.goal_time;
+        sf::Time right_time = right_slope->context.goal_time;
+    }
 }
 
 void Game_State::render(sf::RenderWindow& window)

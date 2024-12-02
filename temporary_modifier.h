@@ -16,18 +16,23 @@
 class Temporary_Modifier : public Moving_Object
 {
 public:
-    Temporary_Modifier(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename);
+    Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename, bool is_active=false);
     ~Temporary_Modifier() = default;
 
     double get_width() const;
     double get_height() const;
     double get_speedmodifier() const; 
+    virtual void active(sf::Time time);
+    void update_time(sf::Time delta) override;
+    
     
 protected:
     double width{};
     double height{};
     double speedmodifier{};
+    bool is_active{};
+    sf::Time time_passed{};
     
 };
 
@@ -37,14 +42,15 @@ protected:
 class Chalmerist : public Temporary_Modifier
 {
 public: 
-    Chalmerist(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Chalmerist(double xpos, double ypos, float scale, double xspeed,
+         double speedmodifier, std::string filename = "tire.png", bool is_active=false);
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+ //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other) override;
+    void perform_collision(Game_Object* const& other, Context& context) override;
+ //   void remove_if_inactual() override;
 
 private: 
 
@@ -56,14 +62,15 @@ private:
 class Can : public Temporary_Modifier
 {
 public: 
-    Can(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Can(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename = "tire.png", bool is_active=false);
     ~Can() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+ //   void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other) override;
+    void perform_collision(Game_Object* const& other, Context& context) override;
+ //   void remove_if_inactual() override;
 
 private: 
 
@@ -75,14 +82,15 @@ private:
 class Kir : public Temporary_Modifier
 {
 public: 
-    Kir(double xpos, double ypos, double xspeed,
-        double width, double height, double speedmodifier, std::string filename = "tire.png");
+    Kir(double xpos, double ypos, float scale, double xspeed,
+        double speedmodifier, std::string filename = "kir.png", bool is_active=false);
     ~Kir() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
+//    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
-    void perform_collision(Game_Object* const& other) override;
+    void perform_collision(Game_Object* const& other, Context& context) override;
+    void remove_if_inactual(Context& context) override;
 
 private: 
 
