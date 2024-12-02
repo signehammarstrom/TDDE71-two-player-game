@@ -37,7 +37,8 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
 
-    context.player = new Player {1,1};
+    sf::Vector2u window_size {1136, 640};
+    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
     context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
@@ -54,16 +55,7 @@ Slope::Slope(bool side)
     context.mod_lst.push_back(new Chalmerist((context.left_bound+context.right_bound)/2, 3000, 0.2f, 700, 0.75f));
 
 
-    sf::Vector2u window_size {1136, 640};
-    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
-    context.y_speed = 300; 
 
-
-    context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 1000, 0.1f));
-    context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2000, 0.1f));
-    context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3000, 0.5f));
-    context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.2f, 700));
-    context.mod_lst.push_back(new Kir((context.left_bound+context.right_bound)/2, 750, 0.1f, 700, 3));
 
 
 /*
@@ -203,22 +195,6 @@ void Slope::update(sf::Time delta)
     {
         modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
     }
-
-
-    for (Game_Object* obstacle : context.mod_lst)
-        if (obstacle -> collides(context.player))
-        {
-            obstacle -> perform_collision(context.player, context);
-            context.player -> perform_collision(obstacle, context);
-        }
-
-    for (Game_Object* obstacle : context.mod_lst)
-        for(Game_Object* projectile : context.snowball_lst)
-            if (obstacle -> collides(projectile))
-            {
-                obstacle -> perform_collision(projectile, context);
-                projectile -> perform_collision(obstacle, context);
-            }
 
     //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 

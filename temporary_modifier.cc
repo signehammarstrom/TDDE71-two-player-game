@@ -91,6 +91,11 @@ bool Chalmerist::handle(sf::Event event, Context& context)
 }
 
 
+void Chalmerist::render(sf::RenderWindow& window)
+{
+   window.draw(sprite);
+   return;
+}
 /*
 void Chalmerist::update(sf::Time delta, Context& context) 
 {
