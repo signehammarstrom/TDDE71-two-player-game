@@ -33,7 +33,7 @@ Slope::Slope(bool side)
     }
 
     context.player = new Player {1,1, context};
-    context.y_speed = 100; 
+    context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
     context.coll_count = 0;
