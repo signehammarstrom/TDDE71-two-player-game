@@ -43,6 +43,7 @@ public:
 private:
     void read_track(Context& context);
     float const x_speed { 200.0f };
+    void create_track(Context& context);
     //sf::Font font{};
     //sf::Text text{};
 

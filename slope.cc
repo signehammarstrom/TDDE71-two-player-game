@@ -6,6 +6,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <random>
+#include <time.h>
 
 #include "slope.h"
 #include "game_object.h"
@@ -15,6 +16,7 @@
 #include "temporary_modifier.h"
 #include "player.h"
 
+
 using namespace std;
 
 Slope::Slope(bool side)
@@ -23,6 +25,7 @@ Slope::Slope(bool side)
     context.side = side;
     context.snow_count = 0;
     context.game_finished = false;
+    create_track( context);
     
 
     if (side)
@@ -36,6 +39,7 @@ Slope::Slope(bool side)
         context.left_bound = 1136/2;
         context.right_bound = 1136;
     }
+   
     read_track(context);
     sf::Vector2u window_size {1136, 640};
     context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
@@ -43,19 +47,6 @@ Slope::Slope(bool side)
     context.base_speed = context.y_speed;
     context.is_colliding = false;
     context.coll_count = 0;
-
-
-    // context.mod_lst.push_back(new Hole((context.left_bound+context.right_bound)/2, 1000, 0.1f));
-    // context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2000, 0.1f));
-    // context.mod_lst.push_back(new Goal ((context.left_bound+context.right_bound)/2, 3500, 0.5f));
-    // context.mod_lst.push_back(new Snowball_Mod ((context.left_bound+context.right_bound)/2, 500, 0.2f, 700));
-    // context.mod_lst.push_back(new Kir((context.left_bound+context.right_bound)/2, 750, 0.1f, 700, 3));
-    // context.mod_lst.push_back(new Can((context.left_bound+context.right_bound)/2, 2400, 0.2f, 700, 0.3f));
-    // context.mod_lst.push_back(new Tire ((context.left_bound+context.right_bound)/2, 2700, 0.1f));
-    // context.mod_lst.push_back(new Chalmerist((context.left_bound+context.right_bound)/2, 3000, 0.2f, 700, 0.75f));
-
-
-
 
 
 /*
@@ -222,6 +213,36 @@ void Slope::render(sf::RenderWindow& window)
 
 }
 
+void Slope::create_track(Context& context)
+{
+    srand(time(NULL));
+    int track_length {3000};
+    int modifier_xpos{};
+    int modifier_ypos{200};
+    
+    ofstream mod_info ("track.txt");
+
+    if (!mod_info.is_open())
+    {
+        throw runtime_error{"trackinfo_file couldn't be opened!"};
+    }
+    else
+    {
+        for(int i = 1 ; i < track_length/250; i++)
+        {
+            modifier_xpos = rand()%580;
+            modifier_ypos = modifier_ypos + 250;
+            mod_info << "Tire "<< ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+        }
+    }
+    
+    mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
+
+    //skapa random genererade däkc och hål. 
+    //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
+    //x-koordinat slumpas utifrån context.left_bound() oc hright_bound()
+    //spara i txt-fil.
+}
 
 void Slope::read_track(Context& context)
 {
