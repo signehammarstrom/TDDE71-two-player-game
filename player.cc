@@ -5,6 +5,7 @@
 #include <cmath>
 #include "context.h"
 #include "snowball_projectile.h"
+#include "static_obstacle.h"
 
 
 
@@ -34,6 +35,7 @@ void Player::render(sf::RenderWindow& window)
 
 void Player::update(sf::Time delta, Context& context)
 {
+    old_position = sprite.getPosition();
 
     float distance {delta.asSeconds() * 200.0f};
     sf::Vector2f old_position {sprite.getPosition()};
@@ -72,7 +74,20 @@ void Player::throw_snowball()
 {}
 
 void Player::perform_collision(Game_Object* const& other, Context& context)
-{}
+{
+    Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
+    if (stat_obst)
+    {
+        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_top_position()) > 0.5 )
+        {
+            sf::Vector2f temp {old_position.x, sprite.getPosition().y};
+            sprite.setPosition(temp);
+        }
+
+    }
+    stat_obst = nullptr;
+
+}
 
 
 bool Player::out_of_bounds(Context const& context)

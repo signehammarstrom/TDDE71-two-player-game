@@ -16,6 +16,8 @@ class Static_Obstacle : public Modifier
 public:
     Static_Obstacle(double xpos, double ypos, float scale, std::string filename);
     ~Static_Obstacle() = default;
+    void update(sf::Time delta, Context& context) override;
+    float get_top_position() const override;
 
 };
 
@@ -33,7 +35,6 @@ public:
     ~Tire() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
@@ -53,7 +54,6 @@ public:
     ~Hole() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
@@ -72,7 +72,6 @@ public:
     ~Goal() = default;
  
     bool handle(sf::Event event, Context& context) override;
-    void update(sf::Time delta, Context& context) override;
     void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 

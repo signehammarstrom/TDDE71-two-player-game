@@ -25,7 +25,7 @@ public:
 private:
    double height{};
    double width{};
- 
+    sf::Vector2f old_position{};
 };
 
 #endif

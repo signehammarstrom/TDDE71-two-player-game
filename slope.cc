@@ -170,8 +170,8 @@ void Slope::update(sf::Time delta)
     }
 
 
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    context.player->update(delta, context);
+    /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         if (context.side)
         {
@@ -184,7 +184,7 @@ void Slope::update(sf::Time delta)
         {
             context.player->update(delta, context);
         }
-    }
+    }*/
 
     for( Game_Object* snowball : context.snowball_lst)
     {
