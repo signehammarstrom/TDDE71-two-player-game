@@ -256,15 +256,15 @@ void Slope::read_track(Context& context)
             }
             else if (modifier_name == "Chalmerist")
             {
-                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, 0.2, 50, 0.5));
+                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, 0.2, 100, 0.5));
             }
             else if (modifier_name == "Kir")
             {
-                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, 0.1, 50, 2));
+                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, 0.1, 100, 2));
             }
             else if (modifier_name == "Can")
             {
-                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, 0.2, 50, 0.75 ));
+                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, 0.15, 100, 0.75 ));
             }
             else if (modifier_name == "Snowball")
             {

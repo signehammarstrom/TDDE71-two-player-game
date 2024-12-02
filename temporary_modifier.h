@@ -47,7 +47,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float scale, double xspeed,
-         double speedmodifier, std::string filename = "man.png", bool is_active=false);
+         double speedmodifier, std::string filename = "Chalmerist.png", bool is_active=false);
     ~Chalmerist() = default;
 
     bool handle(sf::Event event, Context& context) override;

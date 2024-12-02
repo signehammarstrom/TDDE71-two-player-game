@@ -9,7 +9,7 @@ Can 284 1200
 
 Chalmerist 284 1400 
 
-Snowball 284 1600
+Snowball 284 350
 
 Goal 284 2000
 
