@@ -15,7 +15,7 @@ class Game_Object
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    Game_Object(double xpos, double ypos, std::string filename);
+    Game_Object(double xpos, double ypos, float scale, std::string filename);
     //Game_Object(Game_Object const& other) = delete;
     //Game_Object& operator=(Game_Object const& other) = delete;
     //Game_Object(Game_Object && other) = delete;
@@ -39,6 +39,7 @@ public:
     virtual void update_time(sf::Time delta); //Används för kiren
     virtual void remove_if_inactual(Context& context); //Används för kiren
     virtual float get_position() const;
+    virtual void stop_effect(Game_Object*& object);
 
 
 protected:
@@ -48,6 +49,7 @@ protected:
     sf::Sprite sprite;
     sf::Texture texture;
     bool removed{false};
+    float scale;
     
 private:
     // ...

@@ -6,15 +6,15 @@
 #include "context.h"
 #include "snowball_projectile.h"
 #include "static_obstacle.h"
+#include "temporary_modifier.h"
 
 
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, std::string filename )
-    : Game_Object(x,y, filename)
+Player::Player(double x, double y, float scale, std::string filename )
+    : Game_Object(x,y, scale, filename), x_speed{200}
 {
-    sprite.setScale(0.05f, 0.05f);
 }
 
 // Medlemsfunktioner
@@ -37,7 +37,7 @@ void Player::update(sf::Time delta, Context& context)
 {
     old_position = sprite.getPosition();
 
-    float distance {delta.asSeconds() * 200.0f};
+    float distance {delta.asSeconds() * x_speed};
     sf::Vector2f old_position {sprite.getPosition()};
 
     if (context.side)
@@ -85,7 +85,14 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
         }
 
     }
+    Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
+    if (temp_mod)
+    {
+        x_speed = temp_mod->get_speedmodifier()*x_speed;
+
+    }
     stat_obst = nullptr;
+    temp_mod = nullptr;
 
 }
 
@@ -119,6 +126,16 @@ float Player::get_position() const
     return sprite.getPosition().y + sprite.getGlobalBounds().height/2;
 }
 
+
+void Player::stop_effect(Game_Object*& object)
+{
+    Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(object);
+    if (temp_mod)
+    {
+        x_speed = x_speed/temp_mod->get_speedmodifier();
+    }
+    temp_mod = nullptr;
+}
 
 /*_____________________________________________________*/
 

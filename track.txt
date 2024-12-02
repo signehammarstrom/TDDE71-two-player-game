@@ -11,7 +11,9 @@ Chalmerist 284 1400
 
 Snowball 284 350
 
-Goal 284 2000
+Tire 284 2000
+
+Goal 284 2500
 
 
 

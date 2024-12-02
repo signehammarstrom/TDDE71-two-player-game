@@ -107,106 +107,107 @@ void Slope::update(sf::Time delta)
 {   
     if (!context.game_finished)
     {
-    context.coll_count = 0;
-    for (Game_Object* obstacle : context.mod_lst)
-    {
-        if (obstacle -> collides(context.player))
+        context.coll_count = 0;
+        for (Game_Object* obstacle : context.mod_lst)
         {
-            obstacle -> perform_collision(context.player, context);
-            context.player -> perform_collision(obstacle, context);
-        }
-    }
-    //Kollar om vi kommer från att ha kolliderat till att inte längre kollidera
-    if(context.coll_count == 0)
-    {
-        if(context.is_colliding == true)
-        {
-            context.y_speed = context.base_speed;
-            context.is_colliding = false;
-        }
-    }
-
-    for (Game_Object* obstacle : context.mod_lst)
-    {
-        for(Game_Object* snowball_projectile : context.snowball_lst)
-        {
-            if (obstacle -> collides(snowball_projectile))
+            if (obstacle -> collides(context.player))
             {
-                obstacle -> perform_collision(snowball_projectile, context);
-                snowball_projectile -> perform_collision(obstacle,context);
+                obstacle -> perform_collision(context.player, context);
+                context.player -> perform_collision(obstacle, context);
             }
         }
-    }
-    //Ta bort inaktuella modifiers
-    for (unsigned int i=0; i<context.mod_lst.size(); i++)
-    {
-        if (context.mod_lst.at(i)->is_removed())
+        //Kollar om vi kommer från att ha kolliderat till att inte längre kollidera
+        if(context.coll_count == 0)
         {
-            std::swap(context.mod_lst.at(i), context.mod_lst.back());
-            delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
-            context.mod_lst.pop_back();
-        }
-    }
-    //Ta bort inaktuella snöbollar
-    for (unsigned int i=0; i<context.snowball_lst.size(); i++)
-    {
-        if (context.snowball_lst.at(i)->is_removed())
-        {
-            std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
-            delete context.snowball_lst.back();
-            context.snowball_lst.pop_back();
-        }
-    }
-
-    //Ta bort inaktuella temporary modifiers
-    if(context.active_temp_mods.size() != 0)
-    {
-        for(unsigned int i=0; i<context.active_temp_mods.size(); i++)
-        {
-            context.active_temp_mods.at(i)->update_time(delta);
-            context.active_temp_mods.at(i)->remove_if_inactual(context);
-            if(context.active_temp_mods.at(i)->is_removed())
+            if(context.is_colliding == true)
             {
-                std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
-                //delete context.active_temp_mods.back();
-                context.active_temp_mods.pop_back();
+                context.y_speed = context.base_speed;
+                context.is_colliding = false;
             }
         }
-    }
 
-
-    context.player->update(delta, context);
-    /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-    {
-        if (context.side)
+        for (Game_Object* obstacle : context.mod_lst)
         {
-            context.player->update(delta, context);
+            for(Game_Object* snowball_projectile : context.snowball_lst)
+            {
+                if (obstacle -> collides(snowball_projectile))
+                {
+                    obstacle -> perform_collision(snowball_projectile, context);
+                    snowball_projectile -> perform_collision(obstacle,context);
+                }
+            }
         }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    {
-        if (!context.side)
+        //Ta bort inaktuella modifiers
+        for (unsigned int i=0; i<context.mod_lst.size(); i++)
         {
-            context.player->update(delta, context);
+            if (context.mod_lst.at(i)->is_removed())
+            {
+                std::swap(context.mod_lst.at(i), context.mod_lst.back());
+                delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
+                context.mod_lst.pop_back();
+            }
         }
-    }*/
+        //Ta bort inaktuella snöbollar
+        for (unsigned int i=0; i<context.snowball_lst.size(); i++)
+        {
+            if (context.snowball_lst.at(i)->is_removed())
+            {
+                std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
+                delete context.snowball_lst.back();
+                context.snowball_lst.pop_back();
+            }
+        }
 
-    for( Game_Object* snowball : context.snowball_lst)
-    {
-        snowball->update(delta, context);
+        //Ta bort inaktuella temporary modifiers
+        if(context.active_temp_mods.size() != 0)
+        {
+            for(unsigned int i=0; i<context.active_temp_mods.size(); i++)
+            {
+                context.active_temp_mods.at(i)->update_time(delta);
+                context.active_temp_mods.at(i)->remove_if_inactual(context);
+                if(context.active_temp_mods.at(i)->is_removed())
+                {
+                    context.player->stop_effect(context.active_temp_mods.at(i));
+                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
+                    //delete context.active_temp_mods.back();
+                    context.active_temp_mods.pop_back();
+                }
+            }
+        }
+
+
+        context.player->update(delta, context);
+        /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        {
+            if (context.side)
+            {
+                context.player->update(delta, context);
+            }
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        {
+            if (!context.side)
+            {
+                context.player->update(delta, context);
+            }
+        }*/
+
+        for( Game_Object* snowball : context.snowball_lst)
+        {
+            snowball->update(delta, context);
+        }
+
+        for(Game_Object* modifier : context.mod_lst)
+        {
+            modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
+        }
+
+        //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
+
+        snow_text.update(context);
+        progress_bar.update(context.player, context.goal);
     }
 
-    for(Game_Object* modifier : context.mod_lst)
-    {
-        modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
-    }
-
-    //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
-
-    }
-
-    snow_text.update(context);
-    progress_bar.update(context.player, context.goal);
 }
 
 
