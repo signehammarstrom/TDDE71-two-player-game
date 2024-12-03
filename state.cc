@@ -6,11 +6,16 @@
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <stdlib.h>
+#include <random>
+#include <time.h>
+
+using namespace std;
 
 Game_State::Game_State(sf::RenderWindow& window)
 : left_slope{new Slope(true)}, right_slope{new Slope(false)}, window {window}
 {
-    
+    create_track();
 }
 
 Game_State::~Game_State()
@@ -19,7 +24,7 @@ Game_State::~Game_State()
     delete right_slope;
 }
 
-void Game_State::handle(sf::Event event, std::stack<State*>& stack)
+void Game_State::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
         {
@@ -61,22 +66,61 @@ void Game_State::render(sf::RenderWindow& window)
     
 }
 
+void Game_State::create_track()
+{
+    srand(time(NULL));
+    int track_length {5000};
+    int modifier_xpos{};
+    int modifier_ypos{500};
+    vector<string> StatObjs {"Hole", "Tire"};
+    vector<string> MovObjs {"Chalmerist", "Kir", "Can"};
+    
+    ofstream mod_info ("track.txt");
+    if (!mod_info.is_open())
+    {
+        throw runtime_error{"trackinfo_file couldn't be opened!"};
+    }
+    else
+    {
+        for(modifier_ypos = 500; modifier_ypos < (track_length-50); modifier_ypos = modifier_ypos + 150)
+        {
+            modifier_xpos =  30 + rand()%540;
+            modifier_ypos = modifier_ypos + rand()%50;
+            mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+        }
+
+        for(modifier_ypos = 1000; modifier_ypos < (track_length-100); modifier_ypos = modifier_ypos + 450)
+        {
+            modifier_xpos =  30 + rand()%540;
+            modifier_ypos = modifier_ypos + rand()%100;
+            mod_info << MovObjs.at(rand()%MovObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+        }
+    }
+    mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
+    mod_info << "Snowball" << " 284" << ' ' << 500 << '\n';
+
+    //skapa random genererade däkc och hål. 
+    //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
+    //x-koordinat slumpas utifrån context.left_bound() och right_bound()
+    //spara i txt-fil.
+}
+
 
 Menu_State::Menu_State(sf::RenderWindow& window)
 : window {window}
 {
     if (!font.loadFromFile("font.ttf"))
     {
-        throw std::runtime_error("Kan inte öppna: font.ttf");
+        throw runtime_error("Kan inte öppna: font.ttf");
     }
     /**/
     else if (!texture.loadFromFile("y6_logo.png"))
     {
-        throw std::runtime_error("Kan inte öppna: y6_logo.png");
+        throw runtime_error("Kan inte öppna: y6_logo.png");
     }
     if (!texture_background.loadFromFile("background.png"))
     {
-        throw std::runtime_error("Kan inte öppna: background.png");
+        throw runtime_error("Kan inte öppna: background.png");
     }
 
     // BAKGRUND
@@ -170,7 +214,7 @@ void Menu_State::move_down()
     }
 }
 
-void Menu_State::handle(sf::Event event, std::stack<State*>& stack )
+void Menu_State::handle(sf::Event event, stack<State*>& stack )
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -232,7 +276,7 @@ void Menu_State::render(sf::RenderWindow& window)
 Highscore::Highscore(sf::RenderWindow& window)
     :  Menu_State{window}
 {
-    std::vector<std::string> highscores {read_highscore()};
+    vector<string> highscores {read_highscore()};
 
     for (int i = 0; i < highscores.size() ; ++i)
     {
@@ -255,7 +299,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
 }
 
-void Highscore::handle(sf::Event event, std::stack<State*>& stack)
+void Highscore::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -283,18 +327,18 @@ void Highscore::render(sf::RenderWindow& window)
     window.draw(instruction);
 }
 
-std::vector<std::string> Highscore::read_highscore()
+vector<string> Highscore::read_highscore()
 {
-    std::ifstream file("highscore.txt");
-    std::vector<std::string> scores;
+    ifstream file("highscore.txt");
+    vector<string> scores;
 
     if (!file)
     {
-        throw std::runtime_error("Kan inte öppna: highscore.txt");
+        throw runtime_error("Kan inte öppna: highscore.txt");
     }
 
-    std::string score;
-    while (std::getline(file, score))
+    string score;
+    while (getline(file, score))
     {
         scores.push_back(score);
     }
@@ -316,7 +360,7 @@ Controls::Controls(sf::RenderWindow& window)
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
 }
 
-void Controls::handle(sf::Event event, std::stack<State*>& stack)
+void Controls::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
     {

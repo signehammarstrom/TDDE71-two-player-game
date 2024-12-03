@@ -35,6 +35,7 @@ public:
     Slope* left_slope{};
     Slope* right_slope{};
 private:
+    void create_track();
     sf::RenderWindow& window;
 };
 

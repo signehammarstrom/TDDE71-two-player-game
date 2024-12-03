@@ -4,9 +4,6 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <stdlib.h>
-#include <random>
-#include <time.h>
 
 
 #include "slope.h"
@@ -27,8 +24,6 @@ Slope::Slope(bool side)
     context.side = side;
     context.snow_count = 0;
     context.game_finished = false;
-    create_track( context);
-    
 
     if (side)
     {
@@ -237,37 +232,6 @@ void Slope::render(sf::RenderWindow& window)
     snow_text.render(window);
     progress_bar.render(window);
 
-}
-
-void Slope::create_track(Context& context)
-{
-    srand(time(NULL));
-    int track_length {5000};
-    int modifier_xpos{};
-    int modifier_ypos{500};
-    vector<string> StatObjs {"Hole", "Tire"};
-    
-    ofstream mod_info ("track.txt");
-    if (!mod_info.is_open())
-    {
-        throw runtime_error{"trackinfo_file couldn't be opened!"};
-    }
-    else
-    {
-        for(modifier_ypos = 500; modifier_ypos < track_length; modifier_ypos = modifier_ypos + 150)
-        {
-            modifier_xpos = rand()%580;
-            modifier_ypos = modifier_ypos + rand()%50;
-            mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
-        }
-    }
-    mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
-    mod_info << "Snowball" << " 284" << ' ' << 500 << '\n';
-
-    //skapa random genererade däkc och hål. 
-    //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
-    //x-koordinat slumpas utifrån context.left_bound() och right_bound()
-    //spara i txt-fil.
 }
 
 void Slope::read_track(Context& context)
