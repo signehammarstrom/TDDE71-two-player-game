@@ -210,8 +210,8 @@ void Slope::update(sf::Time delta)
 
         //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
-        // snow_text.update(context);
-        // progress_bar.update(context.player, context.goal);
+        snow_text.update(context);
+        progress_bar.update(context.player, context.goal);
     }
 
 }
@@ -242,31 +242,31 @@ void Slope::render(sf::RenderWindow& window)
 void Slope::create_track(Context& context)
 {
     srand(time(NULL));
-    int track_length {3000};
+    int track_length {5000};
     int modifier_xpos{};
-    int modifier_ypos{200};
+    int modifier_ypos{500};
+    vector<string> StatObjs {"Hole", "Tire"};
     
     ofstream mod_info ("track.txt");
-
     if (!mod_info.is_open())
     {
         throw runtime_error{"trackinfo_file couldn't be opened!"};
     }
     else
     {
-        for(int i = 1 ; i < track_length/250; i++)
+        for(modifier_ypos = 500; modifier_ypos < track_length; modifier_ypos = modifier_ypos + 150)
         {
             modifier_xpos = rand()%580;
-            modifier_ypos = modifier_ypos + 250;
-            mod_info << "Tire "<< ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+            modifier_ypos = modifier_ypos + rand()%50;
+            mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
         }
     }
-    
     mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
+    mod_info << "Snowball" << " 284" << ' ' << 500 << '\n';
 
     //skapa random genererade däkc och hål. 
     //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
-    //x-koordinat slumpas utifrån context.left_bound() oc hright_bound()
+    //x-koordinat slumpas utifrån context.left_bound() och right_bound()
     //spara i txt-fil.
 }
 
