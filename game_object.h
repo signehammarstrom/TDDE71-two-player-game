@@ -15,7 +15,7 @@ class Game_Object
 public:
     // Konstruktor & särskilda medlemsfuntkioner
     /*_____________________________________________________*/
-    Game_Object(double xpos, double ypos, float scale, std::string filename);
+    Game_Object(double xpos, double ypos, float radius, std::string filename);
     //Game_Object(Game_Object const& other) = delete;
     //Game_Object& operator=(Game_Object const& other) = delete;
     //Game_Object(Game_Object && other) = delete;

@@ -24,7 +24,7 @@ bool Player::handle(sf::Event event, Context& context)
     sf::Vector2f curr_position {sprite.getPosition()};
     if (context.snow_count > 0)
     {
-        context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y));
+        context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, 80));
         context.snow_count = context.snow_count - 1;
     }
 }

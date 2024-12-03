@@ -5,8 +5,8 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Game_Object::Game_Object(double x, double y, float scale, std::string filename)
-    : xpos {x}, ypos {y}, scale{scale}, texture{}, sprite{}
+Game_Object::Game_Object(double x, double y, float radius, std::string filename)
+    : xpos {x}, ypos {y}, scale{}, texture{}, sprite{}
 {
 
     texture.loadFromFile(filename);
@@ -19,6 +19,7 @@ Game_Object::Game_Object(double x, double y, float scale, std::string filename)
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     sprite.setPosition(xpos, ypos);
+    scale = radius/texture_size.x/2;
     sprite.setScale(scale, scale);
     
 }

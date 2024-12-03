@@ -39,7 +39,7 @@ Slope::Slope(bool side)
    
     read_track(context);
     sf::Vector2u window_size {1136, 640};
-    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6};
+    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6, 150};
     context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
@@ -255,32 +255,32 @@ void Slope::read_track(Context& context)
             modifierinfo >> modifier_name >> modifier_xpos>> modifier_ypos;
             if (modifier_name == "Tire")
             {
-                context.mod_lst.push_back(new Tire(modifier_xpos + context.left_bound, modifier_ypos, 0.1f ));
+                context.mod_lst.push_back(new Tire(modifier_xpos + context.left_bound, modifier_ypos, 130));
             }
             else if (modifier_name == "Goal")
             {
-                context.mod_lst.push_back(new Goal(modifier_xpos + context.left_bound, modifier_ypos, 1));
+                context.mod_lst.push_back(new Goal(modifier_xpos + context.left_bound, modifier_ypos, 2*(context.right_bound-context.left_bound)));
                 context.goal = context.mod_lst.back();
             }
             else if (modifier_name == "Hole")
             {
-                context.mod_lst.push_back(new Hole(modifier_xpos + context.left_bound, modifier_ypos, 0.1f));
+                context.mod_lst.push_back(new Hole(modifier_xpos + context.left_bound, modifier_ypos, 130));
             }
             else if (modifier_name == "Chalmerist")
             {
-                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, 0.2, 100, 0.5));
+                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, 150, 100, 0.5));
             }
             else if (modifier_name == "Kir")
             {
-                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, 0.1, 100, 2));
+                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, 100, 100, 2));
             }
             else if (modifier_name == "Can")
             {
-                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, 0.15, 100, 0.75 ));
+                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, 100, 100, 0.75 ));
             }
             else if (modifier_name == "Snowball")
             {
-                context.mod_lst.push_back(new Snowball_Mod(modifier_xpos+ context.left_bound, modifier_ypos, 0.2, 20));
+                context.mod_lst.push_back(new Snowball_Mod(modifier_xpos+ context.left_bound, modifier_ypos, 150, 20));
             }
        }
        trackinfo_file.close();

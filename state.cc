@@ -72,6 +72,7 @@ void Game_State::create_track()
     int track_length {5000};
     int modifier_xpos{};
     int modifier_ypos{500};
+    
     vector<string> StatObjs {"Hole", "Tire"};
     vector<string> MovObjs {"Chalmerist", "Kir", "Can"};
     
@@ -82,13 +83,24 @@ void Game_State::create_track()
     }
     else
     {
-        for(modifier_ypos = 500; modifier_ypos < (track_length-50); modifier_ypos = modifier_ypos + 150)
+        int x{0};
+        for(modifier_ypos = 500; modifier_ypos < (track_length-400); modifier_ypos = modifier_ypos + 100)
         {
             modifier_xpos =  30 + rand()%540;
             modifier_ypos = modifier_ypos + rand()%50;
             mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+            if (x%4 == 0)
+                {
+                    int modifier_xpos2{0};
+                    modifier_xpos2 = modifier_xpos + 100 + rand()%540;
+                    if (modifier_xpos2 > 540)
+                        {
+                            modifier_xpos2 - 580;
+                        }
+                    mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos2 << ' ' << modifier_ypos << '\n';
+                }
+            x = x + 1;
         }
-
         for(modifier_ypos = 1000; modifier_ypos < (track_length-100); modifier_ypos = modifier_ypos + 450)
         {
             modifier_xpos =  30 + rand()%540;
