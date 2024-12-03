@@ -78,9 +78,17 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
     {
-        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > 0.5 )
+        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > sprite.getGlobalBounds().height/100 )
         {
-            sf::Vector2f temp {old_position.x, sprite.getPosition().y};
+            sf::Vector2f temp {};
+            if (old_position.x > sprite.getPosition().x)
+            {
+                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/20000, sprite.getPosition().y};
+            }
+            else if (old_position.x < sprite.getPosition().x)
+            {
+                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/20000, sprite.getPosition().y};
+            }
             sprite.setPosition(temp);
         }
 
