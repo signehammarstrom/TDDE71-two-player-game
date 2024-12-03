@@ -78,21 +78,47 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
     {
-        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > sprite.getGlobalBounds().height/100 )
+        sf::FloatRect bounds = sprite.getGlobalBounds();
+        sf::FloatRect other_bounds = other->bounds();
+
+        float overlap_X = std::min(bounds.left + bounds.width, other_bounds.left + other_bounds.width) - std::max(bounds.left, other_bounds.left);
+        float overlap_Y = std::min(bounds.top + bounds.height, other_bounds.top + other_bounds.height) - std::max(bounds.top, other_bounds.top);
+        
+        if (overlap_X < overlap_Y)
+        {
+            sf::Vector2f temp {};
+            temp = {old_position.x, sprite.getPosition().y};
+            if (old_position.x > sprite.getPosition().x)
+            {
+                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+            }
+            else if (old_position.x < sprite.getPosition().x)
+            {
+                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+            }
+            sprite.setPosition(temp);
+        }
+    }
+        /*
+        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > sprite.getGlobalBounds().height/50 )
         {
             sf::Vector2f temp {};
             if (old_position.x > sprite.getPosition().x)
             {
-                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/20000, sprite.getPosition().y};
+                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
             }
             else if (old_position.x < sprite.getPosition().x)
             {
-                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/20000, sprite.getPosition().y};
+                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+            }
+            else if (old_position.x == sprite.getPosition().x)
+            {
+                temp = {old_position.x, sprite.getPosition().y};
             }
             sprite.setPosition(temp);
-        }
+        }*/
 
-    }
+
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
     if (temp_mod)
     {
@@ -101,6 +127,7 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
     }
     stat_obst = nullptr;
     temp_mod = nullptr;
+
 
 }
 
