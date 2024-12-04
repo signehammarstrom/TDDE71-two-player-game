@@ -41,10 +41,12 @@ void Player::update(sf::Time delta, Context& context)
          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
         {
             sprite.move({-distance, 0});
+            sprite.setScale(scale, scale);
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         {
             sprite.move({distance, 0});
+            sprite.setScale(-scale, scale);
         }
     }
     else
@@ -52,10 +54,12 @@ void Player::update(sf::Time delta, Context& context)
          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         {
             sprite.move({-distance, 0});
+            sprite.setScale(scale, scale);
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {
             sprite.move({distance, 0});
+            sprite.setScale(-scale, scale);
         }
     }
 
@@ -95,25 +99,6 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
             sprite.setPosition(temp);
         }
     }
-        /*
-        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > sprite.getGlobalBounds().height/50 )
-        {
-            sf::Vector2f temp {};
-            if (old_position.x > sprite.getPosition().x)
-            {
-                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
-            }
-            else if (old_position.x < sprite.getPosition().x)
-            {
-                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
-            }
-            else if (old_position.x == sprite.getPosition().x)
-            {
-                temp = {old_position.x, sprite.getPosition().y};
-            }
-            sprite.setPosition(temp);
-        }*/
-
 
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
     if (temp_mod)

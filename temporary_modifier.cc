@@ -36,7 +36,6 @@ void Temporary_Modifier::remove_if_inactual(Context& context)
 {
    if(time_passed.asSeconds() >= 3.f)
    {
-      
       context.y_speed = context.base_speed;
       remove();
    }
@@ -50,19 +49,21 @@ void Temporary_Modifier::active(sf::Time time)
 void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& context)
 {
    Player* player = dynamic_cast<Player*>(other);
-    if (player)
-    {
+   if (player)
+   {
       context.y_speed = context.y_speed * get_speedmodifier();
       context.active_temp_mods.push_back(this);
       sprite.setScale(0, 0);
-      player = nullptr;
-    }
-    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
-    if (snowball)
-    {
+      
+   }
+   Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+   if (snowball)
+   {
       remove();
-      snowball = nullptr;
-    }
+      
+   }
+   player = nullptr;
+   snowball = nullptr;
 
 }
 
