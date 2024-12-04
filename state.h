@@ -12,7 +12,7 @@
 class State
 {
 public:
-    
+    State(sf::RenderWindow& window);
     virtual ~State() = default;
 
     virtual void handle(sf::Event event, std::stack<State*>& stack) = 0;
@@ -21,6 +21,11 @@ public:
 
 protected:
     std::vector<std::string> read_highscore();
+    sf::RenderWindow& window;
+    sf::Vector2u window_size;
+    sf::Font font;
+    sf::Sprite menu_background;
+    sf::Texture menu_background_texture;
 
 }; 
 
@@ -37,13 +42,10 @@ public:
 
     Slope* left_slope{};
     Slope* right_slope{};
-    
+
 private:
     void sort_highscores(std::vector<std::string>);
 
-    sf::RenderWindow& window;
-    sf::Vector2u window_size;
-    sf::Font font;
     sf::Text p1_text;
     sf::Text p2_text;
 
@@ -69,13 +71,6 @@ public:
 
     void move_up();
     void move_down();
-
-protected:
-    sf::Texture texture_background;
-    sf::Sprite background;
-    sf::RenderWindow& window;
-    sf::Font font;
-    sf::Vector2u window_size;
     
 private:
     int selected_menu;
@@ -92,7 +87,7 @@ private:
     float elapsed_time { 0.0f };
 };
 
-class Highscore : public Menu_State
+class Highscore : public State
 {
 public:
     Highscore(sf::RenderWindow& window);
@@ -103,8 +98,6 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    
-    
     sf::Text score[6];
     sf::Text instruction;
 };
@@ -112,7 +105,7 @@ private:
 
 // CONTROLS
 /*___________________________________________________________________________________________________________*/
-class Controls : public Menu_State
+class Controls : public State
 {
 public:
     Controls(sf::RenderWindow& window);

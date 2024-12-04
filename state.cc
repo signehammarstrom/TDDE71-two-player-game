@@ -10,6 +10,23 @@
 
 // STATE
 /*___________________________________________________________________________________________________________*/
+
+State::State(sf::RenderWindow& window)
+: window {window}
+{
+    if (!menu_background_texture.loadFromFile("background.png"))
+    {
+        throw std::runtime_error("Kan inte öppna: background.png");
+    }
+    if (!font.loadFromFile("font.ttf"))
+    {
+        throw std::runtime_error("Kan inte öppna: font.ttf");
+    }
+
+    menu_background.setTexture(menu_background_texture);
+    window_size = window.getSize();
+}
+
 std::vector<std::string> State::read_highscore()
 {
     std::ifstream file("highscore.txt");
@@ -35,16 +52,8 @@ std::vector<std::string> State::read_highscore()
 // GAME_STATE
 /*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
-: left_slope{new Slope(true)}, right_slope{new Slope(false)}, window {window}, highscores{read_highscore()}
+: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}
 {
-    if (!font.loadFromFile("font.ttf"))
-    {
-        throw std::runtime_error("Kan inte öppna: font.ttf");
-    }
-
-    // BAKGRUND
-    window_size = window.getSize();
-
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
@@ -94,13 +103,6 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
         {
             left_slope->handle(event);
         }
-           /*
-        if (left_slope->context.game_finished && right_slope->context.game_finished 
-        && event.key.code == sf::Keyboard::Enter)
-        {
-            delete stack.top();
-            stack.pop();
-        }*/ 
     }
     
     if (left_slope->context.game_finished && right_slope->context.game_finished)
@@ -112,7 +114,6 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
                 if (event.text.unicode == '\r' || event.text.unicode == '\n') 
                 {
                     sort_highscores(highscores);
-                    std::cout << "Name entered: " << name << std::endl;
                     //delete stack.top();
                     stack.pop();
                 }
@@ -137,7 +138,6 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
             
         }
     }
-
 }
 
 void Game_State::update(sf::Time delta)
@@ -147,10 +147,8 @@ void Game_State::update(sf::Time delta)
     {
         left_slope->update(delta);
         right_slope->update(delta);
-        //sf::Time left_time =  left_slope->context.goal_time;
-        //sf::Time right_time = right_slope->context.goal_time;
     }
-    else
+    else if (!new_highscore)
     {
         std::istringstream iss {highscores.back()};
         std::string throwaway{};
@@ -161,7 +159,7 @@ void Game_State::update(sf::Time delta)
             new_highscore = true;
             new_highscore_time = left_slope->context.goal_time.asSeconds();
         }
-        else if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
+        else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
         {
             new_highscore = true;
             new_highscore_time = right_slope->context.goal_time.asSeconds();
@@ -179,13 +177,7 @@ void Game_State::render(sf::RenderWindow& window)
 
     if (left_slope->context.game_finished && right_slope->context.game_finished)
     {   
-        sf::Sprite background;
-        sf::Texture texture_background;
-
-        texture_background.loadFromFile("background.png");
-        background.setTexture(texture_background);
-
-        window.draw(background);
+        window.draw(menu_background);
 
         if ( left_slope->context.goal_time < right_slope->context.goal_time )
         {
@@ -207,17 +199,22 @@ void Game_State::sort_highscores(std::vector<std::string>)
 {
     double time {};
     std::string throwaway;
-    for (unsigned int i=0; i < highscores.size(); i++)
+    bool inserted = false; // Flag to track if a high score has been inserted
+
+    for (unsigned int i = 0; i < highscores.size(); i++)
     {
         std::istringstream iss {highscores.at(i)};
-        iss >> throwaway >> time;
-        if (time > new_highscore_time)
+        iss >> throwaway >> time; // Extract name and time
+
+        if (time > new_highscore_time && !inserted)
         {
-            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));//+ std::to_string(new_highscore_time));
-        }
-        if (highscores.size() > 6)
-        {
-            highscores.pop_back();
+            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            inserted = true;
+            if (highscores.size() > 6)
+            {
+                highscores.pop_back();
+            }
+            break;
         }
     }
 
@@ -228,9 +225,14 @@ void Game_State::sort_highscores(std::vector<std::string>)
         throw std::runtime_error("Kan inte öppna: font.ttf");
     }
 
-    for (std::string hej : highscores) 
+    for (unsigned int i = 0; i < highscores.size(); ++i) 
     {
-        outFile << hej << '\n'; 
+        outFile << highscores[i];
+        
+        if (i < highscores.size() - 1) 
+        {
+            outFile << '\n';
+        }
     }
     outFile.close();
 
@@ -240,33 +242,12 @@ void Game_State::sort_highscores(std::vector<std::string>)
 // MENU_STATE
 /*___________________________________________________________________________________________________________*/
 Menu_State::Menu_State(sf::RenderWindow& window)
-: window {window}
+: State{window}
 {
-    if (!font.loadFromFile("font.ttf"))
-    {
-        throw std::runtime_error("Kan inte öppna: font.ttf");
-    }
-    /**/
-    else if (!texture.loadFromFile("y6_logo.png"))
+    if (!texture.loadFromFile("y6_logo.png"))
     {
         throw std::runtime_error("Kan inte öppna: y6_logo.png");
     }
-    if (!texture_background.loadFromFile("background.png"))
-    {
-        throw std::runtime_error("Kan inte öppna: background.png");
-    }
-    /*if (!menu_texture.loadFromFile("background.png"))
-    {
-        throw std::runtime_error("Kan inte öppna: background.png");
-    }*/
-
-
-
-    // BAKGRUND
-    window_size = window.getSize();
-
-    texture_background.loadFromFile("background.png");
-    background.setTexture(texture_background);
 
     // Y6 logo
     sprite.setTexture(texture);
@@ -400,7 +381,7 @@ void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
 
 void Menu_State::render(sf::RenderWindow& window)
 {
-    window.draw(background);
+    window.draw(menu_background);
     for (int i = 0; i < Max_Menu ; ++i)
     {
         //window.draw(menu_background[0]);
@@ -418,8 +399,9 @@ void Menu_State::render(sf::RenderWindow& window)
 // HIGHSCORE
 /*___________________________________________________________________________________________________________*/
 Highscore::Highscore(sf::RenderWindow& window)
-    :  Menu_State{window}
+    : State{window}
 {
+
     std::vector<std::string> highscores {read_highscore()};
 
     for (int i = 0; i < highscores.size() ; ++i)
@@ -433,11 +415,9 @@ Highscore::Highscore(sf::RenderWindow& window)
     }
 
     instruction.setFont(font);
-    instruction.setString("Tryck 'esc' för att gå tillbaka");
+    instruction.setString("Press 'esc' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
-
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
-
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
 }
@@ -461,7 +441,7 @@ void Highscore::update(sf::Time delta)
 
 void Highscore::render(sf::RenderWindow& window)
 {
-    window.draw(background);
+    window.draw(menu_background);
 
     for (int i = 0; i < 6 ; ++i)
     {
@@ -476,10 +456,10 @@ void Highscore::render(sf::RenderWindow& window)
 // CONTROLS
 /*___________________________________________________________________________________________________________*/
 Controls::Controls(sf::RenderWindow& window)
-    :  Menu_State{window}
+    :  State{window}
 {
     instruction.setFont(font);
-    instruction.setString("Tryck 'esc' för att gå tillbaka");
+    instruction.setString("Press 'esc' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
 
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
@@ -507,6 +487,6 @@ void Controls::update(sf::Time delta)
 
 void Controls::render(sf::RenderWindow& window)
 {
-    window.draw(background);
+    window.draw(menu_background);
     window.draw(instruction);
 }
