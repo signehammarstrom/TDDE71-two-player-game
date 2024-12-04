@@ -92,7 +92,7 @@ void Game_State::create_track()
             if (x%4 == 0)
                 {
                     int modifier_xpos2{0};
-                    modifier_xpos2 = modifier_xpos + 100 + rand()%540;
+                    modifier_xpos2 = 30 + rand()%540;
                     if (modifier_xpos2 > 540)
                         {
                             modifier_xpos2 - 580;

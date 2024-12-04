@@ -37,6 +37,8 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
    
+    context.side_tire_size = 50;
+    
     read_track(context);
     sf::Vector2u window_size {1136, 640};
     context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6, 150};
@@ -197,6 +199,7 @@ void Slope::update(sf::Time delta)
 
         snow_text.update(context);
         progress_bar.update(context.player, context.goal);
+        background.update(delta, context);
     }
 
 }

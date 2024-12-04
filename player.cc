@@ -134,12 +134,11 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
 bool Player::out_of_bounds(Context const& context)
 {
     sf::FloatRect bounds {sprite.getGlobalBounds()};
-
-    if (bounds.left < context.left_bound)
+    if (bounds.left - context.side_tire_size < context.left_bound)
     {
         return true;
     }
-    else if (bounds.left + bounds.width > context.right_bound)
+    else if (bounds.left + bounds.width + context.side_tire_size > context.right_bound)
     {
         return true;
     }
