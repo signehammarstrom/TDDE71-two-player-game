@@ -12,12 +12,20 @@
 class State
 {
 public:
-    
+    State(sf::RenderWindow& window);
     virtual ~State() = default;
 
     virtual void handle(sf::Event event, std::stack<State*>& stack) = 0;
     virtual void update(sf::Time delta) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
+
+protected:
+    std::vector<std::string> read_highscore();
+    sf::RenderWindow& window;
+    sf::Vector2u window_size;
+    sf::Font font;
+    sf::Sprite menu_background;
+    sf::Texture menu_background_texture;
 
 }; 
 
@@ -34,11 +42,22 @@ public:
 
     Slope* left_slope{};
     Slope* right_slope{};
+
 private:
     void create_track();
-    sf::RenderWindow& window;
-};
+    void sort_highscores(std::vector<std::string>);
 
+    sf::Text p1_text;
+    sf::Text p2_text;
+
+    sf::Text prompt;
+    sf::Text typed_name;
+    std::string name;
+
+    bool new_highscore;
+    double new_highscore_time;
+    std::vector<std::string> highscores;
+};
 
 class Menu_State : public State
 {
@@ -53,17 +72,12 @@ public:
 
     void move_up();
     void move_down();
-
-protected:
-    sf::Texture texture_background;
-    sf::Sprite background;
-    sf::RenderWindow& window;
-    sf::Font font;
-    sf::Vector2u window_size;
     
 private:
     int selected_menu;
     sf::Text menu[Max_Menu];
+    //sf::Sprite menu_background[Max_Menu];
+    //sf::Texture menu_texture;
 
     sf::Text text;
     sf::Text header;
@@ -72,11 +86,9 @@ private:
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
-    
-
 };
 
-class Highscore : public Menu_State
+class Highscore : public State
 {
 public:
     Highscore(sf::RenderWindow& window);
@@ -87,12 +99,14 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    std::vector<std::string> read_highscore();
     sf::Text score[6];
     sf::Text instruction;
 };
 
-class Controls : public Menu_State
+
+// CONTROLS
+/*___________________________________________________________________________________________________________*/
+class Controls : public State
 {
 public:
     Controls(sf::RenderWindow& window);

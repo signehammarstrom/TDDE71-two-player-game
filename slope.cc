@@ -68,7 +68,7 @@ void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
     {
         if (del)
         {
-        delete object;
+            delete object;
         }
         object = nullptr;
     }
@@ -165,25 +165,28 @@ void Slope::update(sf::Time delta)
         }
 
         //Ta bort inaktuella temporary modifiers
+
         if(context.active_temp_mods.size() != 0)
         {
-            for(unsigned int i=0; i<context.active_temp_mods.size(); i++)
+            for(Game_Object* TempMod : context.active_temp_mods)
             {
-                context.active_temp_mods.at(i)->update_time(delta);
-                context.active_temp_mods.at(i)->remove_if_inactual(context);
-                if(context.active_temp_mods.at(i)->is_removed())
+                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(TempMod);
+                if (tempmodtest)
                 {
-                    context.player->stop_effect(context.active_temp_mods.at(i));
-                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
-                    //delete context.active_temp_mods.back();
+                    tempmodtest -> remove_if_inactual(context);
+                    tempmodtest -> update_time(delta);
+                }
+                if(TempMod -> is_removed())
+                {
+                    context.player->stop_effect(TempMod);
+                    std::swap(TempMod, context.active_temp_mods.back());
                     context.active_temp_mods.pop_back();
                 }
+                tempmodtest = nullptr;
             }
         }
 
-
         context.player->update(delta, context);
-
 
         for( Game_Object* snowball : context.snowball_lst)
         {
@@ -194,8 +197,6 @@ void Slope::update(sf::Time delta)
         {
             modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
         }
-
-        //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
         snow_text.update(context);
         progress_bar.update(context.player, context.goal);
@@ -208,14 +209,12 @@ void Slope::update(sf::Time delta)
 void Slope::render(sf::RenderWindow& window)
 {
     background.render(window);
-    //loopa igenom alla object och rita upp dem!!
     context.player->render(window);
 
     for( Game_Object* snowball : context.snowball_lst)
     {
         snowball->render(window);
     }
-
 
     for(Game_Object* modifier : context.mod_lst)
     {
@@ -229,7 +228,6 @@ void Slope::render(sf::RenderWindow& window)
 
 void Slope::read_track(Context& context)
 {
-    //behöver ändras, just nu hårdkodas alla variabler utom x och y koordinater in till objecten
     string line {};
     ifstream trackinfo_file {"track.txt"};
     if (!trackinfo_file.is_open())
