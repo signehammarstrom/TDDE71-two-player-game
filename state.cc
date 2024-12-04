@@ -74,7 +74,7 @@ void Game_State::create_track()
     int modifier_ypos{500};
     
     vector<string> StatObjs {"Hole", "Tire"};
-    vector<string> MovObjs {"Chalmerist", "Kir", "Can"};
+    vector<string> MovObjs {"Chalmerist", "Kir", "Can", "Snowball"};
     
     ofstream mod_info ("track.txt");
     if (!mod_info.is_open())
@@ -84,7 +84,7 @@ void Game_State::create_track()
     else
     {
         int x{0};
-        for(modifier_ypos = 500; modifier_ypos < (track_length-400); modifier_ypos = modifier_ypos + 100)
+        for(modifier_ypos = 600; modifier_ypos < (track_length-400); modifier_ypos = modifier_ypos + 100)
         {
             modifier_xpos =  30 + rand()%540;
             modifier_ypos = modifier_ypos + rand()%50;
@@ -105,7 +105,22 @@ void Game_State::create_track()
         {
             modifier_xpos =  30 + rand()%540;
             modifier_ypos = modifier_ypos + rand()%100;
-            mod_info << MovObjs.at(rand()%MovObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+
+            int randValue{};
+            randValue = rand() % 100 + 1;
+
+            string selectedObject{};
+            if (randValue <= 40) {
+                selectedObject = "Can";  // 30% chance for Can
+            } else if (randValue <= 40) {
+                selectedObject = "Kir";  // 30% chance for Kir
+            } else if (randValue <= 90) {
+                selectedObject = "Chalmerist";  // 20% chance for Kir
+            } else {
+                selectedObject = "Snowball";  // 20% chance for Snowball
+            }
+
+            mod_info << selectedObject << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
         }
     }
     mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
