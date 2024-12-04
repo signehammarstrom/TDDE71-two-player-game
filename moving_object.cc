@@ -19,6 +19,7 @@ Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspee
 void Moving_Object::update(sf::Time delta, Context& context) 
 {
    float dx{2.f};
+   float rotationSpeed{120.0f};
    float distance_y {delta.asSeconds() * context.y_speed};
    sf::Vector2f old_position {sprite.getPosition()};
 
@@ -34,6 +35,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
       {
          sprite.move(distance_x, -distance_y);
       }
+      sprite.rotate(rotationSpeed * delta.asSeconds());
    }
 
    if(!right_direction)
@@ -47,6 +49,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
       {
          sprite.move(-distance_x, -distance_y);
       }
+      sprite.rotate(-rotationSpeed * delta.asSeconds());
    }
    return;
 
