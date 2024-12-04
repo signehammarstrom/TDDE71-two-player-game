@@ -18,16 +18,9 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
     sf::Vector2f old_position {sprite.getPosition()};
     
     sprite.move({0, distance});
-
-
 }
 
 void Snowball_Projectile::perform_collision(Game_Object* const& other, Context& context)
 {
     remove();
-}
-
-sf::FloatRect Snowball_Projectile::bounds() const
-{
-    return sprite.getGlobalBounds();
 }

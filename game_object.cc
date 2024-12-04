@@ -1,14 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
 #include "game_object.h"
 
-// Konstruktor & särskilda medlemsfuntkioner
-/*_____________________________________________________*/
-Game_Object::Game_Object(double x, double y, float radius, std::string filename)
-    : scale{}, texture{}, sprite{}
-{
 
+Game_Object::Game_Object(double x, double y, float radius, std::string filename)
+    : scale{}, texture{}, sprite{}, removed {false}
+{
     texture.loadFromFile(filename);
     if (!texture.loadFromFile(filename))
     {
@@ -23,14 +20,9 @@ Game_Object::Game_Object(double x, double y, float radius, std::string filename)
     sprite.setScale(scale, scale);
 }
 
-// Medlemsfunktioner
-/*_____________________________________________________*/
-
-
 bool Game_Object::collides(Game_Object* const& object) const
 {
     return bounds().intersects(object->bounds());
-    //return false;
 }
 
 void Game_Object::render(sf::RenderWindow& window)
@@ -48,9 +40,13 @@ void Game_Object::remove()
     removed = true;
 }
 
+sf::FloatRect Game_Object::bounds() const
+{
+    return sprite.getGlobalBounds();
+}
+
 float Game_Object::get_position() const
 {}
 
 void Game_Object::stop_effect(Game_Object*& object)
 {}
-// ..

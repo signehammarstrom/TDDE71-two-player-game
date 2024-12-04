@@ -14,8 +14,3 @@ bool Modifier::handle(sf::Event event, Context& context)
 {
     return false;
 }
-
-sf::FloatRect Modifier::bounds() const
-{
-    return sprite.getGlobalBounds();
-}
