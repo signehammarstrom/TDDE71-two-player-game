@@ -226,7 +226,21 @@ void Game_State::sort_highscores(std::vector<std::string>)
     std::ofstream outFile("highscore.txt");//, std::ofstream::trunc);
 
     if (!outFile)
-    
+    {
+        throw std::runtime_error("Kan inte öppna: font.ttf");
+    }
+
+    for (unsigned int i = 0; i < highscores.size(); ++i) 
+    {
+        outFile << highscores[i];
+        
+        if (i < highscores.size() - 1) 
+        {
+            outFile << '\n';
+        }
+    }
+    outFile.close();
+
 }
 
 void Game_State::create_track()
@@ -293,28 +307,6 @@ void Game_State::create_track()
     //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
     //x-koordinat slumpas utifrån context.left_bound() och right_bound()
     //spara i txt-fil.
-}
-
-
-Menu_State::Menu_State(sf::RenderWindow& window)
-: window {window}
-{
-    if (!font.loadFromFile("font.ttf"))
-    {
-        throw runtime_error("Kan inte öppna: font.ttf");
-    }
-
-    for (unsigned int i = 0; i < highscores.size(); ++i) 
-    {
-        outFile << highscores[i];
-        
-        if (i < highscores.size() - 1) 
-        {
-            outFile << '\n';
-        }
-    }
-    outFile.close();
-
 }
 
 
