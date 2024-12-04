@@ -21,6 +21,7 @@ class Background
 {
     public:
         Background(bool side);
+        void update(sf::Time delta, Context& context);
         void render(sf::RenderWindow& window);
 
     private:

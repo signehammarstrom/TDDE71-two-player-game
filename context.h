@@ -38,6 +38,8 @@ struct Context
     int coll_count{};
 
     sf::Time goal_time{};
+
+    double side_tire_size{};
 };
 
 #endif
