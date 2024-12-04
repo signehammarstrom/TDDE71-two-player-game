@@ -34,6 +34,11 @@ bool Game_Object::collides(Game_Object* const& object) const
     //return false;
 }
 
+void Game_Object::render(sf::RenderWindow& window)
+{
+    window.draw(sprite);
+}
+
 bool Game_Object::is_removed() const
 {
     return removed;

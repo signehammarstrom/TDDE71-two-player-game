@@ -52,7 +52,6 @@ public:
 
     bool handle(sf::Event event, Context& context) override;
  //   void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
  //   void remove_if_inactual() override;
 
 private: 
@@ -71,7 +70,6 @@ public:
 
     bool handle(sf::Event event, Context& context) override;
  //   void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
  //   void remove_if_inactual(Contect& context) override;
 
 private: 
@@ -90,7 +88,6 @@ public:
 
     bool handle(sf::Event event, Context& context) override;
 //    void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
 
 private: 
 

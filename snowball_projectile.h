@@ -29,7 +29,6 @@ public:
     /*_____________________________________________________*/
     bool handle(sf::Event event, Context& context) override;
     void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
     sf::FloatRect bounds() const;
     

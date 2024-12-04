@@ -35,7 +35,6 @@ public:
     ~Tire() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 private:
@@ -54,7 +53,6 @@ public:
     ~Hole() = default;
 
     bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 private:
@@ -72,7 +70,6 @@ public:
     ~Goal() = default;
  
     bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 

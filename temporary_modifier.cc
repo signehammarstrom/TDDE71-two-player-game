@@ -90,12 +90,6 @@ bool Chalmerist::handle(sf::Event event, Context& context)
    return false;
 }
 
-
-void Chalmerist::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
-   return;
-}
 /*
 void Chalmerist::update(sf::Time delta, Context& context) 
 {
@@ -119,12 +113,6 @@ Can::Can(double xpos, double ypos, float scale, double xspeed,
 bool Can::handle(sf::Event event, Context& context)
 {
    return false;
-}
-
-void Can::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
-   return;
 }
 
 /*
@@ -151,11 +139,6 @@ Kir::Kir(double xpos, double ypos, float scale, double xspeed,
 bool Kir::handle(sf::Event event, Context& context)
 {
    return false;
-}
-
-void Kir::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
 }
 
 /*

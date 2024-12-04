@@ -22,13 +22,6 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
 
 }
 
-void Snowball_Projectile::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
-
-
-
 void Snowball_Projectile::perform_collision(Game_Object* const& other, Context& context)
 {
     remove();
