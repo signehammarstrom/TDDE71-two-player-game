@@ -12,9 +12,17 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, float scale, std::string filename )
+Player::Player(double x, double y, float scale, std::string filename, std::string filename2 , std::string filename3 )
     : Game_Object(x,y, scale, filename), x_speed{200}
 {
+    if (!texture2.loadFromFile(filename2))
+    {
+        throw std::runtime_error{"Couldn't open filename"};
+    }
+    if (!texture3.loadFromFile(filename3))
+    {
+        throw std::runtime_error{"Couldn't open filename"};
+    }
 }
 
 // Medlemsfunktioner
@@ -98,31 +106,22 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
             }
             sprite.setPosition(temp);
         }
+        
     }
-        /*
-        if(fabs(sprite.getPosition().y + sprite.getGlobalBounds().height/2 - other->get_position()) > sprite.getGlobalBounds().height/50 )
-        {
-            sf::Vector2f temp {};
-            if (old_position.x > sprite.getPosition().x)
-            {
-                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
-            }
-            else if (old_position.x < sprite.getPosition().x)
-            {
-                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
-            }
-            else if (old_position.x == sprite.getPosition().x)
-            {
-                temp = {old_position.x, sprite.getPosition().y};
-            }
-            sprite.setPosition(temp);
-        }*/
-
-
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
     if (temp_mod)
     {
         x_speed = temp_mod->get_speedmodifier()*x_speed;
+        Kir* kir = dynamic_cast<Kir*>(temp_mod);
+        if (kir)
+        {
+            sprite.setTexture(texture3);
+        }
+        else
+        {
+            sprite.setTexture(texture2);
+        }
+        kir = nullptr;
 
     }
     stat_obst = nullptr;
@@ -168,6 +167,7 @@ void Player::stop_effect(Game_Object*& object)
     if (temp_mod)
     {
         x_speed = x_speed/temp_mod->get_speedmodifier();
+        sprite.setTexture(texture);
     }
     temp_mod = nullptr;
 }
