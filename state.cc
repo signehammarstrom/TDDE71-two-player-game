@@ -87,6 +87,7 @@ Game_State::Game_State(sf::RenderWindow& window)
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
 
+    create_track();
 }
 
 Game_State::~Game_State()
@@ -240,7 +241,6 @@ void Game_State::sort_highscores(std::vector<std::string>)
         }
     }
     outFile.close();
-
 }
 
 void Game_State::create_track()
@@ -289,9 +289,9 @@ void Game_State::create_track()
             string selectedObject{};
             if (randValue <= 40) {
                 selectedObject = "Can";  // 30% chance for Can
-            } else if (randValue <= 40) {
+            } else if (randValue <= 65) {
                 selectedObject = "Kir";  // 30% chance for Kir
-            } else if (randValue <= 90) {
+            } else if (randValue <= 85) {
                 selectedObject = "Chalmerist";  // 20% chance for Kir
             } else {
                 selectedObject = "Snowball";  // 20% chance for Snowball
@@ -475,7 +475,7 @@ Highscore::Highscore(sf::RenderWindow& window)
 
     std::vector<std::string> highscores {read_highscore()};
 
-    for (int i = 0; i < highscores.size() ; ++i)
+    for (unsigned int i = 0; i < highscores.size() ; ++i)
     {
         score[i].setFont(font);
         score[i].setFillColor(sf::Color::Black);
@@ -505,7 +505,7 @@ void Highscore::handle(sf::Event event, stack<State*>& stack)
     }
 }
 
-void Highscore::update(sf::Time delta)
+void Highscore::update([[maybe_unused]]sf::Time delta)
 {
 
 }
@@ -551,7 +551,7 @@ void Controls::handle(sf::Event event, stack<State*>& stack)
     }
 }
 
-void Controls::update(sf::Time delta)
+void Controls::update([[maybe_unused]]sf::Time delta)
 {
 
 }

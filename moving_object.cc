@@ -9,12 +9,11 @@
 #include "context.h"
 #include "modifier.h"
 #include "moving_object.h"
-
 //Moving_Object
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename)
+Moving_Object::Moving_Object(double xpos, double ypos, float scale, float xspeed, std::string filename)
    : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, 
       right_direction{}
 {
@@ -58,7 +57,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
    }
 }
 
-double Moving_Object::get_xspeed() const
+float Moving_Object::get_xspeed() const
 {
    return xspeed;
 }
@@ -68,12 +67,12 @@ double Moving_Object::get_xspeed() const
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, 
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, float xspeed, 
    std::string filename)
    : Moving_Object(xpos, ypos, scale, xspeed, filename)
 {}
 
-void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
+void Snowball_Mod::perform_collision([[maybe_unused]]Game_Object* const& other, Context& context)
 {
    context.snow_count += 3;
    remove();

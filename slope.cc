@@ -41,7 +41,7 @@ Slope::Slope(bool side)
     
     read_track(context);
     sf::Vector2u window_size {1136, 640};
-    context.player = new Player{(context.left_bound + context.right_bound)/2, window_size.y/6, 150};
+    context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 150};
     context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
@@ -58,7 +58,6 @@ Slope::Slope(bool side)
 
     std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
     text.setString(snow_text);
-    //  update_time
     sf::FloatRect bounds { text.getGlobalBounds() };
 };
 
@@ -90,20 +89,9 @@ void Slope::handle(sf::Event event)
 {
     if (!context.game_finished)
     {
-        if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
-        {
-            context.player->handle(event, context);
-        }
-
-        for( Game_Object* snowball : context.snowball_lst)
-        {
-            snowball->handle(event, context);
-        }
-
-        for(Game_Object* modifier : context.mod_lst)
-        {
-            modifier -> handle(event, context);
-        }
+        Player* player = dynamic_cast<Player*>(context.player);
+        player->handle(event, context);
+        player = nullptr;
     }
 }
 
@@ -176,9 +164,13 @@ void Slope::update(sf::Time delta)
                     tempmodtest -> remove_if_inactual(context);
                     tempmodtest -> update_time(delta);
                 }
+
                 if(TempMod -> is_removed())
                 {
-                    context.player->stop_effect(TempMod);
+                    Player* player = dynamic_cast<Player*>(context.player);
+                    player->stop_effect(TempMod);
+                    player = nullptr;
+
                     std::swap(TempMod, context.active_temp_mods.back());
                     context.active_temp_mods.pop_back();
                 }

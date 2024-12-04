@@ -9,8 +9,3 @@ Modifier::Modifier(double xpos, double ypos, float scale, std::string filename)
     :Game_Object(xpos, ypos, scale, filename)
 {
 }
-
-bool Modifier::handle(sf::Event event, Context& context) 
-{
-    return false;
-}

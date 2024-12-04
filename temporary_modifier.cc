@@ -15,9 +15,9 @@
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
 
-Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
+Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, float xspeed,
        double speedmodifier, std::string filename)
-    : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}
+    : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}, time_passed{}
 {
    time_passed = sf::Time::Zero;
 }
@@ -64,7 +64,7 @@ void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& c
 //Chalmerist
 /*_______________________________________________________________________________________*/
 
-Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
+Chalmerist::Chalmerist(double xpos, double ypos, float scale, float xspeed,
          double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
@@ -72,7 +72,7 @@ Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
 //Can
 /*_______________________________________________________________________________________*/
 
-Can::Can(double xpos, double ypos, float scale, double xspeed,
+Can::Can(double xpos, double ypos, float scale, float xspeed,
         double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
@@ -80,7 +80,7 @@ Can::Can(double xpos, double ypos, float scale, double xspeed,
 //Kir
 /*_______________________________________________________________________________________*/
 
-Kir::Kir(double xpos, double ypos, float scale, double xspeed,
+Kir::Kir(double xpos, double ypos, float scale, float xspeed,
         double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}

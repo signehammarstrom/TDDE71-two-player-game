@@ -12,7 +12,6 @@ public:
     Snowball_Projectile(double xpos, double ypos, float scale , std::string filename = "snowball.png");
     ~Snowball_Projectile() = default;
 
-    bool handle(sf::Event event, Context& context) override;
     void update(sf::Time delta, Context& context) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
     

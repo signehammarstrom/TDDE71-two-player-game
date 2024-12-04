@@ -28,13 +28,16 @@ Player::Player(double x, double y, float scale, std::string filename, std::strin
 
 // Medlemsfunktioner
 
-bool Player::handle(sf::Event event, Context& context)
+void Player::handle(sf::Event event, Context& context)
 {
-    sf::Vector2f curr_position {sprite.getPosition()};
-    if (context.snow_count > 0)
+    if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
     {
-        context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, 80));
-        context.snow_count = context.snow_count - 1;
+        sf::Vector2f curr_position {sprite.getPosition()};
+        if (context.snow_count > 0)
+        {
+            context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, 80));
+            context.snow_count = context.snow_count - 1;
+        }
     }
 }
 
@@ -77,7 +80,7 @@ void Player::update(sf::Time delta, Context& context)
     }
 }
 
-void Player::perform_collision(Game_Object* const& other, Context& context)
+void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Context& context)
 {
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
@@ -136,11 +139,6 @@ bool Player::out_of_bounds(Context const& context)
         return true;
     }
     return false;
-}
-
-float Player::get_position() const
-{
-    return sprite.getPosition().y + bounds().height/2;
 }
 
 void Player::stop_effect(Game_Object*& object)
