@@ -15,10 +15,11 @@ class Moving_Object : public Modifier
 {
 public:
     Moving_Object(double xpos, double ypos, float scale, double xspeed,
-     std::string filename, bool right_direction = true);
+     std::string filename);
     ~Moving_Object() = default;
     virtual void update(sf::Time delta, Context& context);
     double get_xspeed() const;
+    
 
 protected:
     double xspeed {};
@@ -32,7 +33,7 @@ class Snowball_Mod : public Moving_Object
 {
 public:
    Snowball_Mod(double xpos, double ypos, float scale, double xspeed, 
-    std::string filename = "snowball_pile.png", bool right_direction=true);
+    std::string filename = "snowball_pile.png");
    ~Snowball_Mod() = default;
     void perform_collision(Game_Object* const& other, Context& context) override;
 

@@ -186,7 +186,6 @@ void Slope::update(sf::Time delta)
 
         context.player->update(delta, context);
 
-
         for( Game_Object* snowball : context.snowball_lst)
         {
             snowball->update(delta, context);
@@ -196,8 +195,6 @@ void Slope::update(sf::Time delta)
         {
             modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
         }
-
-        //Kolla active_mod och se hur mycket tid som gått, ska vi ändra hastigheten i context??
 
         snow_text.update(context);
         progress_bar.update(context.player, context.goal);
@@ -209,14 +206,12 @@ void Slope::update(sf::Time delta)
 void Slope::render(sf::RenderWindow& window)
 {
     background.render(window);
-    //loopa igenom alla object och rita upp dem!!
     context.player->render(window);
 
     for( Game_Object* snowball : context.snowball_lst)
     {
         snowball->render(window);
     }
-
 
     for(Game_Object* modifier : context.mod_lst)
     {
@@ -230,7 +225,6 @@ void Slope::render(sf::RenderWindow& window)
 
 void Slope::read_track(Context& context)
 {
-    //behöver ändras, just nu hårdkodas alla variabler utom x och y koordinater in till objecten
     string line {};
     ifstream trackinfo_file {"track.txt"};
     if (!trackinfo_file.is_open())
