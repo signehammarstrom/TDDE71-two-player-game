@@ -19,6 +19,9 @@ public:
     virtual void update(sf::Time delta) = 0;
     virtual void render(sf::RenderWindow& window) = 0;
 
+protected:
+    std::vector<std::string> read_highscore();
+
 }; 
 
 class Game_State : public State
@@ -34,15 +37,24 @@ public:
 
     Slope* left_slope{};
     Slope* right_slope{};
+    
 private:
+    void sort_highscores(std::vector<std::string>);
+
     sf::RenderWindow& window;
     sf::Vector2u window_size;
     sf::Font font;
     sf::Text p1_text;
     sf::Text p2_text;
 
-};
+    sf::Text prompt;
+    sf::Text typed_name;
+    std::string name;
 
+    bool new_highscore;
+    double new_highscore_time;
+    std::vector<std::string> highscores;
+};
 
 class Menu_State : public State
 {
@@ -91,8 +103,8 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    std::vector<std::string> read_highscore();
-    void sort_highscores(std::vector<std::string>) const;
+    
+    
     sf::Text score[6];
     sf::Text instruction;
 };

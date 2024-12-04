@@ -11,9 +11,11 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
                         "EPIC HARDCORE VSR Simulator" };
 
 
+
 int main() {
 
     std::stack<State*> states{};
+
     states.push(new Menu_State{window});
 
     sf::Clock clock;
@@ -42,9 +44,9 @@ int main() {
         window.display();
     }
 
-    while (!states.empty())
+    /*while (!states.empty())
     {
         delete states.top();
         states.pop();
-    }
+    }*/
 }
