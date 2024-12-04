@@ -40,6 +40,7 @@ int main() {
     while (!states.empty())
     {
         delete states.top();
+        states.top() = nullptr;
         states.pop();
     }
 }

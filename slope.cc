@@ -62,7 +62,7 @@ Slope::Slope(bool side)
 
 void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
 {
-    for (Game_Object* object : object_vector)
+    for (Game_Object*& object : object_vector)
     {
         if (del)
         {
@@ -70,6 +70,7 @@ void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
         }
         object = nullptr;
     }
+    object_vector.clear();
 }
 
 Slope::~Slope()
@@ -145,6 +146,7 @@ void Slope::update(sf::Time delta)
             {
                 std::swap(context.mod_lst.at(i), context.mod_lst.back());
                 delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
+                context.mod_lst.back() = nullptr;
                 context.mod_lst.pop_back();
             }
         }
@@ -155,6 +157,7 @@ void Slope::update(sf::Time delta)
             {
                 std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
                 delete context.snowball_lst.back();
+                context.snowball_lst.back() = nullptr;
                 context.snowball_lst.pop_back();
             }
         }
@@ -178,20 +181,7 @@ void Slope::update(sf::Time delta)
 
 
         context.player->update(delta, context);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-        {
-            if (context.side)
-            {
-                context.player->update(delta, context);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        {
-            if (!context.side)
-            {
-                context.player->update(delta, context);
-            }
-        }
+
 
         for( Game_Object* snowball : context.snowball_lst)
         {
