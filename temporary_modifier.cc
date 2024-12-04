@@ -16,7 +16,7 @@
 /*_______________________________________________________________________________________*/
 
 Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
-       double speedmodifier, std::string filename, bool is_active)
+       double speedmodifier, std::string filename)
     : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}
 {
    time_passed = sf::Time::Zero;
@@ -24,7 +24,7 @@ Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, do
 
 double Temporary_Modifier::get_speedmodifier() const
 {
-    return speedmodifier;
+   return speedmodifier;
 }
 
 void Temporary_Modifier::update_time(sf::Time delta)
@@ -41,11 +41,6 @@ void Temporary_Modifier::remove_if_inactual(Context& context)
    }
 }
 
-void Temporary_Modifier::active(sf::Time time)
-{
-   return;
-}
-
 void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& context)
 {
    Player* player = dynamic_cast<Player*>(other);
@@ -60,7 +55,6 @@ void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& c
    if (snowball)
    {
       remove();
-      
    }
    player = nullptr;
    snowball = nullptr;
@@ -71,7 +65,7 @@ void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& c
 /*_______________________________________________________________________________________*/
 
 Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
-         double speedmodifier, std::string filename, bool is_active)
+         double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
@@ -79,7 +73,7 @@ Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
 /*_______________________________________________________________________________________*/
 
 Can::Can(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename, bool is_active)
+        double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
@@ -87,7 +81,7 @@ Can::Can(double xpos, double ypos, float scale, double xspeed,
 /*_______________________________________________________________________________________*/
 
 Kir::Kir(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename, bool is_active)
+        double speedmodifier, std::string filename)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 

@@ -17,20 +17,17 @@ class Temporary_Modifier : public Moving_Object
 {
 public:
     Temporary_Modifier(double xpos, double ypos, float scale, double xspeed,
-         double speedmodifier, std::string filename, bool is_active=false);
+         double speedmodifier, std::string filename);
     ~Temporary_Modifier() = default;
 
     double get_speedmodifier() const; 
-    virtual void active(sf::Time time);
     void update_time(sf::Time delta);
     void remove_if_inactual(Context& context);
     void perform_collision(Game_Object* const& other, Context& context) override;
     
 protected:
     double speedmodifier{};
-    bool is_active{};
     sf::Time time_passed{};
-    
 };
 
 //Chalmerist
@@ -40,7 +37,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float scale, double xspeed,
-         double speedmodifier, std::string filename = "Chalmerist.png", bool is_active=false);
+         double speedmodifier, std::string filename = "Chalmerist.png");
     ~Chalmerist() = default;
 
 private: 
@@ -54,7 +51,7 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename = "eybro.png", bool is_active=false);
+        double speedmodifier, std::string filename = "eybro.png");
     ~Can() = default;
 
 private: 
@@ -68,7 +65,7 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, float scale, double xspeed,
-        double speedmodifier, std::string filename = "kir.png", bool is_active=false);
+        double speedmodifier, std::string filename = "kir.png");
     ~Kir() = default;
 
 private: 

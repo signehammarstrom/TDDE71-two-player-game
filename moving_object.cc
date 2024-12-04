@@ -13,7 +13,8 @@
 
 
 Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
-   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, right_direction{right_direction}
+   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, 
+      right_direction{right_direction}
 {}
 
 void Moving_Object::update(sf::Time delta, Context& context) 
@@ -65,7 +66,8 @@ double Moving_Object::get_xspeed() const
 
 
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, 
+   std::string filename, bool right_direction)
    : Moving_Object(xpos, ypos, scale, xspeed, filename, right_direction)
 {}
 
