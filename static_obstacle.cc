@@ -96,7 +96,6 @@ Goal::Goal(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
-
 void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
