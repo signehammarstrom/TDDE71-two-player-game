@@ -6,7 +6,6 @@
 Game_Object::Game_Object(double x, double y, float radius, std::string filename)
     : scale{}, texture{}, sprite{}, removed {false}
 {
-    texture.loadFromFile(filename);
     if (!texture.loadFromFile(filename))
     {
         throw std::runtime_error{"Couldn't open filename"};
