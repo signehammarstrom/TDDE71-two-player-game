@@ -12,19 +12,21 @@
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename, bool right_direction)
+Moving_Object::Moving_Object(double xpos, double ypos, float scale, double xspeed, std::string filename)
    : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, 
-      right_direction{right_direction}
-{}
+      right_direction{}
+{
+   right_direction = rand()%2;
+}
 
 void Moving_Object::update(sf::Time delta, Context& context) 
 {
    float dx{2.f};
    float rotationSpeed{120.0f};
    float distance_y {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-
    float distance_x{delta.asSeconds() * xspeed};
+   sf::Vector2f old_position {sprite.getPosition()};
+   
    if(right_direction)
    {
       if(context.right_bound - old_position.x < dx)
@@ -64,11 +66,9 @@ double Moving_Object::get_xspeed() const
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
 
-
-
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, double xspeed, 
-   std::string filename, bool right_direction)
-   : Moving_Object(xpos, ypos, scale, xspeed, filename, right_direction)
+   std::string filename)
+   : Moving_Object(xpos, ypos, scale, xspeed, filename)
 {}
 
 void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
