@@ -36,11 +36,6 @@ Tire::Tire(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
-bool Tire::handle(sf::Event event, Context& context)
-{
-    return false;
-}
-
 void Tire::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
@@ -70,11 +65,6 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
 Hole::Hole(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
-
-bool Hole::handle(sf::Event event, Context& context)
-{
-    return false;
-}
 
 void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -106,10 +96,6 @@ Goal::Goal(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
-bool Goal::handle(sf::Event event, Context& context)
-{
-    return false;
-}
 
 void Goal::perform_collision(Game_Object* const& other, Context& context)
 {

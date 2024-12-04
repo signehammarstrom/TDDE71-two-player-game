@@ -34,13 +34,9 @@ public:
    Snowball_Mod(double xpos, double ypos, float scale, double xspeed, std::string filename = "snowball_pile.png", bool right_direction=true);
    ~Snowball_Mod() = default;
 
-    bool handle(sf::Event event, Context& context) override;
-   // void update(sf::Time delta, Context& context) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
-  //  double get_radius() const;
 private:
-  // double radius{}; 
 };
 
 #endif

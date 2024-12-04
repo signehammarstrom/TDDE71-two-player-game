@@ -34,7 +34,6 @@ public:
         //x och ykoordinat är mittpunkten på däcket. 
     ~Tire() = default;
 
-    bool handle(sf::Event event, Context& context) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 private:
@@ -52,7 +51,6 @@ public:
     Hole(double xpos, double ypos, float scale, std::string filename = "hole.png");
     ~Hole() = default;
 
-    bool handle(sf::Event event, Context& context) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 private:
@@ -68,8 +66,7 @@ class Goal : public Static_Obstacle
 public:
     Goal(double xpos, double ypos, float scale, std::string filename = "finish.png");
     ~Goal() = default;
- 
-    bool handle(sf::Event event, Context& context) override;
+
     void perform_collision(Game_Object* const& other, Context& context) override;
 
 

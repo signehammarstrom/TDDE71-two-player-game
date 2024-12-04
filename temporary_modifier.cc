@@ -22,17 +22,6 @@ Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, do
    time_passed = sf::Time::Zero;
 }
 
-
- double Temporary_Modifier::get_width() const
- {
-    return width;
- }
-
-double Temporary_Modifier::get_height() const
-{
-    return height;
-}
-
 double Temporary_Modifier::get_speedmodifier() const
 {
     return speedmodifier;
@@ -85,23 +74,6 @@ Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
-bool Chalmerist::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-/*
-void Chalmerist::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/
-
 //Can
 /*_______________________________________________________________________________________*/
 
@@ -109,24 +81,6 @@ Can::Can(double xpos, double ypos, float scale, double xspeed,
         double speedmodifier, std::string filename, bool is_active)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
-
-bool Can::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-/*
-void Can::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/
-
 
 //Kir
 /*_______________________________________________________________________________________*/
@@ -136,19 +90,3 @@ Kir::Kir(double xpos, double ypos, float scale, double xspeed,
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
-bool Kir::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-/*
-void Kir::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/
