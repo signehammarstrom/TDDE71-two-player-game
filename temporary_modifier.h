@@ -22,8 +22,8 @@ public:
 
     double get_speedmodifier() const; 
     virtual void active(sf::Time time);
-    void update_time(sf::Time delta) override;
-    void remove_if_inactual(Context& context) override;
+    void update_time(sf::Time delta);
+    void remove_if_inactual(Context& context);
     void perform_collision(Game_Object* const& other, Context& context) override;
     
 protected:
