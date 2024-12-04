@@ -2,13 +2,14 @@
 #include <iostream>
 #include "game_object.h"
 
+using namespace std;
 
-Game_Object::Game_Object(double x, double y, float radius, std::string filename)
-    : scale{}, texture{}, sprite{}, removed {false}
+Game_Object::Game_Object(double x, double y, float radius,  string filename)
+    : sprite{}, texture{}, scale{}, removed {false}
 {
     if (!texture.loadFromFile(filename))
     {
-        throw std::runtime_error{"Couldn't open filename"};
+        throw  runtime_error{"Couldn't open filename"};
     }
 
     sprite.setTexture(texture);
@@ -45,7 +46,6 @@ sf::FloatRect Game_Object::bounds() const
 }
 
 float Game_Object::get_position() const
-{}
-
-void Game_Object::stop_effect(Game_Object*& object)
-{}
+{
+    return sprite.getPosition().y + bounds().height/2;
+}
