@@ -4,7 +4,7 @@
 
 
 Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float scale, std::string filename)
-:Game_Object(xpos,ypos, scale, filename), radius{}, y_speed{50}
+:Game_Object(xpos,ypos, scale, filename), y_speed{50}
 {
 }
 
@@ -21,13 +21,6 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
 
 
 }
-
-void Snowball_Projectile::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
-
-
 
 void Snowball_Projectile::perform_collision(Game_Object* const& other, Context& context)
 {

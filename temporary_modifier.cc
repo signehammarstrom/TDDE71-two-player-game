@@ -22,17 +22,6 @@ Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, do
    time_passed = sf::Time::Zero;
 }
 
-
- double Temporary_Modifier::get_width() const
- {
-    return width;
- }
-
-double Temporary_Modifier::get_height() const
-{
-    return height;
-}
-
 double Temporary_Modifier::get_speedmodifier() const
 {
     return speedmodifier;
@@ -47,7 +36,6 @@ void Temporary_Modifier::remove_if_inactual(Context& context)
 {
    if(time_passed.asSeconds() >= 3.f)
    {
-      
       context.y_speed = context.base_speed;
       remove();
    }
@@ -61,19 +49,21 @@ void Temporary_Modifier::active(sf::Time time)
 void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& context)
 {
    Player* player = dynamic_cast<Player*>(other);
-    if (player)
-    {
+   if (player)
+   {
       context.y_speed = context.y_speed * get_speedmodifier();
       context.active_temp_mods.push_back(this);
       sprite.setScale(0, 0);
-      player = nullptr;
-    }
-    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
-    if (snowball)
-    {
+      
+   }
+   Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
+   if (snowball)
+   {
       remove();
-      snowball = nullptr;
-    }
+      
+   }
+   player = nullptr;
+   snowball = nullptr;
 
 }
 
@@ -85,29 +75,6 @@ Chalmerist::Chalmerist(double xpos, double ypos, float scale, double xspeed,
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
-bool Chalmerist::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-
-void Chalmerist::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
-   return;
-}
-/*
-void Chalmerist::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/
-
 //Can
 /*_______________________________________________________________________________________*/
 
@@ -115,30 +82,6 @@ Can::Can(double xpos, double ypos, float scale, double xspeed,
         double speedmodifier, std::string filename, bool is_active)
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
-
-bool Can::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-void Can::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
-   return;
-}
-
-/*
-void Can::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/
-
 
 //Kir
 /*_______________________________________________________________________________________*/
@@ -148,24 +91,3 @@ Kir::Kir(double xpos, double ypos, float scale, double xspeed,
     : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
 {}
 
-bool Kir::handle(sf::Event event, Context& context)
-{
-   return false;
-}
-
-void Kir::render(sf::RenderWindow& window)
-{
-   window.draw(sprite);
-}
-
-/*
-void Kir::update(sf::Time delta, Context& context) 
-{
-    
-   float distance {delta.asSeconds() * context.y_speed};
-   sf::Vector2f old_position {sprite.getPosition()};
-    
-   sprite.move({0, -distance});
-   return;
-}
-*/

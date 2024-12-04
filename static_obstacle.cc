@@ -34,21 +34,7 @@ float Static_Obstacle::get_position() const
 
 Tire::Tire(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
-{   
-    // sf::Vector2u texture_size { texture.getSize() };
-    // double scale {radius/(texture_size.x/2)};
-    // sprite.setScale(scale, scale);
-}
-
-bool Tire::handle(sf::Event event, Context& context)
-{
-    return false;
-}
-
-void Tire::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
+{}
 
 void Tire::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -80,16 +66,6 @@ Hole::Hole(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
 
-bool Hole::handle(sf::Event event, Context& context)
-{
-    return false;
-}
-
-void Hole::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
-
 void Hole::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
@@ -119,16 +95,6 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
 Goal::Goal(double xpos, double ypos, float scale, std::string filename)
     :Static_Obstacle(xpos, ypos, scale, filename)
 {}
-
-bool Goal::handle(sf::Event event, Context& context)
-{
-    return false;
-}
-
-void Goal::render(sf::RenderWindow& window)
-{
-    window.draw(sprite);
-}
 
 void Goal::perform_collision(Game_Object* const& other, Context& context)
 {

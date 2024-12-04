@@ -12,13 +12,11 @@
 /*_____________________________________________________________________*/
 class Static_Obstacle : public Modifier
 {
-
 public:
     Static_Obstacle(double xpos, double ypos, float scale, std::string filename);
     ~Static_Obstacle() = default;
     void update(sf::Time delta, Context& context) override;
     float get_position() const override;
-
 };
 
 
@@ -26,21 +24,12 @@ public:
 /*_____________________________________________________________________*/
 class Tire : public Static_Obstacle
 {
-
 public:
-
     Tire(double xpos, double ypos, float scale, std::string filename = "tire.png");
-        //ritar ut ett däck med höjd 2*radien och bredd 2*radien. 
-        //x och ykoordinat är mittpunkten på däcket. 
     ~Tire() = default;
 
-    bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
-
 private:
-    double radius;
-
 };
     
 
@@ -48,17 +37,12 @@ private:
 /*____________________________________________________________________*/
 class Hole : public Static_Obstacle
 {
-
 public:
     Hole(double xpos, double ypos, float scale, std::string filename = "hole.png");
     ~Hole() = default;
 
-    bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
-
 private:
-    double radius;
 };
 
 
@@ -66,19 +50,12 @@ private:
 /*____________________________________________________________________*/
 class Goal : public Static_Obstacle
 {
-
 public:
     Goal(double xpos, double ypos, float scale, std::string filename = "finish.png");
     ~Goal() = default;
- 
-    bool handle(sf::Event event, Context& context) override;
-    void render(sf::RenderWindow& window) override;
+
     void perform_collision(Game_Object* const& other, Context& context) override;
-
-
 private:
-    double width;
-    double height;
 };
 
 #endif

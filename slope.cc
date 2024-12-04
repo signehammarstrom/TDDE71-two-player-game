@@ -66,7 +66,7 @@ void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
     {
         if (del)
         {
-        delete object;
+            delete object;
         }
         object = nullptr;
     }
@@ -163,22 +163,26 @@ void Slope::update(sf::Time delta)
         }
 
         //Ta bort inaktuella temporary modifiers
+
         if(context.active_temp_mods.size() != 0)
         {
-            for(unsigned int i=0; i<context.active_temp_mods.size(); i++)
+            for(Game_Object* TempMod : context.active_temp_mods)
             {
-                context.active_temp_mods.at(i)->update_time(delta);
-                context.active_temp_mods.at(i)->remove_if_inactual(context);
-                if(context.active_temp_mods.at(i)->is_removed())
+                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(TempMod);
+                if (tempmodtest)
                 {
-                    context.player->stop_effect(context.active_temp_mods.at(i));
-                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
-                    //delete context.active_temp_mods.back();
+                    tempmodtest -> remove_if_inactual(context);
+                    tempmodtest -> update_time(delta);
+                }
+                if(TempMod -> is_removed())
+                {
+                    context.player->stop_effect(TempMod);
+                    std::swap(TempMod, context.active_temp_mods.back());
                     context.active_temp_mods.pop_back();
                 }
+                tempmodtest = nullptr;
             }
         }
-
 
         context.player->update(delta, context);
 
