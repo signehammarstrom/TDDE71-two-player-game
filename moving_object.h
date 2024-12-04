@@ -19,6 +19,7 @@ public:
     ~Moving_Object() = default;
     virtual void update(sf::Time delta, Context& context);
     double get_xspeed() const;
+    
 
 protected:
     double xspeed {};

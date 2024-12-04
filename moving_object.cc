@@ -2,6 +2,8 @@
 #include <string>
 #include <cmath> //För sinusberäkningar.
 #include <iostream>
+#include <stdlib.h>
+#include <random>
 
 #include "game_object.h"
 #include "context.h"
@@ -26,7 +28,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
    float distance_y {delta.asSeconds() * context.y_speed};
    float distance_x{delta.asSeconds() * xspeed};
    sf::Vector2f old_position {sprite.getPosition()};
-   
+
    if(right_direction)
    {
       if(context.right_bound - old_position.x < dx)
@@ -54,14 +56,14 @@ void Moving_Object::update(sf::Time delta, Context& context)
       }
       sprite.rotate(-rotationSpeed * delta.asSeconds());
    }
-   return;
-
 }
 
 double Moving_Object::get_xspeed() const
 {
    return xspeed;
 }
+
+
 
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
