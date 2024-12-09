@@ -57,8 +57,27 @@ std::vector<std::string> State::read_highscore()
 // GAME_STATE
 /*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}
+: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}, clock{}, game_started{false}
 {
+    if (!one.loadFromFile("one.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!two.loadFromFile("two.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!three.loadFromFile("three.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+
+    digit.setTexture(three);
+    sf::Vector2u texture_size { one.getSize() };
+    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    digit.setPosition(window_size.x / 2, window_size.y / 2);
+    digit.setScale(1.5, 1.5);
+
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
@@ -144,34 +163,50 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
             
         }
     }
-}
+    }
 
 void Game_State::update(sf::Time delta)
 {
-    
-    if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
+    if (!game_started)
     {
-        left_slope->update(delta);
-        right_slope->update(delta);
-    }
-    else if (!new_highscore)
-    {
-        std::istringstream iss {highscores.back()};
-        std::string throwaway{};
-        double worst_time{};
-        iss >> throwaway >> worst_time;
-        if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
+        if(clock.getElapsedTime().asSeconds() > 3)
         {
-            new_highscore = true;
-            new_highscore_time = left_slope->context.goal_time.asSeconds();
+            game_started = true;
         }
-        else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
+        else if (clock.getElapsedTime().asSeconds() > 2)
         {
-            new_highscore = true;
-            new_highscore_time = right_slope->context.goal_time.asSeconds();
+            digit.setTexture(one);
+        }
+        else if(clock.getElapsedTime().asSeconds() > 1)
+        {
+            digit.setTexture(two);
         }
     }
-
+    if(game_started)
+    {
+        if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
+        {
+            left_slope->update(delta);
+            right_slope->update(delta);
+        }
+        else if (!new_highscore)
+        {
+            std::istringstream iss {highscores.back()};
+            std::string throwaway{};
+            double worst_time{};
+            iss >> throwaway >> worst_time;
+            if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
+            {
+                new_highscore = true;
+                new_highscore_time = left_slope->context.goal_time.asSeconds();
+            }
+            else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
+            {
+                new_highscore = true;
+                new_highscore_time = right_slope->context.goal_time.asSeconds();
+            }
+        }
+    }
 }
 
 void Game_State::render(sf::RenderWindow& window)
@@ -198,6 +233,10 @@ void Game_State::render(sf::RenderWindow& window)
             window.draw(prompt);
             window.draw(typed_name);
         }
+    }
+    if (!game_started)
+    {
+        window.draw(digit);
     }
 }
 
