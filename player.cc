@@ -95,7 +95,7 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
         
         if (overlap_X < overlap_Y)
         {
-            if (overlap_Y > pbounds.height/100)
+            if (overlap_Y > pbounds.height/10)
             {
             sf::Vector2f temp {};
             temp = {old_position.x, sprite.getPosition().y};
