@@ -156,25 +156,27 @@ void Slope::update(sf::Time delta)
 
         if(context.active_temp_mods.size() != 0)
         {
-            for(Game_Object* TempMod : context.active_temp_mods)
+            for(unsigned int i = 0; i<context.active_temp_mods.size(); i++)
             {
-                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(TempMod);
+                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(context.active_temp_mods.at(i));
                 if (tempmodtest)
                 {
                     tempmodtest -> remove_if_inactual(context);
                     tempmodtest -> update_time(delta);
                 }
 
-                if(TempMod -> is_removed())
+                if(context.active_temp_mods.at(i) -> is_removed())
                 {
                     Player* player = dynamic_cast<Player*>(context.player);
-                    player->stop_effect(TempMod);
+                    player->stop_effect(context.active_temp_mods.at(i), context);
                     player = nullptr;
 
-                    std::swap(TempMod, context.active_temp_mods.back());
+                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
+                    context.active_temp_mods.back() = nullptr;
                     context.active_temp_mods.pop_back();
                 }
                 tempmodtest = nullptr;
+
             }
         }
 

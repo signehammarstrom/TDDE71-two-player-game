@@ -95,17 +95,20 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
         
         if (overlap_X < overlap_Y)
         {
+            if (overlap_Y > pbounds.height/100)
+            {
             sf::Vector2f temp {};
             temp = {old_position.x, sprite.getPosition().y};
             if (old_position.x > sprite.getPosition().x)
             {
-                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+                temp = {old_position.x + pbounds.width*x_speed/10000, sprite.getPosition().y};
             }
             else if (old_position.x < sprite.getPosition().x)
             {
-                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+                temp = {old_position.x - pbounds.width*x_speed/10000, sprite.getPosition().y};
             }
             sprite.setPosition(temp);
+            }
         }
         
     }
@@ -113,6 +116,7 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
     if (temp_mod)
     {
         x_speed = temp_mod->get_speedmodifier()*x_speed;
+        std::cout << "Changing x_speed: " << x_speed << std::endl;
         Kir* kir = dynamic_cast<Kir*>(temp_mod);
         if (kir)
         {
@@ -141,13 +145,17 @@ bool Player::out_of_bounds(Context const& context)
     return false;
 }
 
-void Player::stop_effect(Game_Object*& object)
+void Player::stop_effect(Game_Object*& object, Context const& context)
 {
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(object);
     if (temp_mod)
     {
         x_speed = x_speed/temp_mod->get_speedmodifier();
-        sprite.setTexture(texture);
+        std::cout << "Stopping effect: " << x_speed << std::endl;
+        if(context.active_temp_mods.size() <= 1)
+        {
+            sprite.setTexture(texture);
+        }
     }
     temp_mod = nullptr;
 }
