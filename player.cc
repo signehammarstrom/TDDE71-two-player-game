@@ -116,7 +116,6 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
     if (temp_mod)
     {
         x_speed = temp_mod->get_speedmodifier()*x_speed;
-        std::cout << "Changing x_speed: " << x_speed << std::endl;
         Kir* kir = dynamic_cast<Kir*>(temp_mod);
         if (kir)
         {
@@ -151,7 +150,6 @@ void Player::stop_effect(Game_Object*& object, Context const& context)
     if (temp_mod)
     {
         x_speed = x_speed/temp_mod->get_speedmodifier();
-        std::cout << "Stopping effect: " << x_speed << std::endl;
         if(context.active_temp_mods.size() <= 1)
         {
             sprite.setTexture(texture);
