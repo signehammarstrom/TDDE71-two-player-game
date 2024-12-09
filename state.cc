@@ -458,14 +458,43 @@ void Highscore::render(sf::RenderWindow& window)
 Controls::Controls(sf::RenderWindow& window)
     :  State{window}
 {
+    if (!white_arrow.loadFromFile("RightArrowBlackWhite-removebg-preview.png"))
+    {
+        throw std::runtime_error("Kan inte ladda RightArrowBlackWhite.png");
+    }
+    /*
+    else if (!green_arrow.loadFromFile("RightArrowBlackGreen-removebg-preview.png"))
+    {
+        throw std::runtime_error("Kan inte ladda RightArrowBlackGreen.png"); 
+    }*/
+
+    // Instruktionsöverskrift
     instruction.setFont(font);
     instruction.setString("Press 'esc' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
-
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
-
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
+
+    // Pilar
+    sf::Vector2u arrow_size { white_arrow.getSize() };
+    // double scale { arrow_size.x / 500 };
+
+    down_arrow.setTexture(white_arrow);
+    down_arrow.setOrigin(arrow_size.x / 2, arrow_size.y / 2);
+    down_arrow.setPosition(2 * window_size.x / 4, window_size.y / 2);
+    down_arrow.rotate(90);
+    down_arrow.setScale(0.4f, 0.4f);
+    
+    left_arrow.setTexture(white_arrow);
+    left_arrow.setOrigin(arrow_size.x / 2, arrow_size.y / 2);
+    left_arrow.setPosition(3 * window_size.x / 4, window_size.y / 2);
+    left_arrow.rotate(180);
+
+    right_arrow.setTexture(white_arrow);
+    right_arrow.setOrigin(arrow_size.x / 2, arrow_size.y / 2);
+    right_arrow.setPosition(4 * window_size.x / 4, window_size.y / 2);
+
 }
 
 void Controls::handle(sf::Event event, std::stack<State*>& stack)
@@ -477,6 +506,12 @@ void Controls::handle(sf::Event event, std::stack<State*>& stack)
             delete stack.top();
             stack.pop();
         }
+        /*
+        else if (event.key.code == sf::Keyboard::Key::Right)
+        {
+            arrow.setTexture(green_arrow);
+        }
+        */
     }
 }
 
@@ -489,4 +524,7 @@ void Controls::render(sf::RenderWindow& window)
 {
     window.draw(menu_background);
     window.draw(instruction);
+    window.draw(down_arrow);
+    window.draw(left_arrow);
+    window.draw(right_arrow);
 }

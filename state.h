@@ -117,7 +117,11 @@ public:
 
 private:
     sf::Text instruction;
-
+    sf::Texture white_arrow;
+    // sf::Texture green_arrow;
+    sf::Sprite down_arrow;
+    sf::Sprite left_arrow;
+    sf::Sprite right_arrow;
 };
 
 
