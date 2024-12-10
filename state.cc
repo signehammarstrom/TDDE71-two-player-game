@@ -23,9 +23,9 @@ State::State(sf::RenderWindow& window)
     {
         throw std::runtime_error("Kan inte öppna: background.png");
     }
-    if (!font.loadFromFile("font.ttf"))
+    if (!font.loadFromFile("Atop-R99O3.ttf"))
     {
-        throw std::runtime_error("Kan inte öppna: font.ttf");
+        throw std::runtime_error("Kan inte öppna: Atop-R99O3.ttf");
     }
 
     menu_background.setTexture(menu_background_texture);
@@ -139,7 +139,7 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
                 if (event.text.unicode == '\r' || event.text.unicode == '\n') 
                 {
                     sort_highscores(highscores);
-                    //delete stack.top();
+                    delete stack.top();
                     stack.pop();
                 }
                 else if (event.text.unicode == '\b' && !name.empty()) 
@@ -157,7 +157,7 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
-                //delete stack.top();
+                delete stack.top();
                 stack.pop();
             }
             
@@ -358,6 +358,10 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     {
         throw runtime_error("Kan inte öppna: y6_logo.png");
     }
+    if (!texture_buttons.loadFromFile("Charcoal_bricks_color1.png"))
+    {
+        throw runtime_error("Kan inte öppna: Charcoal_bricks_color1.png");
+    }
 
     // Y6 logo
     sprite.setTexture(texture);
@@ -371,9 +375,12 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     menu[0].setOrigin(play_bounds.width / 2, play_bounds.height / 2);
     menu[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
 
-    //menu_background[0].setTexture(menu_texture);
-    //menu_background[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
-    //menu_background[0].setTextureRect(sf::IntRect(0, 0, play_bounds.width + 10, play_bounds.height + 10));
+    menu_buttons[0].setTexture(texture_buttons);
+    menu_buttons[0].setTextureRect(sf::IntRect(0, 0, play_bounds.width + 40, play_bounds.height + 20));
+    sf::FloatRect play_bounds_b { menu_buttons[0].getGlobalBounds() };
+    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 7);
+    menu_buttons[0].setPosition(menu[0].getPosition());
+    
 
     menu[1].setFont(font);
     menu[1].setFillColor(sf::Color::Black);
@@ -382,12 +389,27 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     menu[1].setOrigin(control_bounds.width / 2, control_bounds.height / 2);
     menu[1].setPosition(window_size.x / 2, window_size.y / 2);
 
+    menu_buttons[1].setTexture(texture_buttons);
+    menu_buttons[1].setTextureRect(sf::IntRect(0, 0, control_bounds.width + 40, control_bounds.height + 20));
+    sf::FloatRect control_bounds_b { menu_buttons[1].getGlobalBounds() };
+    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 7);
+    menu_buttons[1].setPosition(menu[1].getPosition());
+    
+
     menu[2].setFont(font);
     menu[2].setFillColor(sf::Color::Black);
     menu[2].setString("HIGHSCORE");
     sf::FloatRect highscore_bounds { menu[2].getGlobalBounds() };
     menu[2].setOrigin(highscore_bounds.width / 2, highscore_bounds.height / 2);
     menu[2].setPosition(window_size.x / 2, window_size.y * 3 / 4 );
+
+    menu_buttons[2].setTexture(texture_buttons);
+    menu_buttons[2].setTextureRect(sf::IntRect(0, 0, highscore_bounds.width + 40, highscore_bounds.height + 20));
+    sf::FloatRect highscore_bounds_b { menu_buttons[2].getGlobalBounds() };
+    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 7);
+    menu_buttons[2].setPosition(menu[2].getPosition());
+    
+    
 
     selected_menu = 0;
 
@@ -494,7 +516,7 @@ void Menu_State::render(sf::RenderWindow& window)
     window.draw(menu_background);
     for (int i = 0; i < Max_Menu ; ++i)
     {
-        //window.draw(menu_background[0]);
+        window.draw(menu_buttons[i]);//menu_buttons[0]);
         window.draw(menu[i]);
     }
     if ( selected_menu == 0 )
