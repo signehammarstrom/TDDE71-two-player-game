@@ -1,38 +1,20 @@
+
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
 # Lista över alla objektfiler som ska länkas
-OBJS := player.o game_object.o main.o state.o slope.o snowball_projectile.o
+OBJS := main.o player.o game_object.o slope_objects.o modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o state.o slope.o
 
-# Huvudmål
-all: plmain
-
-# Bygg exekverbara filer
-plmain: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o plmain $(OBJS) $(LIBS)
-
-menu: state.o main.o
-	$(CXX) $(CXXFLAGS) -o menu state.o main.o $(LIBS)
+OBJSPT := player_test.o test_main.o player.o game_object.o  modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o 
 
 # Regler för att skapa objektfiler från källkod
-player.o: player.cc player.h
-	$(CXX) $(CXXFLAGS) -c player.cc
 
 game_object.o: game_object.cc game_object.h
 	$(CXX) $(CXXFLAGS) -c game_object.cc
 
-main.o: main.cc
-	$(CXX) $(CXXFLAGS) -c main.cc
-
-state.o: state.cc state.h
-	$(CXX) $(CXXFLAGS) -c state.cc
-
-slope.o: slope.cc slope.h
-	$(CXX) $(CXXFLAGS) -c slope.cc
-
-snowball_projectile.o: snowball_projectile.cc snowball_projectile.h
-	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
+player.o: player.cc player.h
+	$(CXX) $(CXXFLAGS) -c player.cc
 
 modifier.o: modifier.cc modifier.h
 	$(CXX) $(CXXFLAGS) -c modifier.cc
@@ -40,58 +22,50 @@ modifier.o: modifier.cc modifier.h
 static_obstacle.o: static_obstacle.cc static_obstacle.h
 	$(CXX) $(CXXFLAGS) -c static_obstacle.cc
 
-# Regel för att bygga övriga program
-player_test: player.o game_object.o player_test.o test_main.o
-	$(CXX) $(CXXFLAGS) -o player_test player.o game_object.o
-	 player_test.o test_main.o modifier.cc static_obstacle.cc $(LIBS)
+slope_objects.o: slope_objects.cc slope_objects.h
+	$(CXX) $(CXXFLAGS) -c slope_objects.cc
+
+moving_object.o: moving_object.cc moving_object.h
+	$(CXX) $(CXXFLAGS) -c moving_object.cc
+
+temporary_modifier.o: temporary_modifier.cc temporary_modifier.h 
+	$(CXX) $(CXXFLAGS) -c temporary_modifier.cc
+
+main.o: main.cc
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+state.o: state.cc state.h
+	$(CXX) $(CXXFLAGS) -c state.cc
+
+slope.o: slope.cc slope.h slope_objects.h context.h
+	$(CXX) $(CXXFLAGS) -c slope.cc
+
+snowball_projectile.o: snowball_projectile.cc snowball_projectile.h context.h
+	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
+
+test_main.o: test_main.cc catch.hpp
+	$(CXX) $(CXXFLAGS) -c test_main.cc
+
+player_test.o: player_test.cc 
+	$(CXX) $(CXXFLAGS) -c player_test.cc
+
+# Huvudmål
+all: game menu playertest
+
+# Bygg exekverbara filer
+game: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o game $(OBJS) $(LIBS)
+
+menu: state.o main.o
+	$(CXX) $(CXXFLAGS) -o menu state.o main.o $(LIBS)
+
+playertest: $(OBJSPT)
+	$(CXX) $(CXXFLAGS) -o playertest $(OBJSPT) $(LIBS)
+
 
 # Rensningsregel
 .PHONY: clean
+
 clean:
-	rm -f *.o plmain player_test slope_test main
-
-
-
-# --------------------------------------------------
-
-# Makefile for compiling the project
-
-# Compiler
-CXX = g++
-
-# Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
-# Linker flags for SFML
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-
-# Source files
-SRCS = main.cc game_object.cc modifier.cc moving_object.cc static_obstacle.cc temporary_modifier.cc slope.cc state.cc player.cc snowball_projectile.cc slope_objects.cc
-
-# Header files
-HEADERS = game_object.h modifier.h moving_object.h static_obstacle.h temporary_modifier.h slope.h state.h player.h snowball_projectile.h slope_objects.h
-
-# Object files (compiled from source files)
-OBJS = $(SRCS:.cc=.o)
-
-# Output binary name
-TARGET = game
-
-# Default target
-all: $(TARGET)
-
-# Linking the object files to create the final executable
-$(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
-
-# Compile the source files into object files
-%.o: %.cc $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# Clean up object files and the executable
-clean:
-	rm -f $(OBJS) $(TARGET)
-
-# Rebuild the project (force make to run)
-rebuild: clean all
-
-.PHONY: all clean rebuild
+	rm -f $(OBJS) game $(OBJSPT) playertest
+# ------------------------------------------------
