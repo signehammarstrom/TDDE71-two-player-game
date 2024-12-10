@@ -51,6 +51,14 @@ if (!texture_background.loadFromFile("white_background.png"))
     background.setPosition(left_bound, 0);
 }
 
+void Background::update(sf::Time delta, Context& context) 
+{   
+    float distance {delta.asSeconds() * context.y_speed};
+    sf::Vector2f old_position {background.getPosition()};
+    
+    background.move({0, -distance});
+}
+
 void Background::render(sf::RenderWindow& window)
 {
     window.draw(background);

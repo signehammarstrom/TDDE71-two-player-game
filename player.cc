@@ -95,17 +95,20 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
         
         if (overlap_X < overlap_Y)
         {
+            if (overlap_Y > pbounds.height/10)
+            {
             sf::Vector2f temp {};
             temp = {old_position.x, sprite.getPosition().y};
             if (old_position.x > sprite.getPosition().x)
             {
-                temp = {old_position.x + sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+                temp = {old_position.x + pbounds.width*x_speed/10000, sprite.getPosition().y};
             }
             else if (old_position.x < sprite.getPosition().x)
             {
-                temp = {old_position.x - sprite.getGlobalBounds().width*x_speed/10000, sprite.getPosition().y};
+                temp = {old_position.x - pbounds.width*x_speed/10000, sprite.getPosition().y};
             }
             sprite.setPosition(temp);
+            }
         }
         
     }
@@ -133,21 +136,24 @@ bool Player::out_of_bounds(Context const& context)
 {
     sf::FloatRect playerBounds {bounds()};
     
-    if ((playerBounds.left < context.left_bound)|| 
-        (playerBounds.left + playerBounds.width > context.right_bound))
+    if ((playerBounds.left  - context.side_tire_size < context.left_bound)|| 
+        (playerBounds.left + playerBounds.width + context.side_tire_size > context.right_bound))
     {
         return true;
     }
     return false;
 }
 
-void Player::stop_effect(Game_Object*& object)
+void Player::stop_effect(Game_Object*& object, Context const& context)
 {
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(object);
     if (temp_mod)
     {
         x_speed = x_speed/temp_mod->get_speedmodifier();
-        sprite.setTexture(texture);
+        if(context.active_temp_mods.size() <= 1)
+        {
+            sprite.setTexture(texture);
+        }
     }
     temp_mod = nullptr;
 }

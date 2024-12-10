@@ -30,7 +30,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
 
    if(right_direction)
    {
-      if(context.right_bound - old_position.x < dx)
+      if(context.right_bound - old_position.x - context.side_tire_size < dx)
       {
          right_direction = false;
          sprite.move(-distance_x, -distance_y);
@@ -44,7 +44,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
 
    if(!right_direction)
    {
-      if(old_position.x - context.left_bound < dx)
+      if(old_position.x - context.left_bound - context.side_tire_size< dx)
       {
          right_direction = true;
          sprite.move(distance_x, -distance_y);

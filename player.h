@@ -15,7 +15,7 @@ public:
     void update(sf::Time delta, Context& context) override;
     void perform_collision(Game_Object* const& other, Context& context) override;
     bool out_of_bounds(Context const& context);
-    void stop_effect(Game_Object*& object);
+    void stop_effect(Game_Object*& object, Context const& context);
 
 private:
     sf::Vector2f old_position{};
