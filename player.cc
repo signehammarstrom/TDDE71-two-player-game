@@ -157,4 +157,3 @@ void Player::stop_effect(Game_Object*& object, Context const& context)
     }
     temp_mod = nullptr;
 }
-

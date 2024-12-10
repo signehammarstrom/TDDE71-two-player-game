@@ -11,7 +11,6 @@ Game_Object::Game_Object(double x, double y, float radius,  string filename)
     {
         throw  runtime_error{"Couldn't open filename"};
     }
-
     sprite.setTexture(texture);
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
