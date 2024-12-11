@@ -45,7 +45,7 @@ public:
 
 private:
     void create_track();
-    void sort_highscores(std::vector<std::string>);
+    void sort_highscores();
 
     sf::Text p1_text;
     sf::Text p2_text;
@@ -83,8 +83,8 @@ public:
 private:
     int selected_menu;
     sf::Text menu[Max_Menu];
-    //sf::Sprite menu_background[Max_Menu];
-    //sf::Texture menu_texture;
+    sf::Sprite menu_buttons[Max_Menu];
+    sf::Texture texture_buttons;
 
     sf::Text text;
     sf::Text header;
