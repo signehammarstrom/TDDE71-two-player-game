@@ -23,9 +23,9 @@ State::State(sf::RenderWindow& window)
     {
         throw std::runtime_error("Kan inte öppna: background.png");
     }
-    if (!font.loadFromFile("Atop-R99O3.ttf"))
+    if (!font.loadFromFile("gamefont.ttf"))
     {
-        throw std::runtime_error("Kan inte öppna: Atop-R99O3.ttf");
+        throw std::runtime_error("Kan inte öppna: gamefont.ttf");
     }
 
     menu_background.setTexture(menu_background_texture);
@@ -634,23 +634,23 @@ Controls::Controls(sf::RenderWindow& window)
         t.setOrigin(t_bounds.width / 2, t_bounds.height / 2);
     }
 
-    text[0].setPosition( window_size.x / 2, 1.5 * window_size.y  / 10); // Överskrift
-    text[1].setPosition(3 * window_size.x / 10, 2 * window_size.y / 10);
-    text[2].setPosition(7 * window_size.x / 10, 2 * window_size.y / 10);
+    text[0].setPosition( window_size.x / 2, 1 * window_size.y  / 10); // Överskrift
+    text[1].setPosition(3 * window_size.x / 10, 1.5 * window_size.y / 10);
+    text[2].setPosition(7 * window_size.x / 10, 1.5 * window_size.y / 10);
 
-    text[3].setPosition(2 * window_size.x / 10, 3.5 * window_size.y / 10); // Svänga
+    text[3].setPosition(1 * window_size.x / 10, 3.5 * window_size.y / 10); // Svänga
     text[4].setPosition(4 * window_size.x / 10, 3.5 * window_size.y / 10);
     text[5].setPosition(8 * window_size.x / 10, 3.5 * window_size.y / 10);
 
-    text[6].setPosition(2 * window_size.x / 10, 5.5 * window_size.y / 10); // Skjuta
+    text[6].setPosition(1 * window_size.x / 10, 5.5 * window_size.y / 10); // Skjuta
     text[7].setPosition(4 * window_size.x / 10, 5.5 * window_size.y / 10);
     text[8].setPosition(8 * window_size.x / 10, 5.5 * window_size.y / 10);
 
-    text[9].setPosition(2 * window_size.x / 10, 6.5 * window_size.y / 10); // Modifiers
-    text[10].setPosition(2 * window_size.x / 10, 7 * window_size.y / 10);
-    text[11].setPosition(2 * window_size.x / 10, 7.5 * window_size.y / 10);
-    text[12].setPosition(2 * window_size.x / 10, 8 * window_size.y / 10);
-    text[13].setPosition(2 * window_size.x / 10, 8.5 * window_size.y / 10);
+    text[9].setPosition(1 * window_size.x / 10, 6.5 * window_size.y / 10); // Modifiers
+    text[10].setPosition(1 * window_size.x / 10, 7 * window_size.y / 10);
+    text[11].setPosition(1 * window_size.x / 10, 7.5 * window_size.y / 10);
+    text[12].setPosition(1 * window_size.x / 10, 8 * window_size.y / 10);
+    text[13].setPosition(1 * window_size.x / 10, 8.5 * window_size.y / 10);
 
     /*
     // Instruktionsöverskrift
