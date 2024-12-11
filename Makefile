@@ -8,6 +8,9 @@ OBJS := main.o player.o game_object.o slope_objects.o modifier.o snowball_projec
 
 OBJSPT := player_test.o test_main.o player.o game_object.o  modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o 
 
+# Huvudmål
+all: game playertest
+
 # Regler för att skapa objektfiler från källkod
 
 game_object.o: game_object.cc game_object.h
@@ -49,15 +52,10 @@ test_main.o: test_main.cc catch.hpp
 player_test.o: player_test.cc 
 	$(CXX) $(CXXFLAGS) -c player_test.cc
 
-# Huvudmål
-all: game menu playertest
 
 # Bygg exekverbara filer
 game: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o game $(OBJS) $(LIBS)
-
-menu: state.o main.o
-	$(CXX) $(CXXFLAGS) -o menu state.o main.o $(LIBS)
+	$(CXX) $(CXXFLAGS) -o play $(OBJS) $(LIBS)
 
 playertest: $(OBJSPT)
 	$(CXX) $(CXXFLAGS) -o playertest $(OBJSPT) $(LIBS)
@@ -67,5 +65,5 @@ playertest: $(OBJSPT)
 .PHONY: clean
 
 clean:
-	rm -f $(OBJS) game $(OBJSPT) playertest
+	rm -f $(OBJS) play $(OBJSPT) playertest
 # ------------------------------------------------
