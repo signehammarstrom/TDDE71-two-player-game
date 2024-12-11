@@ -592,26 +592,75 @@ void Highscore::render(sf::RenderWindow& window)
 /*___________________________________________________________________________________________________________*/
 Controls::Controls(sf::RenderWindow& window)
     :  State{window}
-{
+{   
+    /*
     if (!white_arrow.loadFromFile("RightArrowBlackWhite-removebg-preview.png"))
     {
         throw std::runtime_error("Kan inte ladda RightArrowBlackWhite.png");
     }
-    /*
-    else if (!green_arrow.loadFromFile("RightArrowBlackGreen-removebg-preview.png"))
-    {
-        throw std::runtime_error("Kan inte ladda RightArrowBlackGreen.png"); 
-    }*/
+    */
 
+    // Texter
+    for ( sf::Text& t : text)
+    {
+        t.setFont(font);
+        t.setFillColor(sf::Color(255, 20, 147));
+    }
+
+    text[0].setString("Press 'esc' to go back!"); // Överskrift
+    text[1].setString("PLAYER 1");
+    text[2].setString("PLAYER 2");
+
+    text[3].setString("Go 'LEFT' / 'RIGHT':"); // Svänga
+    text[4].setString("'A' / 'D'");
+    text[5].setString("'LeftArrow' / 'RightArrow'");
+
+    text[6].setString("Shoot Snowball:"); // Skjuta
+    text[7].setString("'S'");
+    text[8].setString("'DownArrow'");
+
+    text[9].setString("PICK-UPS:"); // Modifiers
+    text[10].setString("SNOWBALLS - Replenishes snowballs");
+    text[11].setString("CAPRICE KIR - Become a speed devil for a short period of time");
+    text[12].setString("CAN - Slows you down (littering is not cool!)");
+    text[13].setString("CHALMERIST - You dont want to collide with this buffoon...");
+
+    for ( sf::Text& t : text)
+    {
+        sf::FloatRect t_bounds { t.getGlobalBounds() };
+        t.setOrigin(t_bounds.width / 2, t_bounds.height / 2);
+    }
+
+    text[0].setPosition( window_size.x / 2, 1.5 * window_size.y  / 10); // Överskrift
+    text[1].setPosition(3 * window_size.x / 10, 2 * window_size.y / 10);
+    text[2].setPosition(7 * window_size.x / 10, 2 * window_size.y / 10);
+
+    text[3].setPosition(2 * window_size.x / 10, 3.5 * window_size.y / 10); // Svänga
+    text[4].setPosition(4 * window_size.x / 10, 3.5 * window_size.y / 10);
+    text[5].setPosition(8 * window_size.x / 10, 3.5 * window_size.y / 10);
+
+    text[6].setPosition(2 * window_size.x / 10, 5.5 * window_size.y / 10); // Skjuta
+    text[7].setPosition(4 * window_size.x / 10, 5.5 * window_size.y / 10);
+    text[8].setPosition(8 * window_size.x / 10, 5.5 * window_size.y / 10);
+
+    text[9].setPosition(2 * window_size.x / 10, 6.5 * window_size.y / 10); // Modifiers
+    text[10].setPosition(2 * window_size.x / 10, 7 * window_size.y / 10);
+    text[11].setPosition(2 * window_size.x / 10, 7.5 * window_size.y / 10);
+    text[12].setPosition(2 * window_size.x / 10, 8 * window_size.y / 10);
+    text[13].setPosition(2 * window_size.x / 10, 8.5 * window_size.y / 10);
+
+    /*
     // Instruktionsöverskrift
     instruction.setFont(font);
-    instruction.setString("Press 'esc' to go back");
+    //instruction.setString("Press 'esc' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
+    
 
-    // Pilar
+
+    // Sprites
     sf::Vector2u arrow_size { white_arrow.getSize() };
     // double scale { arrow_size.x / 500 };
 
@@ -629,7 +678,7 @@ Controls::Controls(sf::RenderWindow& window)
     right_arrow.setTexture(white_arrow);
     right_arrow.setOrigin(arrow_size.x / 2, arrow_size.y / 2);
     right_arrow.setPosition(4 * window_size.x / 4, window_size.y / 2);
-
+    */
 }
 
 void Controls::handle(sf::Event event, stack<State*>& stack)
@@ -658,8 +707,11 @@ void Controls::update([[maybe_unused]]sf::Time delta)
 void Controls::render(sf::RenderWindow& window)
 {
     window.draw(menu_background);
-    window.draw(instruction);
-    window.draw(down_arrow);
-    window.draw(left_arrow);
-    window.draw(right_arrow);
+    for ( sf::Text t : text )
+    {
+        window.draw(t);
+    }
+    // window.draw(down_arrow);
+    // window.draw(left_arrow);
+    // window.draw(right_arrow);
 }
