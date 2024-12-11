@@ -242,15 +242,15 @@ void Game_over::sort_highscores()
 Game_State::Game_State(sf::RenderWindow& window)
 : State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, clock{}, game_started{false}
 {
-    if (!one.loadFromFile("one.png"))
+    if (!one.loadFromFile("one_signe.png"))
     {
         throw  runtime_error{"Couldn't open filename"};
     }
-    if (!two.loadFromFile("two.png"))
+    if (!two.loadFromFile("two_signe.png"))
     {
         throw  runtime_error{"Couldn't open filename"};
     }
-    if (!three.loadFromFile("three.png"))
+    if (!three.loadFromFile("three_signe.png"))
     {
         throw  runtime_error{"Couldn't open filename"};
     }
