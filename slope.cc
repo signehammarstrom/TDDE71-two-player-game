@@ -126,7 +126,6 @@ void Slope::update(sf::Time delta)
             {
                 obstacle -> perform_collision(context.player, context);
                 context.player -> perform_collision(obstacle, context);
-                std::cout << context.y_speed << endl;
             }
         }
         //Kollar om vi kommer från att ha kolliderat till att inte längre kollidera
