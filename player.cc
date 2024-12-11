@@ -85,31 +85,44 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
     {
-        sf::FloatRect pbounds = bounds();
-        sf::FloatRect other_bounds = other->bounds();
-
-        float overlap_X = std::min(pbounds.left + pbounds.width, other_bounds.left + other_bounds.width) 
-            - std::max(pbounds.left, other_bounds.left);
-        float overlap_Y = std::min(pbounds.top + pbounds.height, other_bounds.top + other_bounds.height) 
-            - std::max(pbounds.top, other_bounds.top);
-        
-        if (overlap_X < overlap_Y)
+        Goal* goal = dynamic_cast<Goal*>(other);
+        if(!goal)
         {
-            if (overlap_Y > pbounds.height/10)
+            if (context.stuck)
             {
-            sf::Vector2f temp {};
-            temp = {old_position.x, sprite.getPosition().y};
-            if (old_position.x > sprite.getPosition().x)
-            {
-                temp = {old_position.x + pbounds.width*x_speed/10000, sprite.getPosition().y};
+                stat_obst->remove();
+                context.stuck = false;
             }
-            else if (old_position.x < sprite.getPosition().x)
+            else
             {
-                temp = {old_position.x - pbounds.width*x_speed/10000, sprite.getPosition().y};
+                sf::FloatRect pbounds = bounds();
+                sf::FloatRect other_bounds = other->bounds();
+
+                float overlap_X = std::min(pbounds.left + pbounds.width, other_bounds.left + other_bounds.width) 
+                    - std::max(pbounds.left, other_bounds.left);
+                float overlap_Y = std::min(pbounds.top + pbounds.height, other_bounds.top + other_bounds.height) 
+                    - std::max(pbounds.top, other_bounds.top);
+                
+                if (overlap_X < overlap_Y)
+                {
+                    if (overlap_Y > pbounds.height/10)
+                    {
+                    sf::Vector2f temp {};
+                    temp = {old_position.x, sprite.getPosition().y};
+                    if (old_position.x > sprite.getPosition().x)
+                    {
+                        temp = {old_position.x + pbounds.width*x_speed/10000, sprite.getPosition().y};
+                    }
+                    else if (old_position.x < sprite.getPosition().x)
+                    {
+                        temp = {old_position.x - pbounds.width*x_speed/10000, sprite.getPosition().y};
+                    }
+                    sprite.setPosition(temp);
+                    }
             }
-            sprite.setPosition(temp);
             }
         }
+        goal = nullptr;
         
     }
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
@@ -157,4 +170,3 @@ void Player::stop_effect(Game_Object*& object, Context const& context)
     }
     temp_mod = nullptr;
 }
-

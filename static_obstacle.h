@@ -24,7 +24,7 @@ public:
 class Tire : public Static_Obstacle
 {
 public:
-    Tire(double xpos, double ypos, float scale, std::string filename = "tire.png");
+    Tire(double xpos, double ypos, float scale, std::string filename = "tire_signe.png");
     ~Tire() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
