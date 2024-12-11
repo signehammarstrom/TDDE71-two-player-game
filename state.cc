@@ -19,7 +19,7 @@ using namespace std;
 State::State(sf::RenderWindow& window)
 : window {window}
 {
-    if (!menu_background_texture.loadFromFile("background.png"))
+    if (!menu_background_texture.loadFromFile("background_signe.png"))
     {
         throw std::runtime_error("Kan inte öppna: background.png");
     }
@@ -29,6 +29,9 @@ State::State(sf::RenderWindow& window)
     }
 
     menu_background.setTexture(menu_background_texture);
+    sf::Vector2u texture_size { menu_background_texture.getSize() };
+    float scale {1200.0f/texture_size.x};
+    menu_background.setScale(scale, scale);
     window_size = window.getSize();
 }
 
