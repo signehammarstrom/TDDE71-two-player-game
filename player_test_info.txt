@@ -1,0 +1,16 @@
+I player test kommer ett playerobjekt befinna sig i toppen av skärmen. 
+
+1. fall 1: Ett Tire-objekt kommer röra sig mot den. 
+om spelaren krockar med däckobjektet ovanifrån kommer y-hastigheten bli 0. 
+spelaren kan röra sig med hjälp av piltangenterna i y-led för att undkomma däcket. 
+
+
+2. Fall 2. Tire-objekt i kolumn rör sig mot spelar objekt. 
+om spelaren och däcket kolliderar längs de vertikala sidorna händer inget, förutom att spelarens x-position bevaras. 
+
+2. fall 2: En rad av Tire-objekt kommer mot spelaren, på så sätt att den inte kan undvika dem 
+SPelaren kommer att fastna. Spelaren kan testa att skjuta snöbollar på däcken men inget kommer att hända. 
+När spelaren har "suttit fast" i tre sekunder kommer däcket försvinna. 
+
+3. fall 3. en ölburk kommer in på skärmen och träffas av en projektil. 
+ölburk och projektil försvinner. 

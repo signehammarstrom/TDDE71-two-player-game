@@ -1,120 +1,224 @@
 
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <sstream>
 
-#include "catch.hpp"
-#include "player.h"
 #include "game_object.h"
-#include "player.h"
-#include "context.h"
-#include "snowball_projectile.h"
+#include "modifier.h"
 #include "static_obstacle.h"
+#include "moving_object.h"
 #include "temporary_modifier.h"
+#include "player.h"
+#include "snowball_projectile.h"
 
-using namespace std;
 
-TEST_CASE("Player perform collision static object")
+
+unsigned const screen_width  { 800 };
+unsigned const screen_height { 800 };
+
+void handle(sf::Event event, Context& context);
+void render(sf::RenderWindow& window, Context& context);
+void update(sf::Time delta, Context& context);
+
+int main()
 {
-    //Perform collision är implementerad något speciellt
-    //eftersom player kommer ovanifrån. för de statiska objekten, ska endast y-hastighet stoppas
-    //då spelaren kommer ovanifrån.
-    
+    sf::RenderWindow window { sf::VideoMode { screen_width,
+                                              screen_height },
+                              "playertest" };
+
     Context context {};
-    context.y_speed = 40;
+    context.y_speed = 300;                        
+    sf::Vector2u window_size { window.getSize() };
+    context.side = false;
+    context.side_tire_size = 0;
+    context.left_bound = 0;
+    context.right_bound = 640;
+    context.snow_count = 3;
+
+    context.player = new Player(window_size.x/2, window_size.y/6, 200);
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 200));
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 200));
+
+    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 200));
+    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 200));
+    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 200));
+    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 200));
+    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 200));
+
+    sf::Clock clock;    
+    while (window.isOpen())
+    {
+        sf::Time frame_duration { clock.restart() };
+        
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+            handle(event, context);
+        }  
+
+
+        update(frame_duration, context);
+        
+        window.clear();
+        render(window, context);
+        
+        window.display();
+    }
     
-    context.player = new Player(10, 10, 40);
-    Game_Object* tire = new Tire(0, 25, 40);
-    Game_Object* hole2 = new Hole(10,25,100);
+}
 
-    sf::FloatRect player_bounds{context.player -> bounds()};
-    sf::FloatRect obst_bounds{tire -> bounds()};
-    sf::FloatRect holebounds{hole2 -> bounds()};
+void handle(sf::Event event, Context& context)
+{
+    if (event.type == sf::Event::KeyPressed)
+    {
+        if (event.key.code == sf::Keyboard::Down)
+        {
+            Player* player = dynamic_cast<Player*>(context.player);
+            player->handle(event, context);
+            player = nullptr;
+        }
+    }
+}
 
-    CHECK(player_bounds.intersects(holebounds));
-    CHECK_FALSE(player_bounds.top + player_bounds.height <= holebounds.top + 5 );
-    context.player -> perform_collision(hole2, context);
-    hole2 -> perform_collision(context.player, context);
-    CHECK(context.y_speed == 40);
+void update(sf::Time delta, Context& context)
+{   
+    if (!context.game_finished)
+    {
+        if (context.y_speed == 0)
+        {
+            if (context.stuck_time.asSeconds() == 0)
+            {
+                context.stuck_clock.restart();
+            }
+            context.stuck_time = context.stuck_clock.getElapsedTime();
+            if (context.stuck_time.asSeconds() > 3)
+            {
+                context.stuck = true;
+                context.stuck_clock.restart();
+            }
+        }
+        else
+        {
+            context.stuck_clock.restart();
+            context.stuck_time = sf::Time{};
 
-    CHECK(player_bounds.intersects(obst_bounds));
-    CHECK(player_bounds.top + player_bounds.height <= obst_bounds.top + 5 );
-    context.player -> perform_collision(tire, context);
-    tire -> perform_collision(context.player, context);
-    CHECK(context.y_speed == 0);
-    CHECK(context.is_colliding);
-    CHECK(context.coll_count ==1);
+        }
+        context.coll_count = 0;
+        for (Game_Object* obstacle : context.mod_lst)
+        {
+            if (obstacle -> collides(context.player))
+            {
+                obstacle -> perform_collision(context.player, context);
+                context.player -> perform_collision(obstacle, context);
+            }
+        }
+        //Kollar om vi kommer från att ha kolliderat till att inte längre kollidera
+        if(context.coll_count == 0)
+        {
+            if(context.is_colliding == true)
+            {
+                context.y_speed = context.prev_speed;
+                context.is_colliding = false;
+            }
+        }
 
-    cout << player_bounds.top << ' ' << player_bounds.left << endl;
-    cout << context.player->bounds().top << ' ' << context.player->bounds().left << endl;
+        for (Game_Object* obstacle : context.mod_lst)
+        {
+            for(Game_Object* snowball_projectile : context.snowball_lst)
+            {
+                if (obstacle -> collides(snowball_projectile))
+                {
+                    obstacle -> perform_collision(snowball_projectile, context);
+                    snowball_projectile -> perform_collision(obstacle,context);
+                }
+            }
+        }
+        //Ta bort inaktuella modifiers
+        for (unsigned int i=0; i<context.mod_lst.size(); i++)
+        {
+            if (context.mod_lst.at(i)->is_removed())
+            {
+                std::swap(context.mod_lst.at(i), context.mod_lst.back());
+                delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
+                context.mod_lst.back() = nullptr;
+                context.mod_lst.pop_back();
+            }
+        }
+        //Ta bort inaktuella snöbollar
+        for (unsigned int i=0; i<context.snowball_lst.size(); i++)
+        {
+            if (context.snowball_lst.at(i)->is_removed())
+            {
+                std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
+                delete context.snowball_lst.back();
+                context.snowball_lst.back() = nullptr;
+                context.snowball_lst.pop_back();
+            }
+        }
+
+        //Ta bort inaktuella temporary modifiers
+
+        if(context.active_temp_mods.size() != 0)
+        {
+            for(unsigned int i = 0; i<context.active_temp_mods.size(); i++)
+            {
+                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(context.active_temp_mods.at(i));
+                if (tempmodtest)
+                {
+                    tempmodtest -> remove_if_inactual(context);
+                    tempmodtest -> update_time(delta);
+                }
+
+                if(context.active_temp_mods.at(i) -> is_removed())
+                {
+                    Player* player = dynamic_cast<Player*>(context.player);
+                    player->stop_effect(context.active_temp_mods.at(i), context);
+                    player = nullptr;
+
+                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
+                    context.active_temp_mods.back() = nullptr;
+                    context.active_temp_mods.pop_back();
+                }
+                tempmodtest = nullptr;
+
+            }
+        }
+
+        context.player->update(delta, context);
+
+        for( Game_Object* snowball : context.snowball_lst)
+        {
+            snowball->update(delta, context);
+        }
+
+        for(Game_Object* modifier : context.mod_lst)
+        {
+            modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
+        }
+    }
 
 }
 
-TEST_CASE("Player perform collision goal")
+
+void render(sf::RenderWindow& window, Context& context)
 {
-    //Perform collision är implementerad något speciellt
-    //eftersom player kommer ovanifrån. för de statiska objekten, ska endast y-hastighet stoppas
-    //då spelaren kommer ovanifrån.
-    
-    Context context {};
-    context.y_speed = 40;
-    
-    context.player = new Player(10, 10, 40);
-    Game_Object* goal = new Goal(10, 25, 100);
+    context.player -> render(window);
+    for( Game_Object* snowball : context.snowball_lst)
+    {
+        snowball->render(window);
+    }
 
-    sf::FloatRect player_bounds{context.player -> bounds()};
-    sf::FloatRect goalbounds{goal-> bounds()};
-
-    CHECK(player_bounds.intersects(goalbounds));
-    CHECK_FALSE(player_bounds.top + player_bounds.height <= goalbounds.top + 5 );
-    context.player -> perform_collision(goal, context);
-    goal-> perform_collision(context.player, context);
-    CHECK(context.y_speed == 0);
-    CHECK(context.game_finished == true);
-
-    cout << player_bounds.top << ' ' << player_bounds.left << endl;
-    cout << context.player->bounds().top << ' ' << context.player->bounds().left << endl;
-
+    for(Game_Object* modifier : context.mod_lst)
+    {
+        modifier -> render(window);
+    }
 }
-
-TEST_CASE("Player perform collision moving object")
-{
-    
-    Context context {};
-    context.y_speed = 40;
-    
-    context.player = new Player(10, 10, 40);
-    Game_Object* kir = new Kir(0, 25, 40, 30);
-    Game_Object* can = new Can(10,25,100, 20);
-    Game_Object* chalmerist = new Chalmerist(10,25,100, 20);
-
-    sf::FloatRect player_bounds{context.player -> bounds()};
-    sf::FloatRect kirbounds{kir -> bounds()};
-    sf::FloatRect canbounds{can -> bounds()};
-    sf::FloatRect chalbounds{chalmerist -> bounds()};
-
-    CHECK(player_bounds.intersects(kirbounds));
-    context.player -> perform_collision(kir, context);
-    kir -> perform_collision(context.player, context);
-    CHECK(context.y_speed == 80);
-    CHECK(context.active_temp_mods.size() == 1);
-    CHECK(context.active_temp_mods.at(0) == kir);
-
-
-    CHECK(player_bounds.intersects(canbounds));
-    context.player -> perform_collision(can, context);
-    can -> perform_collision(context.player, context);
-    CHECK(context.y_speed == 80*0.8);
-    CHECK(context.active_temp_mods.size() == 2);
-    CHECK(context.active_temp_mods.at(1) == can);
-     // I spelet tas aktiva temp-mods bort av slope. 
-
-    CHECK(player_bounds.intersects(chalbounds));
-    context.player -> perform_collision(chalmerist, context);
-    chalmerist -> perform_collision(context.player, context);
-    CHECK(context.y_speed == 80*0.8*0.5);
-    CHECK(context.active_temp_mods.size() == 3);
-    CHECK(context.active_temp_mods.at(2) == chalmerist);
-}
-
-
