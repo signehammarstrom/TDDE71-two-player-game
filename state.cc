@@ -6,6 +6,11 @@
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <stdlib.h>
+#include <random>
+#include <time.h>
+
+using namespace std;
 #include <sstream>
 
 // STATE
@@ -52,8 +57,27 @@ std::vector<std::string> State::read_highscore()
 // GAME_STATE
 /*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}
+: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}, clock{}, game_started{false}
 {
+    if (!one.loadFromFile("one.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!two.loadFromFile("two.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!three.loadFromFile("three.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+
+    digit.setTexture(three);
+    sf::Vector2u texture_size { one.getSize() };
+    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    digit.setPosition(window_size.x / 2, window_size.y / 2);
+    digit.setScale(1.5, 1.5);
+
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
@@ -82,6 +106,7 @@ Game_State::Game_State(sf::RenderWindow& window)
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
 
+    create_track();
 }
 
 Game_State::~Game_State()
@@ -91,7 +116,7 @@ Game_State::~Game_State()
     delete right_slope;
 }
 
-void Game_State::handle(sf::Event event, std::stack<State*>& stack)
+void Game_State::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -138,34 +163,50 @@ void Game_State::handle(sf::Event event, std::stack<State*>& stack)
             
         }
     }
-}
+    }
 
 void Game_State::update(sf::Time delta)
 {
-    
-    if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
+    if (!game_started)
     {
-        left_slope->update(delta);
-        right_slope->update(delta);
-    }
-    else if (!new_highscore)
-    {
-        std::istringstream iss {highscores.back()};
-        std::string throwaway{};
-        double worst_time{};
-        iss >> throwaway >> worst_time;
-        if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
+        if(clock.getElapsedTime().asSeconds() > 3)
         {
-            new_highscore = true;
-            new_highscore_time = left_slope->context.goal_time.asSeconds();
+            game_started = true;
         }
-        else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
+        else if (clock.getElapsedTime().asSeconds() > 2)
         {
-            new_highscore = true;
-            new_highscore_time = right_slope->context.goal_time.asSeconds();
+            digit.setTexture(one);
+        }
+        else if(clock.getElapsedTime().asSeconds() > 1)
+        {
+            digit.setTexture(two);
         }
     }
-
+    if(game_started)
+    {
+        if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
+        {
+            left_slope->update(delta);
+            right_slope->update(delta);
+        }
+        else if (!new_highscore)
+        {
+            std::istringstream iss {highscores.back()};
+            std::string throwaway{};
+            double worst_time{};
+            iss >> throwaway >> worst_time;
+            if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
+            {
+                new_highscore = true;
+                new_highscore_time = left_slope->context.goal_time.asSeconds();
+            }
+            else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
+            {
+                new_highscore = true;
+                new_highscore_time = right_slope->context.goal_time.asSeconds();
+            }
+        }
+    }
 }
 
 void Game_State::render(sf::RenderWindow& window)
@@ -192,6 +233,10 @@ void Game_State::render(sf::RenderWindow& window)
             window.draw(prompt);
             window.draw(typed_name);
         }
+    }
+    if (!game_started)
+    {
+        window.draw(digit);
     }
 }
 
@@ -235,7 +280,72 @@ void Game_State::sort_highscores(std::vector<std::string>)
         }
     }
     outFile.close();
+}
 
+void Game_State::create_track()
+{
+    srand(time(NULL));
+    int track_length {5000};
+    int modifier_xpos{};
+    int modifier_ypos{500};
+    
+    vector<string> StatObjs {"Hole", "Tire"};
+    vector<string> MovObjs {"Chalmerist", "Kir", "Can", "Snowball"};
+    
+    ofstream mod_info ("track.txt");
+    if (!mod_info.is_open())
+    {
+        throw runtime_error{"trackinfo_file couldn't be opened!"};
+    }
+    else
+    {
+        int x{0};
+        for(modifier_ypos = 600; modifier_ypos < (track_length-400); modifier_ypos = modifier_ypos + 100)
+        {
+            modifier_xpos =  30 + rand()%540;
+            modifier_ypos = modifier_ypos + rand()%50;
+            mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+            if (x%4 == 0)
+                {
+                    int modifier_xpos2{0};
+                    modifier_xpos2 = 30 + rand()%540;
+                    if (modifier_xpos2 > 540)
+                        {
+                            modifier_xpos2 - 580;
+                        }
+                    mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos2 << ' ' << modifier_ypos << '\n';
+                }
+            x = x + 1;
+        }
+        for(modifier_ypos = 1000; modifier_ypos < (track_length-100); modifier_ypos = modifier_ypos + 450)
+        {
+            modifier_xpos =  30 + rand()%540;
+            modifier_ypos = modifier_ypos + rand()%100;
+
+            int randValue{};
+            randValue = rand() % 100 + 1;
+
+            string selectedObject{};
+            if (randValue <= 40) {
+                selectedObject = "Can";  // 30% chance for Can
+            } else if (randValue <= 65) {
+                selectedObject = "Kir";  // 30% chance for Kir
+            } else if (randValue <= 85) {
+                selectedObject = "Chalmerist";  // 20% chance for Kir
+            } else {
+                selectedObject = "Snowball";  // 20% chance for Snowball
+            }
+
+            mod_info << selectedObject << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+        }
+    }
+    mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
+    mod_info << "Snowball" << " 284" << ' ' << 500 << '\n';
+
+    //skapa random genererade däkc och hål. 
+    //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
+    //x-koordinat slumpas utifrån context.left_bound() och right_bound()
+    //spara i txt-fil.
 }
 
 
@@ -246,7 +356,7 @@ Menu_State::Menu_State(sf::RenderWindow& window)
 {
     if (!texture.loadFromFile("y6_logo.png"))
     {
-        throw std::runtime_error("Kan inte öppna: y6_logo.png");
+        throw runtime_error("Kan inte öppna: y6_logo.png");
     }
 
     // Y6 logo
@@ -336,7 +446,7 @@ void Menu_State::move_down()
     }
 }
 
-void Menu_State::handle(sf::Event event, std::stack<State*>& stack )
+void Menu_State::handle(sf::Event event, stack<State*>& stack )
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -404,7 +514,7 @@ Highscore::Highscore(sf::RenderWindow& window)
 
     std::vector<std::string> highscores {read_highscore()};
 
-    for (int i = 0; i < highscores.size() ; ++i)
+    for (unsigned int i = 0; i < highscores.size() ; ++i)
     {
         score[i].setFont(font);
         score[i].setFillColor(sf::Color::Black);
@@ -422,7 +532,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     instruction.setPosition(window_size.x / 2, window_size.y / 12);
 }
 
-void Highscore::handle(sf::Event event, std::stack<State*>& stack)
+void Highscore::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -434,7 +544,7 @@ void Highscore::handle(sf::Event event, std::stack<State*>& stack)
     }
 }
 
-void Highscore::update(sf::Time delta)
+void Highscore::update([[maybe_unused]]sf::Time delta)
 {
 
 }
@@ -497,7 +607,7 @@ Controls::Controls(sf::RenderWindow& window)
 
 }
 
-void Controls::handle(sf::Event event, std::stack<State*>& stack)
+void Controls::handle(sf::Event event, stack<State*>& stack)
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -515,7 +625,7 @@ void Controls::handle(sf::Event event, std::stack<State*>& stack)
     }
 }
 
-void Controls::update(sf::Time delta)
+void Controls::update([[maybe_unused]]sf::Time delta)
 {
 
 }

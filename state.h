@@ -44,6 +44,7 @@ public:
     Slope* right_slope{};
 
 private:
+    void create_track();
     void sort_highscores(std::vector<std::string>);
 
     sf::Text p1_text;
@@ -56,6 +57,13 @@ private:
     bool new_highscore;
     double new_highscore_time;
     std::vector<std::string> highscores;
+
+    bool game_started;
+    sf::Clock clock;
+    sf::Texture one;
+    sf::Texture two;
+    sf::Texture three;
+    sf::Sprite digit;
 };
 
 class Menu_State : public State

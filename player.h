@@ -8,26 +8,20 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, Context context); //x och ypos behövs inte!!
-                                                        //ändra sen så den tar fil som inparameter!!
+    Player(double xpos, double ypos, float scale = 0.05, std::string filename = "skier.png", std::string filename2 = "skier_bw.png", std::string filename3 = "skier_saturated.png"); //x och ypos behövs inte!!
     ~Player() = default;
 
-    bool handle(sf::Event event, Context& context) override;
+    void handle(sf::Event event, Context& context);
     void update(sf::Time delta, Context& context) override;
-    void render(sf::RenderWindow& window) override;
-    void throw_snowball();
     void perform_collision(Game_Object* const& other, Context& context) override;
-    double get_width() const;
-    double get_height() const;
     bool out_of_bounds(Context const& context);
-    sf::FloatRect bounds() const;
+    void stop_effect(Game_Object*& object, Context const& context);
 
 private:
-   double height{};
-   double width{};
-   sf::Sprite sprite;
-   sf::Texture texture;
- 
+    sf::Vector2f old_position{};
+    float x_speed;
+    sf::Texture texture2{};
+    sf::Texture texture3{};
 };
 
 #endif

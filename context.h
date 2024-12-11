@@ -13,6 +13,7 @@ struct Context
 
     std::vector<Game_Object*> mod_lst{};
     Game_Object* player;
+    Game_Object* goal;
     std::vector<Game_Object*> snowball_lst{}; //aktiva snöbollar
     std::vector<Game_Object*> active_temp_mods{}; //aktiva temporary_modifiers
 
@@ -21,8 +22,6 @@ struct Context
     double base_speed{};
 
     bool side {}; // true ger vänster
-
-    Game_Object* active_mod{};
 
     sf::Clock clock;
 
@@ -39,6 +38,8 @@ struct Context
     int coll_count{};
 
     sf::Time goal_time{};
+
+    double side_tire_size{};
 };
 
 #endif
