@@ -45,7 +45,7 @@ public:
 
 private:
     void create_track();
-    void sort_highscores(std::vector<std::string>);
+    void sort_highscores();
 
     sf::Text p1_text;
     sf::Text p2_text;

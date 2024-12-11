@@ -138,8 +138,8 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
             {
                 if (event.text.unicode == '\r' || event.text.unicode == '\n') 
                 {
-                    sort_highscores(highscores);
-                    delete stack.top();
+                    sort_highscores();
+                    //delete stack.top();
                     stack.pop();
                 }
                 else if (event.text.unicode == '\b' && !name.empty()) 
@@ -160,10 +160,11 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
                 delete stack.top();
                 stack.pop();
             }
-            
-        }
+        }   
+
     }
-    }
+}
+
 
 void Game_State::update(sf::Time delta)
 {
@@ -199,11 +200,13 @@ void Game_State::update(sf::Time delta)
             {
                 new_highscore = true;
                 new_highscore_time = left_slope->context.goal_time.asSeconds();
+                cout << "left slope: " << new_highscore_time << endl;
             }
             else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
             {
                 new_highscore = true;
                 new_highscore_time = right_slope->context.goal_time.asSeconds();
+                cout << "right slope: " << new_highscore_time << endl;
             }
         }
     }
@@ -240,16 +243,16 @@ void Game_State::render(sf::RenderWindow& window)
     }
 }
 
-void Game_State::sort_highscores(std::vector<std::string>)
+void Game_State::sort_highscores()
 {
     double time {};
     std::string throwaway;
-    bool inserted = false; // Flag to track if a high score has been inserted
+    bool inserted = false;
 
     for (unsigned int i = 0; i < highscores.size(); i++)
     {
         std::istringstream iss {highscores.at(i)};
-        iss >> throwaway >> time; // Extract name and time
+        iss >> throwaway >> time; 
 
         if (time > new_highscore_time && !inserted)
         {
@@ -267,7 +270,7 @@ void Game_State::sort_highscores(std::vector<std::string>)
 
     if (!outFile)
     {
-        throw std::runtime_error("Kan inte öppna: font.ttf");
+        throw std::runtime_error("Kan inte öppna: highscore.txt");
     }
 
     for (unsigned int i = 0; i < highscores.size(); ++i) 
