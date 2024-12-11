@@ -45,18 +45,6 @@ public:
 
 private:
     void create_track();
-    void sort_highscores();
-
-    sf::Text p1_text;
-    sf::Text p2_text;
-
-    sf::Text prompt;
-    sf::Text typed_name;
-    std::string name;
-
-    bool new_highscore;
-    double new_highscore_time;
-    std::vector<std::string> highscores;
 
     bool game_started;
     sf::Clock clock;
@@ -64,6 +52,37 @@ private:
     sf::Texture two;
     sf::Texture three;
     sf::Sprite digit;
+};
+
+class Game_over : public State
+{
+public:
+    Game_over(double left_time, double right_time);
+    ~Game_over() = default;
+
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+
+private:
+    double left_time;
+    double right_time;
+    std::vector<std::string> highscores;
+
+
+    void sort_highscores();
+
+    sf::Text prompt;
+    sf::Text typed_name;
+    std::string name;
+
+
+    sf::Text p1_text;
+    sf::Text p2_text;
+
+    bool new_highscore;
+    double new_highscore_time;
+
 };
 
 class Menu_State : public State

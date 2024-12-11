@@ -52,32 +52,9 @@ std::vector<std::string> State::read_highscore()
     return scores;
 }
 
-
-
-// GAME_STATE
-/*___________________________________________________________________________________________________________*/
-Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}, clock{}, game_started{false}
+Game_over::Game_over(double left_time, double right_time)
+    : State{window}, left_time{left_time}, right_time{right_time}, highscores{read_highscore()}
 {
-    if (!one.loadFromFile("one.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-    if (!two.loadFromFile("two.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-    if (!three.loadFromFile("three.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-
-    digit.setTexture(three);
-    sf::Vector2u texture_size { one.getSize() };
-    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    digit.setPosition(window_size.x / 2, window_size.y / 2);
-    digit.setScale(1.5, 1.5);
-
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
@@ -105,6 +82,153 @@ Game_State::Game_State(sf::RenderWindow& window)
     sf::FloatRect typed_text_bounds {typed_name.getGlobalBounds()};
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
+}
+
+void Game_over::handle(sf::Event event, stack<State*>& stack)
+{   
+    if ( new_highscore )
+    {
+        if (event.type == sf::Event::TextEntered) 
+        {
+            if (event.text.unicode == '\r' || event.text.unicode == '\n') 
+            {
+                sort_highscores();
+                //delete stack.top();
+                stack.pop();
+            }
+            else if (event.text.unicode == '\b' && !name.empty()) 
+            {
+                name.pop_back(); // Ta bort sista bokstaven
+            }
+            else if (event.text.unicode < 128) 
+            { 
+                name += static_cast<char>(event.text.unicode);
+            }
+        }
+        typed_name.setString(name);
+    }
+    else
+    {
+        if (event.key.code == sf::Keyboard::Enter)
+        {
+            //delete stack.top();
+            stack.pop();
+        }
+    }
+}
+
+void Game_over::update(sf::Time delta)
+{
+    if (!new_highscore)
+    {
+        std::istringstream iss {highscores.back()};
+        std::string throwaway{};
+        double worst_time{};
+        iss >> throwaway >> worst_time;
+        if (worst_time > left_time && left_time < right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = left_time;
+            cout << "left slope: " << new_highscore_time << endl;
+        }
+        else if (worst_time > right_time && left_time > right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = right_time;
+            cout << "right slope: " << new_highscore_time << endl;
+        }
+    }
+}
+
+void Game_over::render(sf::RenderWindow& window)
+{
+    window_size = window.getSize();
+
+     
+    window.draw(menu_background);
+
+    if ( left_time < right_time )
+    {
+        window.draw(p1_text);
+    }
+    else
+    {
+        window.draw(p2_text);
+    }
+    if (new_highscore)
+    {
+        window.draw(prompt);
+        window.draw(typed_name);
+    }
+    
+}
+
+void Game_over::sort_highscores()
+{
+    double time {};
+    std::string throwaway;
+    bool inserted = false;
+
+    for (unsigned int i = 0; i < highscores.size(); i++)
+    {
+        std::istringstream iss {highscores.at(i)};
+        iss >> throwaway >> time; 
+
+        if (time > new_highscore_time && !inserted)
+        {
+            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            inserted = true;
+            if (highscores.size() > 6)
+            {
+                highscores.pop_back();
+            }
+            break;
+        }
+    }
+
+    std::ofstream outFile("highscore.txt");
+
+    if (!outFile)
+    {
+        throw std::runtime_error("Kan inte öppna: highscore.txt");
+    }
+
+    for (unsigned int i = 0; i < highscores.size(); ++i) 
+    {
+        outFile << highscores[i];
+        
+        if (i < highscores.size() - 1) 
+        {
+            outFile << '\n';
+        }
+    }
+    outFile.close();
+}
+
+// GAME_STATE
+/*___________________________________________________________________________________________________________*/
+Game_State::Game_State(sf::RenderWindow& window)
+: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, clock{}, game_started{false}
+{
+    if (!one.loadFromFile("one.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!two.loadFromFile("two.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+    if (!three.loadFromFile("three.png"))
+    {
+        throw  runtime_error{"Couldn't open filename"};
+    }
+
+    
+    digit.setTexture(three);
+    sf::Vector2u texture_size { one.getSize() };
+    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    digit.setPosition(window_size.x / 2, window_size.y / 2);
+    digit.setScale(1.5, 1.5);
 
     create_track();
 }
@@ -131,39 +255,17 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
     }
     
     if (left_slope->context.game_finished && right_slope->context.game_finished)
-    {   
-        if ( new_highscore )
+    {
+        if (event.key.code == sf::Keyboard::Enter)
         {
-            if (event.type == sf::Event::TextEntered) 
-            {
-                if (event.text.unicode == '\r' || event.text.unicode == '\n') 
-                {
-                    sort_highscores();
-                    //delete stack.top();
-                    stack.pop();
-                }
-                else if (event.text.unicode == '\b' && !name.empty()) 
-                {
-                    name.pop_back(); // Ta bort sista bokstaven
-                }
-                else if (event.text.unicode < 128) 
-                { 
-                    name += static_cast<char>(event.text.unicode);
-                }
-            }
-            typed_name.setString(name);
+            State* wtf {new Game_over{left_slope->context.goal_time.asSeconds(), right_slope->context.goal_time.asSeconds()}};
+            delete stack.top();
+            stack.pop();
+            stack.push(wtf);
         }
-        else
-        {
-            if (event.key.code == sf::Keyboard::Enter)
-            {
-                delete stack.top();
-                stack.pop();
-            }
-        }   
-
     }
-}
+    
+}   
 
 
 void Game_State::update(sf::Time delta)
@@ -190,25 +292,6 @@ void Game_State::update(sf::Time delta)
             left_slope->update(delta);
             right_slope->update(delta);
         }
-        else if (!new_highscore)
-        {
-            std::istringstream iss {highscores.back()};
-            std::string throwaway{};
-            double worst_time{};
-            iss >> throwaway >> worst_time;
-            if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
-            {
-                new_highscore = true;
-                new_highscore_time = left_slope->context.goal_time.asSeconds();
-                cout << "left slope: " << new_highscore_time << endl;
-            }
-            else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
-            {
-                new_highscore = true;
-                new_highscore_time = right_slope->context.goal_time.asSeconds();
-                cout << "right slope: " << new_highscore_time << endl;
-            }
-        }
     }
 }
 
@@ -222,67 +305,11 @@ void Game_State::render(sf::RenderWindow& window)
     if (left_slope->context.game_finished && right_slope->context.game_finished)
     {   
         window.draw(menu_background);
-
-        if ( left_slope->context.goal_time < right_slope->context.goal_time )
-        {
-            window.draw(p1_text);
-        }
-        else
-        {
-            window.draw(p2_text);
-        }
-        if (new_highscore)
-        {
-            window.draw(prompt);
-            window.draw(typed_name);
-        }
     }
     if (!game_started)
     {
         window.draw(digit);
     }
-}
-
-void Game_State::sort_highscores()
-{
-    double time {};
-    std::string throwaway;
-    bool inserted = false;
-
-    for (unsigned int i = 0; i < highscores.size(); i++)
-    {
-        std::istringstream iss {highscores.at(i)};
-        iss >> throwaway >> time; 
-
-        if (time > new_highscore_time && !inserted)
-        {
-            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
-            inserted = true;
-            if (highscores.size() > 6)
-            {
-                highscores.pop_back();
-            }
-            break;
-        }
-    }
-
-    std::ofstream outFile("highscore.txt");//, std::ofstream::trunc);
-
-    if (!outFile)
-    {
-        throw std::runtime_error("Kan inte öppna: highscore.txt");
-    }
-
-    for (unsigned int i = 0; i < highscores.size(); ++i) 
-    {
-        outFile << highscores[i];
-        
-        if (i < highscores.size() - 1) 
-        {
-            outFile << '\n';
-        }
-    }
-    outFile.close();
 }
 
 void Game_State::create_track()
