@@ -57,7 +57,7 @@ private:
 class Game_over : public State
 {
 public:
-    Game_over(double left_time, double right_time);
+    Game_over(sf::RenderWindow& window, double timeL, double timeR);
     ~Game_over() = default;
 
     void handle(sf::Event event, std::stack<State*>& stack) override;
@@ -69,13 +69,12 @@ private:
     double right_time;
     std::vector<std::string> highscores;
 
-
+    void check_highscore();
     void sort_highscores();
 
     sf::Text prompt;
     sf::Text typed_name;
     std::string name;
-
 
     sf::Text p1_text;
     sf::Text p2_text;

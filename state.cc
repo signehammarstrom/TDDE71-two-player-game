@@ -52,8 +52,8 @@ std::vector<std::string> State::read_highscore()
     return scores;
 }
 
-Game_over::Game_over(double left_time, double right_time)
-    : State{window}, left_time{left_time}, right_time{right_time}, highscores{read_highscore()}
+Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
+    : State{window}, left_time{timeL}, right_time{timeR}, highscores{read_highscore()}
 {
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
@@ -82,6 +82,9 @@ Game_over::Game_over(double left_time, double right_time)
     sf::FloatRect typed_text_bounds {typed_name.getGlobalBounds()};
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
+
+    check_highscore();
+
 }
 
 void Game_over::handle(sf::Event event, stack<State*>& stack)
@@ -93,7 +96,7 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
             if (event.text.unicode == '\r' || event.text.unicode == '\n') 
             {
                 sort_highscores();
-                //delete stack.top();
+                delete stack.top();
                 stack.pop();
             }
             else if (event.text.unicode == '\b' && !name.empty()) 
@@ -109,23 +112,27 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
     }
     else
     {
-        if (event.key.code == sf::Keyboard::Enter)
+        if (event.type == sf::Event::KeyReleased)
         {
-            //delete stack.top();
-            stack.pop();
+            if (event.key.code == sf::Keyboard::Enter)
+            {
+                delete stack.top();
+                stack.pop();
+            }
         }
     }
 }
 
-void Game_over::update(sf::Time delta)
+void Game_over::check_highscore()
 {
-    if (!new_highscore)
+
+    std::istringstream iss {highscores.back()};
+    std::string throwaway{};
+    double worst_time{};
+
+    if (!(iss >> throwaway >> worst_time))
     {
-        std::istringstream iss {highscores.back()};
-        std::string throwaway{};
-        double worst_time{};
-        iss >> throwaway >> worst_time;
-        if (worst_time > left_time && left_time < right_time)
+        if (left_time < right_time)
         {
             new_highscore = true;
             new_highscore_time = left_time;
@@ -138,6 +145,28 @@ void Game_over::update(sf::Time delta)
             cout << "right slope: " << new_highscore_time << endl;
         }
     }
+    else
+    {
+        if (worst_time > left_time && left_time < right_time)
+        {
+            iss >> throwaway >> worst_time;
+            new_highscore = true;
+            new_highscore_time = left_time;
+            cout << "left slope: " << new_highscore_time << endl;
+        }
+        else if (worst_time > right_time && left_time > right_time)
+        {
+            iss >> throwaway >> worst_time;
+            new_highscore = true;
+            new_highscore_time = right_time;
+            cout << "right slope: " << new_highscore_time << endl;
+        }
+    }
+}
+
+void Game_over::update(sf::Time delta)
+{
+    
 }
 
 void Game_over::render(sf::RenderWindow& window)
@@ -256,12 +285,15 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
     
     if (left_slope->context.game_finished && right_slope->context.game_finished)
     {
-        if (event.key.code == sf::Keyboard::Enter)
+        if (event.type == sf::Event::KeyReleased)
         {
-            State* wtf {new Game_over{left_slope->context.goal_time.asSeconds(), right_slope->context.goal_time.asSeconds()}};
-            delete stack.top();
-            stack.pop();
-            stack.push(wtf);
+            if (event.key.code == sf::Keyboard::Enter)
+            {
+                State* wtf {new Game_over{window, left_slope->context.goal_time.asSeconds(), right_slope->context.goal_time.asSeconds()}};
+                delete stack.top();
+                stack.pop();
+                stack.push(wtf);
+            }
         }
     }
     
@@ -297,7 +329,7 @@ void Game_State::update(sf::Time delta)
 
 void Game_State::render(sf::RenderWindow& window)
 {
-    sf::Vector2u const window_size { window.getSize() };
+    window_size = window.getSize();
     
     left_slope->render(window);
     right_slope->render(window);

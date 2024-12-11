@@ -1,6 +1,6 @@
-OllegerAXel 0.000000
-Elvira 0.000000
-elvira 0.000000
-yoooo 0.000000
-hej 0.000000
-hej 7.067017
+adam 24.686760
+Felix 27.990265
+OllegerAXel 30.000000
+Elvira 40.000000
+elvira 50.000000
+yoooo 60.000000
