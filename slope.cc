@@ -41,7 +41,7 @@ Slope::Slope(bool side)
     
     read_track(context);
     sf::Vector2u window_size {1136, 640};
-    context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 150};
+    context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6};
     context.y_speed = 200; 
     context.base_speed = context.y_speed;
     context.is_colliding = false;
@@ -99,6 +99,25 @@ void Slope::update(sf::Time delta)
 {   
     if (!context.game_finished)
     {
+        if (context.y_speed == 0)
+        {
+            if (context.stuck_time.asSeconds() == 0)
+            {
+                context.stuck_clock.restart();
+            }
+            context.stuck_time = context.stuck_clock.getElapsedTime();
+            if (context.stuck_time.asSeconds() > 3)
+            {
+                context.stuck = true;
+                context.stuck_clock.restart();
+            }
+        }
+        else
+        {
+            context.stuck_clock.restart();
+            context.stuck_time = sf::Time{};
+
+        }
         context.coll_count = 0;
         for (Game_Object* obstacle : context.mod_lst)
         {
