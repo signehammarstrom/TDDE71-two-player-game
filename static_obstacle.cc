@@ -36,6 +36,10 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
     Player* player = dynamic_cast<Player*>(other);
     if (player)
     {
+        if (context.y_speed != 0)
+        {
+            context.prev_speed = context.y_speed;
+        }
         sf::FloatRect bounds = sprite.getGlobalBounds();
         sf::FloatRect other_bounds = other->bounds();
         if (other_bounds.top + other_bounds.height <= bounds.top + 5)
@@ -66,6 +70,10 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
     Player* player = dynamic_cast<Player*>(other);
     if (player)
     {
+        if (context.y_speed != 0)
+        {
+            context.prev_speed = context.y_speed;
+        }
         sf::FloatRect objbounds = bounds();
         sf::FloatRect other_bounds = other->bounds();
         if (other_bounds.top + other_bounds.height <= objbounds.top + 5)
@@ -74,6 +82,7 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
             context.is_colliding = true;
             context.coll_count += 1;
         }
+
     }
     Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
     if (snowball)

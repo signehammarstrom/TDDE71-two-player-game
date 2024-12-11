@@ -44,6 +44,7 @@ Slope::Slope(bool side)
     context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 150};
     context.y_speed = 300; 
     context.base_speed = context.y_speed;
+    context.prev_speed = context.y_speed;
     context.is_colliding = false;
     context.coll_count = 0;
 
@@ -133,7 +134,7 @@ void Slope::update(sf::Time delta)
         {
             if(context.is_colliding == true)
             {
-                context.y_speed = context.base_speed;
+                context.y_speed = context.prev_speed;
                 context.is_colliding = false;
             }
         }
