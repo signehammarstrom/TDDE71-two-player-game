@@ -21,6 +21,8 @@ struct Context
 
     double base_speed{};
 
+    double prev_speed{};
+
     bool side {}; // true ger vänster
 
     sf::Clock clock;
@@ -40,6 +42,13 @@ struct Context
     sf::Time goal_time{};
 
     double side_tire_size{};
+
+    bool stuck{};
+
+    sf::Clock stuck_clock{};
+    sf::Time stuck_time{};
+
+
 };
 
 #endif

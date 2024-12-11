@@ -37,18 +37,28 @@ void Snow_Text::render(sf::RenderWindow& window)
 
 Background::Background(bool side)
 {
-if (!texture_background.loadFromFile("white_background.png"))
-    {
-        throw std::runtime_error("Kan inte öppna: white_background.png");
-    }
     double left_bound{0};
-    if (!side)
+    if(side) //Left slope
     {
-        left_bound = 1136/2;
+        if (!texture_background.loadFromFile("leftlane_signe.png"))
+            {
+                throw std::runtime_error("Kan inte öppna: leftlane_signe.png");
+            }
+    }
+    else //Right slope
+    {
+        if (!texture_background.loadFromFile("rightlane_signe.png"))
+            {
+                throw std::runtime_error("Kan inte öppna: rightlane_signe.png");
+            }
+            left_bound = 1136/2;
     }
 
     background.setTexture(texture_background);
     background.setPosition(left_bound, 0);
+    sf::Vector2u texture_size { texture_background.getSize() };
+    float scale {570.0f/texture_size.x};
+    background.setScale(scale, scale);
 }
 
 void Background::update(sf::Time delta, Context& context) 
