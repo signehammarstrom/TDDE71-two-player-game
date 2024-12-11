@@ -45,7 +45,7 @@ void Player::update(sf::Time delta, Context& context)
 {
     old_position = sprite.getPosition();
     float distance {delta.asSeconds() * x_speed};
-    sf::Vector2f old_position {sprite.getPosition()};
+    
 
     if (context.side)
     {
@@ -66,6 +66,7 @@ void Player::update(sf::Time delta, Context& context)
         {
             sprite.move({-distance, 0});
             sprite.setScale(scale, scale);
+            
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {

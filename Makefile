@@ -6,7 +6,7 @@ LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 # Lista över alla objektfiler som ska länkas
 OBJS := main.o player.o game_object.o slope_objects.o modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o state.o slope.o
 
-OBJSPT := player_test.o test_main.o player.o game_object.o  modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o 
+OBJSPT := player_test.o player.o game_object.o  modifier.o snowball_projectile.o moving_object.o static_obstacle.o temporary_modifier.o 
 
 # Huvudmål
 all: game playertest
@@ -46,10 +46,10 @@ slope.o: slope.cc slope.h slope_objects.h context.h
 snowball_projectile.o: snowball_projectile.cc snowball_projectile.h context.h
 	$(CXX) $(CXXFLAGS) -c snowball_projectile.cc
 
-test_main.o: test_main.cc catch.hpp
-	$(CXX) $(CXXFLAGS) -c test_main.cc
+# test_main.o: test_main.cc catch.hpp
+# 	$(CXX) $(CXXFLAGS) -c test_main.cc
 
-player_test.o: player_test.cc 
+player_test.o: player_test.cc context.h
 	$(CXX) $(CXXFLAGS) -c player_test.cc
 
 
