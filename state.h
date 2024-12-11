@@ -142,8 +142,15 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    sf::Text instruction;
-
+    // Texter
+    sf::Text text[14];
+    // Sprites
+    /*
+    sf::Texture white_arrow;
+    sf::Sprite down_arrow;
+    sf::Sprite left_arrow;
+    sf::Sprite right_arrow;
+    */
 };
 
 
