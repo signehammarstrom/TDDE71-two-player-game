@@ -37,7 +37,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float scale, float xspeed,
-         double speedmodifier, std::string filename = "Chalmerist.png");
+         double speedmodifier = 0.5 , std::string filename = "Chalmerist.png");
     ~Chalmerist() = default;
 
 private: 
@@ -51,7 +51,7 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, float scale, float xspeed,
-        double speedmodifier, std::string filename = "eybro.png");
+        double speedmodifier = 0.8, std::string filename = "eybro.png");
     ~Can() = default;
 
 private: 
@@ -65,7 +65,7 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, float scale, float xspeed,
-        double speedmodifier, std::string filename = "kir.png");
+        double speedmodifier = 2, std::string filename = "kir.png");
     ~Kir() = default;
 
 private: 

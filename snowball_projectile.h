@@ -2,9 +2,9 @@
 #define SNOWBALL_PROJECTILE_H
 
 #include <SFML/Graphics.hpp>
-#include "game_object.h"
 #include <iostream>
 #include <cmath>
+#include "game_object.h"
 
 class Snowball_Projectile: public Game_Object
 {
