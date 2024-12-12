@@ -15,7 +15,7 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
 int main() {
 
     std::stack<State*> states{};
-
+    bool wtf {};
     states.push(new Menu_State{window});
 
     sf::Clock clock;
@@ -26,15 +26,9 @@ int main() {
         {
             if (event.type == sf::Event::Closed)
             {
-                while (!states.empty())
-                {
-                    delete states.top();
-                    states.pop();
-                }
-                window.close();
+                wtf = true;  
             }
             states.top()->handle(event, states);
-
         }
 
         states.top()->update(clock.restart());
@@ -42,12 +36,18 @@ int main() {
         window.clear();
         states.top()->render(window);
         window.display();
+        
+        if (wtf)
+        {
+            break;
+        }
     }
-
-    /*while (!states.empty())
+    
+    while (!states.empty())
     {
         delete states.top();
-        states.top() = nullptr;
         states.pop();
-    }*/
+    }
+    window.close();
+
 }
