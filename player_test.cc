@@ -16,7 +16,7 @@
 #include "player.h"
 #include "snowball_projectile.h"
 
-
+using namespace std;
 
 unsigned const screen_width  { 800 };
 unsigned const screen_height { 800 };
@@ -24,6 +24,7 @@ unsigned const screen_height { 800 };
 void handle(sf::Event event, Context& context);
 void render(sf::RenderWindow& window, Context& context);
 void update(sf::Time delta, Context& context);
+void initiate_context(Context& context, sf::RenderWindow& window);
 
 int main()
 {
@@ -32,23 +33,7 @@ int main()
                               "playertest" };
 
     Context context {};
-    context.y_speed = 300;                        
-    sf::Vector2u window_size { window.getSize() };
-    context.side = false;
-    context.side_tire_size = 0;
-    context.left_bound = 0;
-    context.right_bound = 640;
-    context.snow_count = 3;
-
-    context.player = new Player(window_size.x/2, window_size.y/6, 200);
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 200));
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 200));
-
-    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 200));
-    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 200));
-    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 200));
-    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 200));
-    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 200));
+    initiate_context(context, window);
 
     sf::Clock clock;    
     while (window.isOpen())
@@ -148,17 +133,17 @@ void update(sf::Time delta, Context& context)
             if (context.mod_lst.at(i)->is_removed())
             {
                 std::swap(context.mod_lst.at(i), context.mod_lst.back());
-                delete context.mod_lst.back(); //Borde vi inte göra nullptr också?
+                delete context.mod_lst.back();
                 context.mod_lst.back() = nullptr;
                 context.mod_lst.pop_back();
             }
         }
         //Ta bort inaktuella snöbollar
-        for (unsigned int i=0; i<context.snowball_lst.size(); i++)
+        for(Game_Object* projectile : context.snowball_lst)
         {
-            if (context.snowball_lst.at(i)->is_removed())
+            if(projectile->is_removed())
             {
-                std::swap(context.snowball_lst.at(i), context.snowball_lst.back());
+                swap(projectile, context.snowball_lst.back());
                 delete context.snowball_lst.back();
                 context.snowball_lst.back() = nullptr;
                 context.snowball_lst.pop_back();
@@ -166,25 +151,26 @@ void update(sf::Time delta, Context& context)
         }
 
         //Ta bort inaktuella temporary modifiers
-
+       
         if(context.active_temp_mods.size() != 0)
         {
-            for(unsigned int i = 0; i<context.active_temp_mods.size(); i++)
+            
+            for(Game_Object* activemod : context.active_temp_mods)
             {
-                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(context.active_temp_mods.at(i));
+                Temporary_Modifier* tempmodtest = dynamic_cast<Temporary_Modifier*>(activemod);
                 if (tempmodtest)
                 {
                     tempmodtest -> remove_if_inactual(context);
                     tempmodtest -> update_time(delta);
                 }
 
-                if(context.active_temp_mods.at(i) -> is_removed())
+                if(activemod -> is_removed())
                 {
                     Player* player = dynamic_cast<Player*>(context.player);
-                    player->stop_effect(context.active_temp_mods.at(i), context);
+                    player->stop_effect(activemod, context);
                     player = nullptr;
 
-                    std::swap(context.active_temp_mods.at(i), context.active_temp_mods.back());
+                    std::swap(activemod, context.active_temp_mods.back());
                     context.active_temp_mods.back() = nullptr;
                     context.active_temp_mods.pop_back();
                 }
@@ -221,4 +207,33 @@ void render(sf::RenderWindow& window, Context& context)
     {
         modifier -> render(window);
     }
+}
+
+void initiate_context(Context& context, sf::RenderWindow& window)
+{
+    context.y_speed = 300;     
+    context.base_speed = context.y_speed;
+    context.prev_speed = context.y_speed;                   
+    sf::Vector2u window_size { window.getSize() };
+    context.side = false;
+    context.side_tire_size = 0;
+    context.left_bound = 0;
+    context.right_bound = screen_width;
+    context.snow_count = 3;
+
+    context.player = new Player(window_size.x/2, window_size.y/6, 100);
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 100));
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 100));
+
+    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 100));
+    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 100));
+    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 100));
+    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 100));
+    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 100));
+    context.mod_lst.push_back(new Can(window_size.x/2, 5*window_size.y, 50, 0, 0.5));
+    context.mod_lst.push_back(new Tire(window_size.x/6, 5.7*window_size.y, 100));
+    context.mod_lst.push_back(new Goal(window_size.x/2, 7*window_size.y, 800));
+    
+    context.mod_lst.push_back(new Can(window_size.x/2, 7.5*window_size.y, 50, 0, 0.5));
+
 }
