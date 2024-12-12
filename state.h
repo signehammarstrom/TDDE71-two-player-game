@@ -76,13 +76,13 @@ private:
 
     sf::Text prompt;
     sf::Text typed_name;
-    std::string name;
+    std::string name{};
 
     sf::Text p1_text;
     sf::Text p2_text;
 
-    bool new_highscore;
-    double new_highscore_time;
+    bool new_highscore{};
+    double new_highscore_time{};
 
 };
 

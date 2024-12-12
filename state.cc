@@ -480,7 +480,7 @@ Menu_State::Menu_State(sf::RenderWindow& window)
 
     // Pulserande text
     text.setFont(font);
-    text.setString("Press 'Enter' to interact!\nUse arrows to navigate!");
+    text.setString("Press 'Enter' to interact!\nUse arrows to navigate!\nPress 'esc' to exit");
     text.setFillColor(sf::Color(0, 255, 255));
     
     // Överskrift
@@ -647,7 +647,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     }
 
     instruction.setFont(font);
-    instruction.setString("Press 'esc' to go back");
+    instruction.setString("Press 'Q' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
@@ -656,9 +656,9 @@ Highscore::Highscore(sf::RenderWindow& window)
 
 void Highscore::handle(sf::Event event, stack<State*>& stack)
 {
-    if (event.type == sf::Event::KeyPressed)
+    if (event.type == sf::Event::KeyReleased)
     {
-        if (event.key.code == sf::Keyboard::Key::Escape)
+        if (event.key.code == sf::Keyboard::Key::Q)
         {
             State* next_state {new Menu_State{window}};
             delete stack.top();
@@ -705,7 +705,7 @@ Controls::Controls(sf::RenderWindow& window)
 
 
     // Sätt strängar
-    text[0].setString("Press 'esc' to go back!"); // Överskrift
+    text[0].setString("Press 'Q' to go back!"); // Överskrift
     text[1].setString("PLAYER 1\n........");
     text[2].setString("PLAYER 2\n........");
 
@@ -748,9 +748,9 @@ Controls::Controls(sf::RenderWindow& window)
 
 void Controls::handle(sf::Event event, stack<State*>& stack)
 {
-    if (event.type == sf::Event::KeyPressed)
+    if (event.type == sf::Event::KeyReleased)
     {
-        if (event.key.code == sf::Keyboard::Key::Escape)
+        if (event.key.code == sf::Keyboard::Key::Q)
         {
             State* next_state {new Menu_State{window}};
             delete stack.top();
