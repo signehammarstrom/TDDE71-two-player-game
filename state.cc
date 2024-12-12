@@ -1,5 +1,5 @@
 #include <stdexcept>
-#include <cmath> // behöver std::sin
+#include <cmath> 
 #include "state.h"
 #include <fstream>
 #include <vector>
@@ -17,7 +17,7 @@ using namespace std;
 /*___________________________________________________________________________________________________________*/
 
 State::State(sf::RenderWindow& window)
-: window {window}
+: window {window}, window_size{window.getSize()}
 {
     if (!menu_background_texture.loadFromFile("background_signe.png"))
     {
@@ -32,7 +32,7 @@ State::State(sf::RenderWindow& window)
     sf::Vector2u texture_size { menu_background_texture.getSize() };
     float scale {1200.0f/texture_size.x};
     menu_background.setScale(scale, scale);
-    window_size = window.getSize();
+    // window_size = window.getSize();
 }
 
 std::vector<std::string> State::read_highscore()
@@ -59,14 +59,14 @@ Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
     : State{window}, left_time{timeL}, right_time{timeR}, highscores{read_highscore()}
 {
     p2_text.setFont(font);
-    p2_text.setString("SPELARE 2 VINNER!!!");
+    p2_text.setString("PLAYER 2 WINS!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect p2_text_bounds {p2_text.getGlobalBounds()};
     p2_text.setOrigin(p2_text_bounds.width / 2, p2_text_bounds.height / 2);
     p2_text.setPosition(window_size.x / 2, window_size.y / 4);
 
     p1_text.setFont(font);
-    p1_text.setString("SPELARE 1 VINNER!!!");
+    p1_text.setString("PLAYER 1 WINS!!!");
     p1_text.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect p1_text_bounds {p1_text.getGlobalBounds()};
     p1_text.setOrigin(p1_text_bounds.width / 2, p1_text_bounds.height / 2);
@@ -84,7 +84,7 @@ Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
     typed_name.setFillColor(sf::Color::Black);
     sf::FloatRect typed_text_bounds {typed_name.getGlobalBounds()};
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
-    typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
+    typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 20, window_size.y / 2 - 10 );
 
     check_highscore();
 
@@ -102,11 +102,6 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
                 sort_highscores();
                 push_menu = true;
                 new_highscore = false;
-                /*State* next_state{new Menu_State{window}};
-                //delete stack.top();
-                stack.pop();
-                stack.push(next_state);
-                next_state = nullptr;*/
             }
             else if (event.text.unicode == '\b' && !name.empty()) 
             {
@@ -148,42 +143,36 @@ void Game_over::check_highscore()
         {
             new_highscore = true;
             new_highscore_time = left_time;
-            cout << "left slope: " << new_highscore_time << endl;
         }
-        else if (worst_time > right_time && left_time > right_time)
+        else if (left_time > right_time)
         {
             new_highscore = true;
             new_highscore_time = right_time;
-            cout << "right slope: " << new_highscore_time << endl;
         }
     }
     else
     {
-        iss >> throwaway >> worst_time;
-
         if (worst_time > left_time && left_time < right_time)
         {
             new_highscore = true;
             new_highscore_time = left_time;
-            cout << "left slope: " << new_highscore_time << endl;
         }
         else if (worst_time > right_time && left_time > right_time)
         {
             new_highscore = true;
             new_highscore_time = right_time;
-            cout << "right slope: " << new_highscore_time << endl;
         }
     }
 }
 
-void Game_over::update(sf::Time delta)
+void Game_over::update([[maybe_unused]]sf::Time delta)
 {
-    
+    // window_size = window.getSize();
 }
 
 void Game_over::render(sf::RenderWindow& window)
 {
-    window_size = window.getSize();
+    // window_size = window.getSize();
 
      
     window.draw(menu_background);
@@ -264,6 +253,18 @@ Game_State::Game_State(sf::RenderWindow& window)
         throw  runtime_error{"Couldn't open filename: three_signe.png"};
     }
 
+    // Instruktioner
+    text.setFont(font);
+    text.setString("GAME OVER!!!\nPress 'Enter' to continue!");
+    text.setFillColor(sf::Color(0, 255, 255));
+    
+    text.setCharacterSize(35);
+
+    sf::FloatRect text_bounds { text.getGlobalBounds() };
+  
+    text.setOrigin(text_bounds.width / 2, text_bounds.height / 2);
+    text.setPosition(window_size.x / 2, 4 * window_size.y / 8);
+
     
     digit.setTexture(three);
     sf::Vector2u texture_size { one.getSize() };
@@ -278,7 +279,6 @@ Game_State::Game_State(sf::RenderWindow& window)
 
 Game_State::~Game_State()
 {
-    std::cout << "Game state destruktor körs" << std::endl;
     delete left_slope;
     delete right_slope;
 }
@@ -305,8 +305,6 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
             {
                 double left{left_slope->context.goal_time.asSeconds()};
                 double right{right_slope->context.goal_time.asSeconds()};
-                cout << "Vänster tid: " << left << endl;
-                cout << "Höger tid: " << right << endl;
                 State* wtf {new Game_over{window, left, right}};
                 delete stack.top();
                 stack.pop();
@@ -319,7 +317,8 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
 
 
 void Game_State::update(sf::Time delta)
-{
+{   
+    // window_size = window.getSize();
     if (!game_started)
     {
         if(clock.getElapsedTime().asSeconds() > 3)
@@ -348,7 +347,7 @@ void Game_State::update(sf::Time delta)
 
 void Game_State::render(sf::RenderWindow& window)
 {
-    window_size = window.getSize();
+    // window_size = window.getSize();
     
     left_slope->render(window);
     right_slope->render(window);
@@ -356,6 +355,7 @@ void Game_State::render(sf::RenderWindow& window)
     if (left_slope->context.game_finished && right_slope->context.game_finished)
     {   
         window.draw(menu_background);
+        window.draw(text);
     }
     if (!game_started)
     {
@@ -453,74 +453,34 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     for (unsigned int i = 0; i < menu_text.size(); i++)
     {
         menu[i].setFont(font);
-        menu[i].setFillColor(sf::Color::Black);
+        if ( i == 0)
+        {
+            menu[i].setFillColor(sf::Color::Blue);
+        }
+        else
+        {
+            menu[i].setFillColor(sf::Color::Black);
+        }
+
         menu[i].setString(menu_text.at(i));
         t_bounds = menu[i].getLocalBounds();
         menu[i].setOrigin(t_bounds.width / 2, t_bounds.height / 2);
-        menu[i].setPosition(window_size.x / 2, window_size.y / 2);
+        menu[i].setPosition(window_size.x / 2, window_size.y * (i + 1) / 4);
 
         scale_x = (t_bounds.width + 70)/button_size.x;
         scale_y = (t_bounds.height + 50)/button_size.y;
         menu_buttons[i].setTexture(texture_buttons);
         menu_buttons[i].setScale(scale_x, scale_y);
         t_bounds_b = menu_buttons[i].getLocalBounds();
-        menu_buttons[i].setOrigin(t_bounds_b.width / 2, t_bounds.height / 2 - 80);
+        menu_buttons[i].setOrigin(t_bounds_b.width / 2, t_bounds.height / 2 + 190);
         menu_buttons[i].setPosition(menu[i].getPosition());
     }
-
-    // Menyalternativ
-    /*menu[0].setFont(font);
-    menu[0].setFillColor(sf::Color::Blue);
-    menu[0].setString("PLAY");
-    sf::FloatRect play_bounds { menu[0].getLocalBounds() };
-    menu[0].setOrigin(play_bounds.width / 2, play_bounds.height / 2);
-    menu[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
-
-
-    float scale_x {(play_bounds.width + 70)/button_size.x};
-    float scale_y {(play_bounds.height + 50)/button_size.y};
-    menu_buttons[0].setTexture(texture_buttons);
-    menu_buttons[0].setScale(scale_x, scale_y);
-    sf::FloatRect play_bounds_b { menu_buttons[0].getLocalBounds() };
-    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 80 );
-    menu_buttons[0].setPosition(menu[0].getPosition());
-    
-    menu[1].setFont(font);
-    menu[1].setFillColor(sf::Color::Black);
-    menu[1].setString("CONTROLS");
-    sf::FloatRect control_bounds { menu[1].getLocalBounds() };
-    menu[1].setOrigin(control_bounds.width / 2, control_bounds.height / 2);
-    menu[1].setPosition(window_size.x / 2, window_size.y / 2);
-
-    scale_x = (control_bounds.width + 70)/button_size.x;
-    scale_y = (control_bounds.height + 50)/button_size.y;
-    menu_buttons[1].setTexture(texture_buttons);
-    menu_buttons[1].setScale(scale_x, scale_y);
-    sf::FloatRect control_bounds_b { menu_buttons[1].getLocalBounds() };
-    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 80);
-    menu_buttons[1].setPosition(menu[1].getPosition());
-    
-
-    menu[2].setFont(font);
-    menu[2].setFillColor(sf::Color::Black);
-    menu[2].setString("HIGHSCORE");
-    sf::FloatRect highscore_bounds { menu[2].getLocalBounds() };
-    menu[2].setOrigin(highscore_bounds.width / 2, highscore_bounds.height / 2);
-    menu[2].setPosition(window_size.x / 2, window_size.y * 3 / 4 );
-
-    scale_x = (highscore_bounds.width + 70)/button_size.x;
-    scale_y = (highscore_bounds.height + 50)/button_size.y;
-    menu_buttons[2].setTexture(texture_buttons);
-    menu_buttons[2].setScale(scale_x, scale_y);
-    sf::FloatRect highscore_bounds_b { menu_buttons[2].getLocalBounds() };
-    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
-    menu_buttons[2].setPosition(menu[2].getPosition());*/
     
     selected_menu = 0;
 
     // Pulserande text
     text.setFont(font);
-    text.setString("Press <Enter> to start!");
+    text.setString("Press 'Enter' to interact!\nUse arrows to navigate!");
     text.setFillColor(sf::Color(0, 255, 255));
     
     // Överskrift
@@ -528,11 +488,13 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setString("EPIC HARDCORE VSR SIMULATOR");
     header.setFillColor(sf::Color(255, 20, 147));
 
+    text.setCharacterSize(15);
+
     sf::FloatRect text_bounds { text.getGlobalBounds() };
     sf::FloatRect header_bounds { header.getGlobalBounds()};
   
     text.setOrigin(text_bounds.width / 2, text_bounds.height / 2);
-    text.setPosition(window_size.x / 2, window_size.y * 3 / 8);
+    text.setPosition(window_size.x / 2, 7 * window_size.y / 8);
 
     header.setOrigin(header_bounds.width / 2, header_bounds.height / 2);
     header.setPosition(window_size.x / 2, window_size.y / 8);
@@ -610,6 +572,7 @@ void Menu_State::handle(sf::Event event, stack<State*>& stack )
 
 void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
 {
+    // window_size = window.getSize();
     elapsed_time += delta.asSeconds();
 
     // Periodiciteten för texten ska vara 1.5 sek
@@ -619,8 +582,21 @@ void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
     // använder sin för det periodiska beteendet.
     // ANM: std::sin() använder radianer medan SFML använder grader.
 
-    double const scalar { 1.0 + 0.1*sin( (2 * M_PI) * elapsed_time / period) };
-    text.setScale(scalar, scalar);
+    double const scalar { 1.0 + 0.05*sin( (2 * M_PI) * elapsed_time / period) };
+
+    if ( selected_menu == 0)
+    {
+        menu[0].setScale(scalar, scalar);
+    }
+    else if ( selected_menu == 1)
+    {
+        menu[1].setScale(scalar, scalar);
+    }
+    if ( selected_menu == 2)
+    {
+        menu[2].setScale(scalar, scalar);
+    }
+    // text.setScale(scalar, scalar);
 }
 
 void Menu_State::render(sf::RenderWindow& window)
@@ -631,10 +607,9 @@ void Menu_State::render(sf::RenderWindow& window)
         window.draw(menu_buttons[i]);
         window.draw(menu[i]);
     }
-    if ( selected_menu == 0 )
-    {
-        window.draw(text);
-    }
+    
+    window.draw(text);
+    
     
     window.draw(header);
 }
@@ -695,7 +670,7 @@ void Highscore::handle(sf::Event event, stack<State*>& stack)
 
 void Highscore::update([[maybe_unused]]sf::Time delta)
 {
-
+    // window_size = window.getSize();
 }
 
 void Highscore::render(sf::RenderWindow& window)
@@ -719,7 +694,7 @@ Controls::Controls(sf::RenderWindow& window)
     :  State{window}
 {   
     // OBS: Att fontinläsningen går bra kontrolleras i States konstruktor
-
+    
     // Texter till menyn
     for ( sf::Text& t : text)
     {
@@ -787,7 +762,7 @@ void Controls::handle(sf::Event event, stack<State*>& stack)
 
 void Controls::update([[maybe_unused]]sf::Time delta)
 {
-
+    // window_size = window.getSize();
 }
 
 void Controls::render(sf::RenderWindow& window)

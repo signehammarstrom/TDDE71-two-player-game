@@ -52,6 +52,8 @@ private:
     sf::Texture two;
     sf::Texture three;
     sf::Sprite digit;
+
+    sf::Text text;
 };
 
 class Game_over : public State
