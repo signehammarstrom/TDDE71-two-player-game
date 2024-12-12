@@ -2,12 +2,14 @@
 #define SLOPE_H
 
 #include <vector>
+#include <string>
 #include "context.h"
 #include "game_object.h"
 #include "context.h"
 #include <SFML/Graphics.hpp>
 #include "player.h"
 #include "slope_objects.h"
+#include <map>
 
 
 class Slope
@@ -23,9 +25,11 @@ public:
     
 private:
     void read_track(Context& context);
+    void read_constants();
     float const x_speed { 200.0f };
     sf::Font font{};
     sf::Text text{};
+    std::map<std::string, std::vector<float>> constantMap;
 
     Snow_Text snow_text;
     Background background;

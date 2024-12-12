@@ -39,6 +39,7 @@ Slope::Slope(bool side)
    
     context.side_tire_size = 50;
     
+    read_constants();
     read_track(context);
     sf::Vector2u window_size {1136, 640};
     context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 150};
@@ -237,7 +238,45 @@ void Slope::render(sf::RenderWindow& window)
 
     snow_text.render(window);
     progress_bar.render(window);
+}
 
+void Slope::read_constants()
+{
+    string line {};
+    ifstream info_file {"game_object_info.txt"};
+    if (!info_file.is_open())
+    {
+        throw runtime_error{"game_object_info.txt couldn't be opened!"};
+    }
+    else 
+    {
+        while ( getline (info_file, line))
+        {
+            string info_name {""};
+            float size {0};
+            float xspeed {0};
+            float speedmod {0};
+
+            istringstream info(line);
+            info >> info_name >> size >> xspeed >> speedmod;
+
+            if (!info.fail())
+            {
+                info.clear();
+            }
+
+            constantMap[info_name] = {size};
+            if (!(xspeed == 0))
+            {
+                constantMap[info_name].push_back(xspeed);
+            }
+
+            if (!(speedmod == 0))
+            {
+                constantMap[info_name].push_back(speedmod);
+            }
+        }
+    }
 }
 
 void Slope::read_track(Context& context)
@@ -246,7 +285,7 @@ void Slope::read_track(Context& context)
     ifstream trackinfo_file {"track.txt"};
     if (!trackinfo_file.is_open())
     {
-        throw runtime_error{"trackinfo_file couldn't be opened!"};
+        throw runtime_error{"track.txt couldn't be opened!"};
     }
     else 
     {
@@ -260,32 +299,32 @@ void Slope::read_track(Context& context)
             modifierinfo >> modifier_name >> modifier_xpos>> modifier_ypos;
             if (modifier_name == "Tire")
             {
-                context.mod_lst.push_back(new Tire(modifier_xpos + context.left_bound, modifier_ypos, 130));
+                context.mod_lst.push_back(new Tire(modifier_xpos + context.left_bound, modifier_ypos, constantMap[modifier_name].at(0)));
             }
             else if (modifier_name == "Goal")
             {
-                context.mod_lst.push_back(new Goal(modifier_xpos + context.left_bound, modifier_ypos, 2*(context.right_bound-context.left_bound)));
+                context.mod_lst.push_back(new Goal(modifier_xpos + context.left_bound, modifier_ypos, (context.right_bound-context.left_bound)));
                 context.goal = context.mod_lst.back();
             }
             else if (modifier_name == "Hole")
             {
-                context.mod_lst.push_back(new Hole(modifier_xpos + context.left_bound, modifier_ypos, 130));
+                context.mod_lst.push_back(new Hole(modifier_xpos + context.left_bound, modifier_ypos, constantMap[modifier_name].at(0)));
             }
             else if (modifier_name == "Chalmerist")
             {
-                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, 150, 100, 0.5));
+                context.mod_lst.push_back(new Chalmerist(modifier_xpos + context.left_bound, modifier_ypos, constantMap[modifier_name].at(0), constantMap[modifier_name].at(1), constantMap[modifier_name].at(2)));
             }
             else if (modifier_name == "Kir")
             {
-                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, 100, 100, 2));
+                context.mod_lst.push_back(new Kir(modifier_xpos + context.left_bound, modifier_ypos, constantMap[modifier_name].at(0), constantMap[modifier_name].at(1), constantMap[modifier_name].at(2)));
             }
             else if (modifier_name == "Can")
             {
-                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, 100, 100, 0.75 ));
+                context.mod_lst.push_back(new Can(modifier_xpos+ context.left_bound, modifier_ypos, constantMap[modifier_name].at(0), constantMap[modifier_name].at(1), constantMap[modifier_name].at(2)));
             }
             else if (modifier_name == "Snowball")
             {
-                context.mod_lst.push_back(new Snowball_Mod(modifier_xpos+ context.left_bound, modifier_ypos, 150, 20));
+                context.mod_lst.push_back(new Snowball_Mod(modifier_xpos+ context.left_bound, modifier_ypos, constantMap[modifier_name].at(0), constantMap[modifier_name].at(1)));
             }
        }
        trackinfo_file.close();
