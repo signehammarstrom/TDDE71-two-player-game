@@ -99,8 +99,10 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
             if (event.text.unicode == '\r' || event.text.unicode == '\n') 
             {
                 sort_highscores();
+                State* next_state{new Menu_State{window}};
                 delete stack.top();
                 stack.pop();
+                stack.push(next_state);
             }
             else if (event.text.unicode == '\b' && !name.empty()) 
             {
@@ -119,8 +121,10 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
+                State* next_state{new Menu_State{window}};
                 delete stack.top();
                 stack.pop();
+                stack.push(next_state);
             }
         }
     }
@@ -150,16 +154,16 @@ void Game_over::check_highscore()
     }
     else
     {
+        iss >> throwaway >> worst_time;
+
         if (worst_time > left_time && left_time < right_time)
         {
-            iss >> throwaway >> worst_time;
             new_highscore = true;
             new_highscore_time = left_time;
             cout << "left slope: " << new_highscore_time << endl;
         }
         else if (worst_time > right_time && left_time > right_time)
         {
-            iss >> throwaway >> worst_time;
             new_highscore = true;
             new_highscore_time = right_time;
             cout << "right slope: " << new_highscore_time << endl;
@@ -244,23 +248,25 @@ Game_State::Game_State(sf::RenderWindow& window)
 {
     if (!one.loadFromFile("one_signe.png"))
     {
-        throw  runtime_error{"Couldn't open filename"};
+        throw  runtime_error{"Couldn't open filename: one_signe.png"};
     }
     if (!two.loadFromFile("two_signe.png"))
     {
-        throw  runtime_error{"Couldn't open filename"};
+        throw  runtime_error{"Couldn't open filename: two_signe.png"};
     }
     if (!three.loadFromFile("three_signe.png"))
     {
-        throw  runtime_error{"Couldn't open filename"};
+        throw  runtime_error{"Couldn't open filename: three_signe.png"};
     }
 
     
     digit.setTexture(three);
     sf::Vector2u texture_size { one.getSize() };
-    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    digit.setScale(80/texture_size.x, 80/texture_size.y);
+    sf::FloatRect digit_bounds {digit.getLocalBounds()};
+    digit.setOrigin(digit_bounds.width / 2, digit_bounds.height / 2);
     digit.setPosition(window_size.x / 2, window_size.y / 2);
-    digit.setScale(1.5, 1.5);
+    
 
     create_track();
 }
@@ -292,7 +298,11 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
-                State* wtf {new Game_over{window, left_slope->context.goal_time.asSeconds(), right_slope->context.goal_time.asSeconds()}};
+                double left{left_slope->context.goal_time.asSeconds()};
+                double right{right_slope->context.goal_time.asSeconds()};
+                cout << "Vänster tid: " << left << endl;
+                cout << "Höger tid: " << right << endl;
+                State* wtf {new Game_over{window, left, right}};
                 delete stack.top();
                 stack.pop();
                 stack.push(wtf);
@@ -329,6 +339,7 @@ void Game_State::update(sf::Time delta)
         }
     }
 }
+
 
 void Game_State::render(sf::RenderWindow& window)
 {
@@ -419,63 +430,61 @@ void Game_State::create_track()
 Menu_State::Menu_State(sf::RenderWindow& window)
 : State{window}
 {
-    if (!texture.loadFromFile("y6_logo.png"))
-    {
-        throw runtime_error("Kan inte öppna: y6_logo.png");
-    }
-    if (!texture_buttons.loadFromFile("Charcoal_bricks_color1.png"))
+    if (!texture_buttons.loadFromFile("gamestart_signe.png"))
     {
         throw runtime_error("Kan inte öppna: Charcoal_bricks_color1.png");
     }
 
-    // Y6 logo
-    sprite.setTexture(texture);
-    sprite.setScale(0.1f, 0.1f);
+    sf::Vector2u button_size {texture_buttons.getSize()};
     
     // Menyalternativ
     menu[0].setFont(font);
     menu[0].setFillColor(sf::Color::Blue);
     menu[0].setString("PLAY");
-    sf::FloatRect play_bounds { menu[0].getGlobalBounds() };
+    sf::FloatRect play_bounds { menu[0].getLocalBounds() };
     menu[0].setOrigin(play_bounds.width / 2, play_bounds.height / 2);
     menu[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
 
+
+    float scale_x {(play_bounds.width + 70)/button_size.x};
+    float scale_y {(play_bounds.height + 50)/button_size.y};
     menu_buttons[0].setTexture(texture_buttons);
-    menu_buttons[0].setTextureRect(sf::IntRect(0, 0, play_bounds.width + 40, play_bounds.height + 20));
-    sf::FloatRect play_bounds_b { menu_buttons[0].getGlobalBounds() };
-    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 7);
+    menu_buttons[0].setScale(scale_x, scale_y);
+    sf::FloatRect play_bounds_b { menu_buttons[0].getLocalBounds() };
+    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 80 );
     menu_buttons[0].setPosition(menu[0].getPosition());
     
-
     menu[1].setFont(font);
     menu[1].setFillColor(sf::Color::Black);
     menu[1].setString("CONTROLS");
-    sf::FloatRect control_bounds { menu[1].getGlobalBounds() };
+    sf::FloatRect control_bounds { menu[1].getLocalBounds() };
     menu[1].setOrigin(control_bounds.width / 2, control_bounds.height / 2);
     menu[1].setPosition(window_size.x / 2, window_size.y / 2);
 
+    scale_x = (control_bounds.width + 70)/button_size.x;
+    scale_y = (control_bounds.height + 50)/button_size.y;
     menu_buttons[1].setTexture(texture_buttons);
-    menu_buttons[1].setTextureRect(sf::IntRect(0, 0, control_bounds.width + 40, control_bounds.height + 20));
-    sf::FloatRect control_bounds_b { menu_buttons[1].getGlobalBounds() };
-    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 7);
+    menu_buttons[1].setScale(scale_x, scale_y);
+    sf::FloatRect control_bounds_b { menu_buttons[1].getLocalBounds() };
+    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 80);
     menu_buttons[1].setPosition(menu[1].getPosition());
     
 
     menu[2].setFont(font);
     menu[2].setFillColor(sf::Color::Black);
     menu[2].setString("HIGHSCORE");
-    sf::FloatRect highscore_bounds { menu[2].getGlobalBounds() };
+    sf::FloatRect highscore_bounds { menu[2].getLocalBounds() };
     menu[2].setOrigin(highscore_bounds.width / 2, highscore_bounds.height / 2);
     menu[2].setPosition(window_size.x / 2, window_size.y * 3 / 4 );
 
+    scale_x = (highscore_bounds.width + 70)/button_size.x;
+    scale_y = (highscore_bounds.height + 50)/button_size.y;
     menu_buttons[2].setTexture(texture_buttons);
-    menu_buttons[2].setTextureRect(sf::IntRect(0, 0, highscore_bounds.width + 40, highscore_bounds.height + 20));
-    sf::FloatRect highscore_bounds_b { menu_buttons[2].getGlobalBounds() };
-    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 7);
+    menu_buttons[2].setScale(scale_x, scale_y);
+    sf::FloatRect highscore_bounds_b { menu_buttons[2].getLocalBounds() };
+    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
     menu_buttons[2].setPosition(menu[2].getPosition());
     
-    
-
     selected_menu = 0;
 
     // Pulserande text
@@ -488,13 +497,9 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setString("EPIC HARDCORE VSR SIMULATOR");
     header.setFillColor(sf::Color(255, 20, 147));
 
-    sf::Vector2u texture_size { texture.getSize() };
     sf::FloatRect text_bounds { text.getGlobalBounds() };
     sf::FloatRect header_bounds { header.getGlobalBounds()};
-
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition(4 * window_size.x / 5, window_size.y / 5);
-        
+  
     text.setOrigin(text_bounds.width / 2, text_bounds.height / 2);
     text.setPosition(window_size.x / 2, window_size.y * 3 / 8);
 
@@ -537,17 +542,28 @@ void Menu_State::handle(sf::Event event, stack<State*>& stack )
 {
     if (event.type == sf::Event::KeyPressed)
     {
+        State* next_state{nullptr};
+
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 0)
         {
-            stack.push(new Game_State{window});
+            next_state = new Game_State{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 1)
         {
-            stack.push(new Controls{window});
+            next_state = new Controls{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 2)
         {
-            stack.push(new Highscore{window});
+            next_state = new Highscore{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Down)
         {
@@ -581,7 +597,7 @@ void Menu_State::render(sf::RenderWindow& window)
     window.draw(menu_background);
     for (int i = 0; i < Max_Menu ; ++i)
     {
-        window.draw(menu_buttons[i]);//menu_buttons[0]);
+        window.draw(menu_buttons[i]);
         window.draw(menu[i]);
     }
     if ( selected_menu == 0 )
@@ -590,7 +606,6 @@ void Menu_State::render(sf::RenderWindow& window)
     }
     
     window.draw(header);
-    window.draw(sprite);
 }
 
 // HIGHSCORE
@@ -625,8 +640,10 @@ void Highscore::handle(sf::Event event, stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            State* next_state {new Menu_State{window}};
             delete stack.top();
             stack.pop();
+            stack.push(next_state);
         }
     }
 }
@@ -749,8 +766,10 @@ void Controls::handle(sf::Event event, stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            State* next_state {new Menu_State{window}};
             delete stack.top();
             stack.pop();
+            stack.push(next_state);
         }
         /*
         else if (event.key.code == sf::Keyboard::Key::Right)

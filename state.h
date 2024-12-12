@@ -46,8 +46,8 @@ public:
 private:
     void create_track();
 
-    bool game_started;
     sf::Clock clock;
+    bool game_started;
     sf::Texture one;
     sf::Texture two;
     sf::Texture three;
@@ -106,8 +106,6 @@ private:
 
     sf::Text text;
     sf::Text header;
-    sf::Texture texture;
-    sf::Sprite sprite;
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
