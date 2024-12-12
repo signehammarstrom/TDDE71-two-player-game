@@ -239,7 +239,7 @@ void Game_over::sort_highscores()
 // GAME_STATE
 /*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{}, right_slope{}, settings{}, highscores{read_highscore()}, clock{}, game_started{false}
+: State{window}, left_slope{}, right_slope{}, settings{}, clock{}, game_started{false}
 {
     read_constants();
     create_track();
@@ -365,6 +365,7 @@ void Game_State::render(sf::RenderWindow& window)
     }
     if (!game_started)
     {
+        
         window.draw(digit);
     }
 }
