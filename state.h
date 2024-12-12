@@ -123,6 +123,8 @@ public:
 
 private:
     sf::Text score[6];
+    sf::Sprite highscore_sprite[6];
+    sf::Texture highscore_texture;
     sf::Text instruction;
 };
 

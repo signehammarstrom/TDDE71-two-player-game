@@ -92,6 +92,7 @@ Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
 
 void Game_over::handle(sf::Event event, stack<State*>& stack)
 {   
+    bool push_menu{};
     if ( new_highscore )
     {
         if (event.type == sf::Event::TextEntered) 
@@ -99,10 +100,13 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
             if (event.text.unicode == '\r' || event.text.unicode == '\n') 
             {
                 sort_highscores();
-                State* next_state{new Menu_State{window}};
-                delete stack.top();
+                push_menu = true;
+                new_highscore = false;
+                /*State* next_state{new Menu_State{window}};
+                //delete stack.top();
                 stack.pop();
                 stack.push(next_state);
+                next_state = nullptr;*/
             }
             else if (event.text.unicode == '\b' && !name.empty()) 
             {
@@ -119,12 +123,13 @@ void Game_over::handle(sf::Event event, stack<State*>& stack)
     {
         if (event.type == sf::Event::KeyReleased)
         {
-            if (event.key.code == sf::Keyboard::Enter)
+            if (event.key.code == sf::Keyboard::Enter || push_menu)
             {
                 State* next_state{new Menu_State{window}};
                 delete stack.top();
                 stack.pop();
                 stack.push(next_state);
+                next_state = nullptr;
             }
         }
     }
@@ -437,8 +442,34 @@ Menu_State::Menu_State(sf::RenderWindow& window)
 
     sf::Vector2u button_size {texture_buttons.getSize()};
     
+
+    vector<string> menu_text{"PLAY", "CONTROLS", "HIGHSCORE"};
+
+    float scale_x {};
+    float scale_y {};
+    sf::FloatRect t_bounds {};
+    sf::FloatRect t_bounds_b {};
+
+    for (unsigned int i = 0; i < menu_text.size(); i++)
+    {
+        menu[i].setFont(font);
+        menu[i].setFillColor(sf::Color::Black);
+        menu[i].setString(menu_text.at(i));
+        t_bounds = menu[i].getLocalBounds();
+        menu[i].setOrigin(t_bounds.width / 2, t_bounds.height / 2);
+        menu[i].setPosition(window_size.x / 2, window_size.y / 2);
+
+        scale_x = (t_bounds.width + 70)/button_size.x;
+        scale_y = (t_bounds.height + 50)/button_size.y;
+        menu_buttons[i].setTexture(texture_buttons);
+        menu_buttons[i].setScale(scale_x, scale_y);
+        t_bounds_b = menu_buttons[i].getLocalBounds();
+        menu_buttons[i].setOrigin(t_bounds_b.width / 2, t_bounds.height / 2 - 80);
+        menu_buttons[i].setPosition(menu[i].getPosition());
+    }
+
     // Menyalternativ
-    menu[0].setFont(font);
+    /*menu[0].setFont(font);
     menu[0].setFillColor(sf::Color::Blue);
     menu[0].setString("PLAY");
     sf::FloatRect play_bounds { menu[0].getLocalBounds() };
@@ -483,7 +514,7 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     menu_buttons[2].setScale(scale_x, scale_y);
     sf::FloatRect highscore_bounds_b { menu_buttons[2].getLocalBounds() };
     menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
-    menu_buttons[2].setPosition(menu[2].getPosition());
+    menu_buttons[2].setPosition(menu[2].getPosition());*/
     
     selected_menu = 0;
 
@@ -613,6 +644,12 @@ void Menu_State::render(sf::RenderWindow& window)
 Highscore::Highscore(sf::RenderWindow& window)
     : State{window}
 {
+    if (!highscore_texture.loadFromFile("highscore_signe.png"))
+    {
+        throw runtime_error("Kan inte öppna: highscore_signe.png");
+    }
+
+    sf::Vector2u button_size {highscore_texture.getSize()};
 
     std::vector<std::string> highscores {read_highscore()};
 
@@ -621,9 +658,17 @@ Highscore::Highscore(sf::RenderWindow& window)
         score[i].setFont(font);
         score[i].setFillColor(sf::Color::Black);
         score[i].setString(highscores.at(i));
-        sf::FloatRect bounds { score[i].getGlobalBounds() };
+        sf::FloatRect bounds { score[i].getLocalBounds() };
         score[i].setOrigin(bounds.width / 2, bounds.height / 2);
         score[i].setPosition(window_size.x / 2, window_size.y * 1 / 7 * (i + 1));
+
+        float scale_x {(bounds.width + 100)/button_size.x};
+        float scale_y {(bounds.height + 50)/button_size.y};
+        highscore_sprite[i].setTexture(highscore_texture);
+        highscore_sprite[i].setScale(scale_x, scale_y);
+        sf::FloatRect highscore_bounds_b { highscore_sprite[i].getLocalBounds() };
+        highscore_sprite[i].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
+        highscore_sprite[i].setPosition(score[i].getPosition());
     }
 
     instruction.setFont(font);
@@ -631,7 +676,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     instruction.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
-    instruction.setPosition(window_size.x / 2, window_size.y / 12);
+    instruction.setPosition(window_size.x / 2, window_size.y / 16);
 }
 
 void Highscore::handle(sf::Event event, stack<State*>& stack)
@@ -659,6 +704,7 @@ void Highscore::render(sf::RenderWindow& window)
 
     for (int i = 0; i < 6 ; ++i)
     {
+        window.draw(highscore_sprite[i]);
         window.draw(score[i]);
     }
 
