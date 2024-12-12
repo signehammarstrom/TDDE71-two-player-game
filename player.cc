@@ -149,11 +149,21 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
 bool Player::out_of_bounds(Context const& context)
 {
     sf::FloatRect playerBounds {bounds()};
-    
-    if ((playerBounds.left  - context.side_tire_size < context.left_bound)|| 
-        (playerBounds.left + playerBounds.width + context.side_tire_size > context.right_bound))
+    if (context.side)
     {
-        return true;
+        if ((playerBounds.left  < context.left_bound)|| 
+            (playerBounds.left + playerBounds.width + context.side_tire_size > context.right_bound))
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if ((playerBounds.left  - context.side_tire_size < context.left_bound)|| 
+            (playerBounds.left + playerBounds.width > context.right_bound))
+        {
+            return true;
+        }
     }
     return false;
 }
