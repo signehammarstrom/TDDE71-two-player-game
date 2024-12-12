@@ -13,8 +13,8 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, float scale, std::string filename, std::string filename2 , std::string filename3 )
-    : Game_Object(x,y, scale, filename), x_speed{200}
+Player::Player(double x, double y, float size, std::string filename, std::string filename2 , std::string filename3 )
+    : Game_Object(x,y, size, filename), x_speed{200}
 {
     if (!texture2.loadFromFile(filename2))
     {

@@ -4,8 +4,8 @@
 #include "modifier.h"
 
 
-Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float scale, std::string filename)
-:Game_Object(xpos,ypos, scale, filename), y_speed{50}
+Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float size, std::string filename)
+:Game_Object(xpos,ypos, size, filename), y_speed{50}
 {
 }
 

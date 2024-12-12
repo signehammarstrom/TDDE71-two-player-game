@@ -13,8 +13,8 @@
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, float scale, float xspeed, std::string filename)
-   : Modifier(xpos, ypos, scale, filename), xspeed{xspeed}, 
+Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed, std::string filename)
+   : Modifier(xpos, ypos, size, filename), xspeed{xspeed}, 
       right_direction{}
 {
    right_direction = rand()%2;
@@ -67,9 +67,9 @@ float Moving_Object::get_xspeed() const
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
 
-Snowball_Mod::Snowball_Mod(double xpos, double ypos, float scale, float xspeed, 
+Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
    std::string filename)
-   : Moving_Object(xpos, ypos, scale, xspeed, filename)
+   : Moving_Object(xpos, ypos, size, xspeed, filename)
 {}
 
 void Snowball_Mod::perform_collision([[maybe_unused]]Game_Object* const& other, Context& context)

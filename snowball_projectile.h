@@ -9,7 +9,7 @@
 class Snowball_Projectile: public Game_Object
 {
 public:
-    Snowball_Projectile(double xpos, double ypos, float scale , std::string filename = "snowball.png");
+    Snowball_Projectile(double xpos, double ypos, float size , std::string filename = "snowball.png");
     ~Snowball_Projectile() = default;
 
     void update(sf::Time delta, Context& context) override;

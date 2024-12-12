@@ -5,7 +5,7 @@
 #include "modifier.h"
 
 
-Modifier::Modifier(double xpos, double ypos, float scale, std::string filename)
-    :Game_Object(xpos, ypos, scale, filename)
+Modifier::Modifier(double xpos, double ypos, float size, std::string filename)
+    :Game_Object(xpos, ypos, size, filename)
 {
 }

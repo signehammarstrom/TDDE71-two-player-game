@@ -12,8 +12,8 @@
 
 // Static_Obstacle
 ///////////////////////////////
-Static_Obstacle::Static_Obstacle(double xpos, double ypos, float scale, std::string filename)
-    :Modifier(xpos, ypos, scale, filename)
+Static_Obstacle::Static_Obstacle(double xpos, double ypos, float size, std::string filename)
+    :Modifier(xpos, ypos, size, filename)
 {}
 
 void Static_Obstacle::update(sf::Time delta, Context& context) 
@@ -27,8 +27,8 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
 // Tire
 ///////////////////////////////
 
-Tire::Tire(double xpos, double ypos, float scale, std::string filename)
-    :Static_Obstacle(xpos, ypos, scale, filename)
+Tire::Tire(double xpos, double ypos, float size, std::string filename)
+    :Static_Obstacle(xpos, ypos, size, filename)
 {}
 
 void Tire::perform_collision(Game_Object* const& other, Context& context)
@@ -61,8 +61,8 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
 // Hole
 ///////////////////////////////
 
-Hole::Hole(double xpos, double ypos, float scale, std::string filename)
-    :Static_Obstacle(xpos, ypos, scale, filename)
+Hole::Hole(double xpos, double ypos, float size, std::string filename)
+    :Static_Obstacle(xpos, ypos, size, filename)
 {}
 
 void Hole::perform_collision(Game_Object* const& other, Context& context)
@@ -96,8 +96,8 @@ void Hole::perform_collision(Game_Object* const& other, Context& context)
 // Goal
 ///////////////////////////////
 
-Goal::Goal(double xpos, double ypos, float scale, std::string filename)
-    :Static_Obstacle(xpos, ypos, scale, filename)
+Goal::Goal(double xpos, double ypos, float size, std::string filename)
+    :Static_Obstacle(xpos, ypos, size, filename)
 {}
 
 void Goal::perform_collision(Game_Object* const& other, Context& context)

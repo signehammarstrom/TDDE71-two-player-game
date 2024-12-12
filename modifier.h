@@ -9,7 +9,7 @@
 class Modifier : public Game_Object 
 {
 public:
-    Modifier(double xpos, double ypos, float scale, std::string filename);
+    Modifier(double xpos, double ypos, float size, std::string filename);
     ~Modifier() = default;
    
 protected:

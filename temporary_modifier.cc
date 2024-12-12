@@ -15,9 +15,9 @@
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
 
-Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float scale, float xspeed,
+Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float size, float xspeed,
        double speedmodifier, std::string filename)
-    : Moving_Object(xpos, ypos, scale, xspeed, filename), speedmodifier{speedmodifier}, time_passed{}
+    : Moving_Object(xpos, ypos, size, xspeed, filename), speedmodifier{speedmodifier}, time_passed{}
 {
    time_passed = sf::Time::Zero;
 }
@@ -64,24 +64,24 @@ void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& c
 //Chalmerist
 /*_______________________________________________________________________________________*/
 
-Chalmerist::Chalmerist(double xpos, double ypos, float scale, float xspeed,
+Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
          double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
 {}
 
 //Can
 /*_______________________________________________________________________________________*/
 
-Can::Can(double xpos, double ypos, float scale, float xspeed,
+Can::Can(double xpos, double ypos, float size, float xspeed,
         double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
 {}
 
 //Kir
 /*_______________________________________________________________________________________*/
 
-Kir::Kir(double xpos, double ypos, float scale, float xspeed,
+Kir::Kir(double xpos, double ypos, float size, float xspeed,
         double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, scale, xspeed, speedmodifier, filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
 {}
 

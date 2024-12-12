@@ -13,7 +13,7 @@
 class Static_Obstacle : public Modifier
 {
 public:
-    Static_Obstacle(double xpos, double ypos, float scale, std::string filename);
+    Static_Obstacle(double xpos, double ypos, float size, std::string filename);
     ~Static_Obstacle() = default;
     void update(sf::Time delta, Context& context) override;
 };
@@ -24,7 +24,7 @@ public:
 class Tire : public Static_Obstacle
 {
 public:
-    Tire(double xpos, double ypos, float scale, std::string filename = "tire_signe.png");
+    Tire(double xpos, double ypos, float size, std::string filename = "tire_signe.png");
     ~Tire() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
@@ -37,7 +37,7 @@ private:
 class Hole : public Static_Obstacle
 {
 public:
-    Hole(double xpos, double ypos, float scale, std::string filename = "hole.png");
+    Hole(double xpos, double ypos, float size, std::string filename = "hole.png");
     ~Hole() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
@@ -50,7 +50,7 @@ private:
 class Goal : public Static_Obstacle
 {
 public:
-    Goal(double xpos, double ypos, float scale, std::string filename = "finish.png");
+    Goal(double xpos, double ypos, float size, std::string filename = "finish.png");
     ~Goal() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
