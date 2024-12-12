@@ -3,9 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include "slope.h"
+#include "settings.h"
 #include <stack>
 #include <vector>
 #include <string>
+#include <map> 
 
 #define Max_Menu 3
 
@@ -45,7 +47,10 @@ public:
 
 private:
     void create_track();
+    void read_constants();
     void sort_highscores(std::vector<std::string>);
+
+    Settings settings;
 
     sf::Text p1_text;
     sf::Text p2_text;

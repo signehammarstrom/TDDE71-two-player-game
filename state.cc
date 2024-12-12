@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <random>
 #include <time.h>
+#include <map> 
 
 using namespace std;
 #include <sstream>
@@ -60,8 +61,13 @@ std::vector<std::string> State::read_highscore()
 // GAME_STATE
 /*___________________________________________________________________________________________________________*/
 Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}, clock{}, game_started{false}
+: State{window}, left_slope{}, right_slope{}, settings{}, highscores{read_highscore()}, clock{}, game_started{false}
 {
+    read_constants();
+    create_track();
+    left_slope = new Slope(true, settings.constantMap);
+    right_slope = new Slope(false, settings.constantMap);
+
     if (!one.loadFromFile("one_signe.png"))
     {
         throw  runtime_error{"Couldn't open filename"};
@@ -79,7 +85,7 @@ Game_State::Game_State(sf::RenderWindow& window)
     sf::Vector2u texture_size { one.getSize() };
     digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
     digit.setPosition(window_size.x / 2, window_size.y / 2);
-    digit.setScale(1.5, 1.5);
+    digit.setScale(0.2, 0.2);
 
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
@@ -108,8 +114,9 @@ Game_State::Game_State(sf::RenderWindow& window)
     sf::FloatRect typed_text_bounds {typed_name.getGlobalBounds()};
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
-
-    create_track();
+    
+    
+    clock.restart();
 }
 
 Game_State::~Game_State()
@@ -287,69 +294,155 @@ void Game_State::sort_highscores(std::vector<std::string>)
 
 void Game_State::create_track()
 {
-    srand(time(NULL));
-    int track_length {5000};
-    int modifier_xpos{};
-    int modifier_ypos{500};
-    
-    vector<string> StatObjs {"Hole", "Tire"};
-    vector<string> MovObjs {"Chalmerist", "Kir", "Can", "Snowball"};
+    srand(settings.seed);
+    float modifier_xpos {};
+    float modifier_ypos {600};
     
     ofstream mod_info ("track.txt");
     if (!mod_info.is_open())
     {
-        throw runtime_error{"trackinfo_file couldn't be opened!"};
+        throw runtime_error{"track.txt couldn't be opened!"};
     }
     else
     {
         int x{0};
-        for(modifier_ypos = 600; modifier_ypos < (track_length-400); modifier_ypos = modifier_ypos + 100)
+
+        mod_info << "Goal" << ' ' << window_size.x/4 << ' ' << settings.track_length <<'\n';
+        mod_info << "Snowball" << ' ' << window_size.x/4 << ' ' << modifier_ypos << '\n';
+
+        for(modifier_ypos = 600; modifier_ypos < (settings.track_length-400); modifier_ypos = modifier_ypos + settings.StatObjs_freq)
         {
-            modifier_xpos =  30 + rand()%540;
+            modifier_xpos =  settings.constantMap["Tire"].at(0)/2 + rand()%(window_size.x/2 - static_cast<int>(settings.constantMap["Tire"].at(0))); 
             modifier_ypos = modifier_ypos + rand()%50;
-            mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
+            mod_info << settings.StatObjs.at(rand()%(settings.StatObjs.size())) << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
             if (x%4 == 0)
                 {
                     int modifier_xpos2{0};
-                    modifier_xpos2 = 30 + rand()%540;
-                    if (modifier_xpos2 > 540)
-                        {
-                            modifier_xpos2 - 580;
-                        }
-                    mod_info << StatObjs.at(rand()%StatObjs.size()) << ' ' << modifier_xpos2 << ' ' << modifier_ypos << '\n';
+                    modifier_xpos2 = settings.constantMap["Tire"].at(0)/2 + rand()%(window_size.x/2 - static_cast<int>(settings.constantMap["Tire"].at(0))); 
+                    mod_info << settings.StatObjs.at(rand()%(settings.StatObjs.size())) << ' ' << modifier_xpos2 << ' ' << modifier_ypos << '\n';
                 }
             x = x + 1;
         }
-        for(modifier_ypos = 1000; modifier_ypos < (track_length-100); modifier_ypos = modifier_ypos + 450)
+
+        int occurence_sum {0};
+        for(const auto &[key, value]: settings.constantMap)
         {
-            modifier_xpos =  30 + rand()%540;
-            modifier_ypos = modifier_ypos + rand()%100;
+            occurence_sum = occurence_sum + settings.constantMap[key].at(1);
+        }
 
-            int randValue{};
-            randValue = rand() % 100 + 1;
+        for(modifier_ypos = 1000; modifier_ypos < (settings.track_length-400); modifier_ypos = modifier_ypos + settings.MovObjs_freq)
+        {
+            modifier_xpos = settings.constantMap["Tire"].at(0)/2 + rand()%(window_size.x/2) - settings.constantMap["Tire"].at(0); 
+            modifier_ypos = modifier_ypos + rand()%100; 
 
+            int randValue {};
+            int current {0};
             string selectedObject{};
-            if (randValue <= 40) {
-                selectedObject = "Can";  // 30% chance for Can
-            } else if (randValue <= 65) {
-                selectedObject = "Kir";  // 30% chance for Kir
-            } else if (randValue <= 85) {
-                selectedObject = "Chalmerist";  // 20% chance for Kir
-            } else {
-                selectedObject = "Snowball";  // 20% chance for Snowball
+            randValue = rand() % occurence_sum + 1;
+            for(string mov : settings.MovObjs)
+            {
+                current = current + settings.constantMap[mov].at(1);
+                if(randValue <= current)
+                {
+                    selectedObject = mov;
+                    break;
+                }
             }
-
             mod_info << selectedObject << ' ' << modifier_xpos << ' ' << modifier_ypos << '\n';
         }
     }
-    mod_info << "Goal" << " 284" << ' ' << track_length <<'\n';
-    mod_info << "Snowball" << " 284" << ' ' << 500 << '\n';
-
-    //skapa random genererade däkc och hål. 
-    //hål och däck kommer med ett bestämt avstånd mellan varandra - ex. 300 pts
-    //x-koordinat slumpas utifrån context.left_bound() och right_bound()
-    //spara i txt-fil.
 }
+
+void Game_State::read_constants()
+{
+    string line {};
+    ifstream info_file {"game_object_info.txt"};
+    if (!info_file.is_open())
+    {
+        throw runtime_error{"game_object_info.txt couldn't be opened!"};
+    }
+    else 
+    {
+        while ( getline (info_file, line))
+        {
+            string info_name {""};
+            float size {0};
+            float occurence {0};
+            float xspeed {0};
+            float speedmod {0};
+
+            istringstream info(line);
+            info >> info_name >> size >> occurence >> xspeed >> speedmod;
+
+            if (!info.fail())
+            {
+                info.clear();
+            }
+
+            settings.constantMap[info_name] = {size,occurence};
+            if (!(xspeed == 0))
+            {
+                settings.constantMap[info_name].push_back(xspeed);
+            }
+
+            if (!(speedmod == 0))
+            {
+                settings.constantMap[info_name].push_back(speedmod);
+            }
+        }
+        info_file.close();
+    }
+
+    info_file.open("settings.txt");
+    if (!info_file.is_open())
+    {
+        throw runtime_error{"settings.txt couldn't be opened!"};
+    }
+    else 
+    {
+        while (getline (info_file, line))
+        {
+            string setting_name {};
+            string object {};
+
+            istringstream info(line);
+            info >> setting_name;
+
+            if (setting_name == "Track_length:")
+            {
+                info >> settings.track_length;
+            }
+            if (setting_name == "Seed:")
+            {
+                info >> settings.seed;
+            }
+            if (setting_name == "StatObjs:")
+            {
+                while (info >> object)
+                {
+                    settings.StatObjs.push_back(object);
+                }
+            }
+            if (setting_name == "MovObjs:")
+            {
+                while (info >> object)
+                {
+                    settings.MovObjs.push_back(object);
+                }
+            }
+            if (setting_name == "StatObjs_freq:")
+            {
+                info >> settings.StatObjs_freq;
+            }
+            if (setting_name == "MovObjs_freq:")
+            {
+                info >> settings.MovObjs_freq;
+            }
+        }
+        info_file.close();
+    }
+}
+
 
 
 // MENU_STATE

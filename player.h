@@ -8,7 +8,7 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, float size = 150, std::string filename = "saucer_signe.png", std::string filename2 = "saucerbw_signe.png", std::string filename3 = "saucercolor_signe.png"); //x och ypos behövs inte!!
+    Player(double xpos, double ypos, float size, std::string filename = "saucer_signe.png", std::string filename2 = "saucerbw_signe.png", std::string filename3 = "saucercolor_signe.png"); //x och ypos behövs inte!!
     ~Player() = default;
 
     void handle(sf::Event event, Context& context);
