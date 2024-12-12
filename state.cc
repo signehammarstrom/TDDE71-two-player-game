@@ -55,32 +55,9 @@ std::vector<std::string> State::read_highscore()
     return scores;
 }
 
-
-
-// GAME_STATE
-/*___________________________________________________________________________________________________________*/
-Game_State::Game_State(sf::RenderWindow& window)
-: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, highscores{read_highscore()}, clock{}, game_started{false}
+Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
+    : State{window}, left_time{timeL}, right_time{timeR}, highscores{read_highscore()}
 {
-    if (!one.loadFromFile("one.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-    if (!two.loadFromFile("two.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-    if (!three.loadFromFile("three.png"))
-    {
-        throw  runtime_error{"Couldn't open filename"};
-    }
-
-    digit.setTexture(three);
-    sf::Vector2u texture_size { one.getSize() };
-    digit.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    digit.setPosition(window_size.x / 2, window_size.y / 2);
-    digit.setScale(1.5, 1.5);
-
     p2_text.setFont(font);
     p2_text.setString("SPELARE 2 VINNER!!!");
     p2_text.setFillColor(sf::Color(255, 20, 147));
@@ -109,6 +86,193 @@ Game_State::Game_State(sf::RenderWindow& window)
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 5, window_size.y / 2 );
 
+    check_highscore();
+
+}
+
+void Game_over::handle(sf::Event event, stack<State*>& stack)
+{   
+    bool push_menu{};
+    if ( new_highscore )
+    {
+        if (event.type == sf::Event::TextEntered) 
+        {
+            if (event.text.unicode == '\r' || event.text.unicode == '\n') 
+            {
+                sort_highscores();
+                push_menu = true;
+                new_highscore = false;
+                /*State* next_state{new Menu_State{window}};
+                //delete stack.top();
+                stack.pop();
+                stack.push(next_state);
+                next_state = nullptr;*/
+            }
+            else if (event.text.unicode == '\b' && !name.empty()) 
+            {
+                name.pop_back(); // Ta bort sista bokstaven
+            }
+            else if (event.text.unicode < 128) 
+            { 
+                name += static_cast<char>(event.text.unicode);
+            }
+        }
+        typed_name.setString(name);
+    }
+    else
+    {
+        if (event.type == sf::Event::KeyReleased)
+        {
+            if (event.key.code == sf::Keyboard::Enter || push_menu)
+            {
+                State* next_state{new Menu_State{window}};
+                delete stack.top();
+                stack.pop();
+                stack.push(next_state);
+                next_state = nullptr;
+            }
+        }
+    }
+}
+
+void Game_over::check_highscore()
+{
+
+    std::istringstream iss {highscores.back()};
+    std::string throwaway{};
+    double worst_time{};
+
+    if (!(iss >> throwaway >> worst_time))
+    {
+        if (left_time < right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = left_time;
+            cout << "left slope: " << new_highscore_time << endl;
+        }
+        else if (worst_time > right_time && left_time > right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = right_time;
+            cout << "right slope: " << new_highscore_time << endl;
+        }
+    }
+    else
+    {
+        iss >> throwaway >> worst_time;
+
+        if (worst_time > left_time && left_time < right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = left_time;
+            cout << "left slope: " << new_highscore_time << endl;
+        }
+        else if (worst_time > right_time && left_time > right_time)
+        {
+            new_highscore = true;
+            new_highscore_time = right_time;
+            cout << "right slope: " << new_highscore_time << endl;
+        }
+    }
+}
+
+void Game_over::update(sf::Time delta)
+{
+    
+}
+
+void Game_over::render(sf::RenderWindow& window)
+{
+    window_size = window.getSize();
+
+     
+    window.draw(menu_background);
+
+    if ( left_time < right_time )
+    {
+        window.draw(p1_text);
+    }
+    else
+    {
+        window.draw(p2_text);
+    }
+    if (new_highscore)
+    {
+        window.draw(prompt);
+        window.draw(typed_name);
+    }
+    
+}
+
+void Game_over::sort_highscores()
+{
+    double time {};
+    std::string throwaway;
+    bool inserted = false;
+
+    for (unsigned int i = 0; i < highscores.size(); i++)
+    {
+        std::istringstream iss {highscores.at(i)};
+        iss >> throwaway >> time; 
+
+        if (time > new_highscore_time && !inserted)
+        {
+            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            inserted = true;
+            if (highscores.size() > 6)
+            {
+                highscores.pop_back();
+            }
+            break;
+        }
+    }
+
+    std::ofstream outFile("highscore.txt");
+
+    if (!outFile)
+    {
+        throw std::runtime_error("Kan inte öppna: highscore.txt");
+    }
+
+    for (unsigned int i = 0; i < highscores.size(); ++i) 
+    {
+        outFile << highscores[i];
+        
+        if (i < highscores.size() - 1) 
+        {
+            outFile << '\n';
+        }
+    }
+    outFile.close();
+}
+
+// GAME_STATE
+/*___________________________________________________________________________________________________________*/
+Game_State::Game_State(sf::RenderWindow& window)
+: State{window}, left_slope{new Slope(true)}, right_slope{new Slope(false)}, clock{}, game_started{false}
+{
+    if (!one.loadFromFile("one_signe.png"))
+    {
+        throw  runtime_error{"Couldn't open filename: one_signe.png"};
+    }
+    if (!two.loadFromFile("two_signe.png"))
+    {
+        throw  runtime_error{"Couldn't open filename: two_signe.png"};
+    }
+    if (!three.loadFromFile("three_signe.png"))
+    {
+        throw  runtime_error{"Couldn't open filename: three_signe.png"};
+    }
+
+    
+    digit.setTexture(three);
+    sf::Vector2u texture_size { one.getSize() };
+    digit.setScale(80/texture_size.x, 80/texture_size.y);
+    sf::FloatRect digit_bounds {digit.getLocalBounds()};
+    digit.setOrigin(digit_bounds.width / 2, digit_bounds.height / 2);
+    digit.setPosition(window_size.x / 2, window_size.y / 2);
+    
+
     create_track();
 }
 
@@ -134,39 +298,24 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
     }
     
     if (left_slope->context.game_finished && right_slope->context.game_finished)
-    {   
-        if ( new_highscore )
-        {
-            if (event.type == sf::Event::TextEntered) 
-            {
-                if (event.text.unicode == '\r' || event.text.unicode == '\n') 
-                {
-                    sort_highscores();
-                    //delete stack.top();
-                    stack.pop();
-                }
-                else if (event.text.unicode == '\b' && !name.empty()) 
-                {
-                    name.pop_back(); // Ta bort sista bokstaven
-                }
-                else if (event.text.unicode < 128) 
-                { 
-                    name += static_cast<char>(event.text.unicode);
-                }
-            }
-            typed_name.setString(name);
-        }
-        else
+    {
+        if (event.type == sf::Event::KeyReleased)
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
+                double left{left_slope->context.goal_time.asSeconds()};
+                double right{right_slope->context.goal_time.asSeconds()};
+                cout << "Vänster tid: " << left << endl;
+                cout << "Höger tid: " << right << endl;
+                State* wtf {new Game_over{window, left, right}};
                 delete stack.top();
                 stack.pop();
+                stack.push(wtf);
             }
-        }   
-
+        }
     }
-}
+    
+}   
 
 
 void Game_State::update(sf::Time delta)
@@ -193,31 +342,13 @@ void Game_State::update(sf::Time delta)
             left_slope->update(delta);
             right_slope->update(delta);
         }
-        else if (!new_highscore)
-        {
-            std::istringstream iss {highscores.back()};
-            std::string throwaway{};
-            double worst_time{};
-            iss >> throwaway >> worst_time;
-            if (worst_time > left_slope->context.goal_time.asSeconds() && left_slope->context.goal_time < right_slope->context.goal_time)
-            {
-                new_highscore = true;
-                new_highscore_time = left_slope->context.goal_time.asSeconds();
-                cout << "left slope: " << new_highscore_time << endl;
-            }
-            else if (worst_time > right_slope->context.goal_time.asSeconds() && left_slope->context.goal_time > right_slope->context.goal_time)
-            {
-                new_highscore = true;
-                new_highscore_time = right_slope->context.goal_time.asSeconds();
-                cout << "right slope: " << new_highscore_time << endl;
-            }
-        }
     }
 }
 
+
 void Game_State::render(sf::RenderWindow& window)
 {
-    sf::Vector2u const window_size { window.getSize() };
+    window_size = window.getSize();
     
     left_slope->render(window);
     right_slope->render(window);
@@ -225,67 +356,11 @@ void Game_State::render(sf::RenderWindow& window)
     if (left_slope->context.game_finished && right_slope->context.game_finished)
     {   
         window.draw(menu_background);
-
-        if ( left_slope->context.goal_time < right_slope->context.goal_time )
-        {
-            window.draw(p1_text);
-        }
-        else
-        {
-            window.draw(p2_text);
-        }
-        if (new_highscore)
-        {
-            window.draw(prompt);
-            window.draw(typed_name);
-        }
     }
     if (!game_started)
     {
         window.draw(digit);
     }
-}
-
-void Game_State::sort_highscores()
-{
-    double time {};
-    std::string throwaway;
-    bool inserted = false;
-
-    for (unsigned int i = 0; i < highscores.size(); i++)
-    {
-        std::istringstream iss {highscores.at(i)};
-        iss >> throwaway >> time; 
-
-        if (time > new_highscore_time && !inserted)
-        {
-            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
-            inserted = true;
-            if (highscores.size() > 6)
-            {
-                highscores.pop_back();
-            }
-            break;
-        }
-    }
-
-    std::ofstream outFile("highscore.txt");//, std::ofstream::trunc);
-
-    if (!outFile)
-    {
-        throw std::runtime_error("Kan inte öppna: highscore.txt");
-    }
-
-    for (unsigned int i = 0; i < highscores.size(); ++i) 
-    {
-        outFile << highscores[i];
-        
-        if (i < highscores.size() - 1) 
-        {
-            outFile << '\n';
-        }
-    }
-    outFile.close();
 }
 
 void Game_State::create_track()
@@ -360,63 +435,87 @@ void Game_State::create_track()
 Menu_State::Menu_State(sf::RenderWindow& window)
 : State{window}
 {
-    if (!texture.loadFromFile("y6_logo.png"))
-    {
-        throw runtime_error("Kan inte öppna: y6_logo.png");
-    }
-    if (!texture_buttons.loadFromFile("Charcoal_bricks_color1.png"))
+    if (!texture_buttons.loadFromFile("gamestart_signe.png"))
     {
         throw runtime_error("Kan inte öppna: Charcoal_bricks_color1.png");
     }
 
-    // Y6 logo
-    sprite.setTexture(texture);
-    sprite.setScale(0.1f, 0.1f);
+    sf::Vector2u button_size {texture_buttons.getSize()};
     
+
+    vector<string> menu_text{"PLAY", "CONTROLS", "HIGHSCORE"};
+
+    float scale_x {};
+    float scale_y {};
+    sf::FloatRect t_bounds {};
+    sf::FloatRect t_bounds_b {};
+
+    for (unsigned int i = 0; i < menu_text.size(); i++)
+    {
+        menu[i].setFont(font);
+        menu[i].setFillColor(sf::Color::Black);
+        menu[i].setString(menu_text.at(i));
+        t_bounds = menu[i].getLocalBounds();
+        menu[i].setOrigin(t_bounds.width / 2, t_bounds.height / 2);
+        menu[i].setPosition(window_size.x / 2, window_size.y / 2);
+
+        scale_x = (t_bounds.width + 70)/button_size.x;
+        scale_y = (t_bounds.height + 50)/button_size.y;
+        menu_buttons[i].setTexture(texture_buttons);
+        menu_buttons[i].setScale(scale_x, scale_y);
+        t_bounds_b = menu_buttons[i].getLocalBounds();
+        menu_buttons[i].setOrigin(t_bounds_b.width / 2, t_bounds.height / 2 - 80);
+        menu_buttons[i].setPosition(menu[i].getPosition());
+    }
+
     // Menyalternativ
-    menu[0].setFont(font);
+    /*menu[0].setFont(font);
     menu[0].setFillColor(sf::Color::Blue);
     menu[0].setString("PLAY");
-    sf::FloatRect play_bounds { menu[0].getGlobalBounds() };
+    sf::FloatRect play_bounds { menu[0].getLocalBounds() };
     menu[0].setOrigin(play_bounds.width / 2, play_bounds.height / 2);
     menu[0].setPosition(window_size.x / 2, window_size.y * 1 / 4);
 
+
+    float scale_x {(play_bounds.width + 70)/button_size.x};
+    float scale_y {(play_bounds.height + 50)/button_size.y};
     menu_buttons[0].setTexture(texture_buttons);
-    menu_buttons[0].setTextureRect(sf::IntRect(0, 0, play_bounds.width + 40, play_bounds.height + 20));
-    sf::FloatRect play_bounds_b { menu_buttons[0].getGlobalBounds() };
-    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 7);
+    menu_buttons[0].setScale(scale_x, scale_y);
+    sf::FloatRect play_bounds_b { menu_buttons[0].getLocalBounds() };
+    menu_buttons[0].setOrigin(play_bounds_b.width / 2, play_bounds_b.height / 2 - 80 );
     menu_buttons[0].setPosition(menu[0].getPosition());
     
-
     menu[1].setFont(font);
     menu[1].setFillColor(sf::Color::Black);
     menu[1].setString("CONTROLS");
-    sf::FloatRect control_bounds { menu[1].getGlobalBounds() };
+    sf::FloatRect control_bounds { menu[1].getLocalBounds() };
     menu[1].setOrigin(control_bounds.width / 2, control_bounds.height / 2);
     menu[1].setPosition(window_size.x / 2, window_size.y / 2);
 
+    scale_x = (control_bounds.width + 70)/button_size.x;
+    scale_y = (control_bounds.height + 50)/button_size.y;
     menu_buttons[1].setTexture(texture_buttons);
-    menu_buttons[1].setTextureRect(sf::IntRect(0, 0, control_bounds.width + 40, control_bounds.height + 20));
-    sf::FloatRect control_bounds_b { menu_buttons[1].getGlobalBounds() };
-    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 7);
+    menu_buttons[1].setScale(scale_x, scale_y);
+    sf::FloatRect control_bounds_b { menu_buttons[1].getLocalBounds() };
+    menu_buttons[1].setOrigin(control_bounds_b.width / 2, control_bounds_b.height / 2 - 80);
     menu_buttons[1].setPosition(menu[1].getPosition());
     
 
     menu[2].setFont(font);
     menu[2].setFillColor(sf::Color::Black);
     menu[2].setString("HIGHSCORE");
-    sf::FloatRect highscore_bounds { menu[2].getGlobalBounds() };
+    sf::FloatRect highscore_bounds { menu[2].getLocalBounds() };
     menu[2].setOrigin(highscore_bounds.width / 2, highscore_bounds.height / 2);
     menu[2].setPosition(window_size.x / 2, window_size.y * 3 / 4 );
 
+    scale_x = (highscore_bounds.width + 70)/button_size.x;
+    scale_y = (highscore_bounds.height + 50)/button_size.y;
     menu_buttons[2].setTexture(texture_buttons);
-    menu_buttons[2].setTextureRect(sf::IntRect(0, 0, highscore_bounds.width + 40, highscore_bounds.height + 20));
-    sf::FloatRect highscore_bounds_b { menu_buttons[2].getGlobalBounds() };
-    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 7);
-    menu_buttons[2].setPosition(menu[2].getPosition());
+    menu_buttons[2].setScale(scale_x, scale_y);
+    sf::FloatRect highscore_bounds_b { menu_buttons[2].getLocalBounds() };
+    menu_buttons[2].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
+    menu_buttons[2].setPosition(menu[2].getPosition());*/
     
-    
-
     selected_menu = 0;
 
     // Pulserande text
@@ -429,13 +528,9 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setString("EPIC HARDCORE VSR SIMULATOR");
     header.setFillColor(sf::Color(255, 20, 147));
 
-    sf::Vector2u texture_size { texture.getSize() };
     sf::FloatRect text_bounds { text.getGlobalBounds() };
     sf::FloatRect header_bounds { header.getGlobalBounds()};
-
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition(4 * window_size.x / 5, window_size.y / 5);
-        
+  
     text.setOrigin(text_bounds.width / 2, text_bounds.height / 2);
     text.setPosition(window_size.x / 2, window_size.y * 3 / 8);
 
@@ -478,17 +573,28 @@ void Menu_State::handle(sf::Event event, stack<State*>& stack )
 {
     if (event.type == sf::Event::KeyPressed)
     {
+        State* next_state{nullptr};
+
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 0)
         {
-            stack.push(new Game_State{window});
+            next_state = new Game_State{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 1)
         {
-            stack.push(new Controls{window});
+            next_state = new Controls{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Enter && selected_menu == 2)
         {
-            stack.push(new Highscore{window});
+            next_state = new Highscore{window};
+            delete stack.top();
+            stack.pop();
+            stack.push(next_state);
         }
         if (event.key.code == sf::Keyboard::Key::Down)
         {
@@ -522,7 +628,7 @@ void Menu_State::render(sf::RenderWindow& window)
     window.draw(menu_background);
     for (int i = 0; i < Max_Menu ; ++i)
     {
-        window.draw(menu_buttons[i]);//menu_buttons[0]);
+        window.draw(menu_buttons[i]);
         window.draw(menu[i]);
     }
     if ( selected_menu == 0 )
@@ -531,7 +637,6 @@ void Menu_State::render(sf::RenderWindow& window)
     }
     
     window.draw(header);
-    window.draw(sprite);
 }
 
 // HIGHSCORE
@@ -539,6 +644,12 @@ void Menu_State::render(sf::RenderWindow& window)
 Highscore::Highscore(sf::RenderWindow& window)
     : State{window}
 {
+    if (!highscore_texture.loadFromFile("highscore_signe.png"))
+    {
+        throw runtime_error("Kan inte öppna: highscore_signe.png");
+    }
+
+    sf::Vector2u button_size {highscore_texture.getSize()};
 
     std::vector<std::string> highscores {read_highscore()};
 
@@ -547,9 +658,17 @@ Highscore::Highscore(sf::RenderWindow& window)
         score[i].setFont(font);
         score[i].setFillColor(sf::Color::Black);
         score[i].setString(highscores.at(i));
-        sf::FloatRect bounds { score[i].getGlobalBounds() };
+        sf::FloatRect bounds { score[i].getLocalBounds() };
         score[i].setOrigin(bounds.width / 2, bounds.height / 2);
         score[i].setPosition(window_size.x / 2, window_size.y * 1 / 7 * (i + 1));
+
+        float scale_x {(bounds.width + 100)/button_size.x};
+        float scale_y {(bounds.height + 50)/button_size.y};
+        highscore_sprite[i].setTexture(highscore_texture);
+        highscore_sprite[i].setScale(scale_x, scale_y);
+        sf::FloatRect highscore_bounds_b { highscore_sprite[i].getLocalBounds() };
+        highscore_sprite[i].setOrigin(highscore_bounds_b.width / 2 , highscore_bounds_b.height / 2 - 80);
+        highscore_sprite[i].setPosition(score[i].getPosition());
     }
 
     instruction.setFont(font);
@@ -557,7 +676,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     instruction.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
-    instruction.setPosition(window_size.x / 2, window_size.y / 12);
+    instruction.setPosition(window_size.x / 2, window_size.y / 16);
 }
 
 void Highscore::handle(sf::Event event, stack<State*>& stack)
@@ -566,8 +685,10 @@ void Highscore::handle(sf::Event event, stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            State* next_state {new Menu_State{window}};
             delete stack.top();
             stack.pop();
+            stack.push(next_state);
         }
     }
 }
@@ -583,6 +704,7 @@ void Highscore::render(sf::RenderWindow& window)
 
     for (int i = 0; i < 6 ; ++i)
     {
+        window.draw(highscore_sprite[i]);
         window.draw(score[i]);
     }
 
@@ -655,8 +777,10 @@ void Controls::handle(sf::Event event, stack<State*>& stack)
     {
         if (event.key.code == sf::Keyboard::Key::Escape)
         {
+            State* next_state {new Menu_State{window}};
             delete stack.top();
             stack.pop();
+            stack.push(next_state);
         }
     }
 }

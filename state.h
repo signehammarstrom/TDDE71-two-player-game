@@ -45,25 +45,43 @@ public:
 
 private:
     void create_track();
-    void sort_highscores();
 
-    sf::Text p1_text;
-    sf::Text p2_text;
+    sf::Clock clock;
+    bool game_started;
+    sf::Texture one;
+    sf::Texture two;
+    sf::Texture three;
+    sf::Sprite digit;
+};
+
+class Game_over : public State
+{
+public:
+    Game_over(sf::RenderWindow& window, double timeL, double timeR);
+    ~Game_over() = default;
+
+    void handle(sf::Event event, std::stack<State*>& stack) override;
+    void update(sf::Time delta) override;
+    void render(sf::RenderWindow& window) override;
+
+private:
+    double left_time;
+    double right_time;
+    std::vector<std::string> highscores;
+
+    void check_highscore();
+    void sort_highscores();
 
     sf::Text prompt;
     sf::Text typed_name;
     std::string name;
 
+    sf::Text p1_text;
+    sf::Text p2_text;
+
     bool new_highscore;
     double new_highscore_time;
-    std::vector<std::string> highscores;
 
-    bool game_started;
-    sf::Clock clock;
-    sf::Texture one;
-    sf::Texture two;
-    sf::Texture three;
-    sf::Sprite digit;
 };
 
 class Menu_State : public State
@@ -88,8 +106,6 @@ private:
 
     sf::Text text;
     sf::Text header;
-    sf::Texture texture;
-    sf::Sprite sprite;
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
@@ -107,6 +123,8 @@ public:
 
 private:
     sf::Text score[6];
+    sf::Sprite highscore_sprite[6];
+    sf::Texture highscore_texture;
     sf::Text instruction;
 };
 
