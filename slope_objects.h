@@ -27,6 +27,7 @@ class Background
     private:
         sf::Texture texture_background;
         sf::Sprite background;
+        sf::Sprite background2;
 };
 
 

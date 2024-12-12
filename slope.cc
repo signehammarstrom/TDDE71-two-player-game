@@ -37,9 +37,10 @@ Slope::Slope(bool side)
         context.right_bound = 1136;
     }
    
-    context.side_tire_size = 50;
+    context.side_tire_size = 60;
     
     read_track(context);
+
     sf::Vector2u window_size {1136, 640};
     context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 150};
     context.y_speed = 300; 

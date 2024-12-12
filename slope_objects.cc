@@ -56,9 +56,16 @@ Background::Background(bool side)
 
     background.setTexture(texture_background);
     background.setPosition(left_bound, 0);
+
     sf::Vector2u texture_size { texture_background.getSize() };
     float scale {570.0f/texture_size.x};
+
     background.setScale(scale, scale);
+
+
+    background2.setTexture(texture_background);
+    background2.setPosition(left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
+    background2.setScale(scale, scale);
 }
 
 void Background::update(sf::Time delta, Context& context) 
@@ -67,11 +74,23 @@ void Background::update(sf::Time delta, Context& context)
     sf::Vector2f old_position {background.getPosition()};
     
     background.move({0, -distance});
+    background2.move({0, -distance});
+    
+    if (background.getGlobalBounds().top + background.getGlobalBounds().height < 0)
+    {
+        background.setPosition(context.left_bound, background2.getGlobalBounds().top + background2.getGlobalBounds().height);
+    }
+     if (background2.getGlobalBounds().top + background2.getGlobalBounds().height < 0)
+    {
+        background2.setPosition(context.left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
+    }
+    
 }
 
 void Background::render(sf::RenderWindow& window)
 {
     window.draw(background);
+    window.draw(background2);
 }
 
 
