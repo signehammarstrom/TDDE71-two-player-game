@@ -18,10 +18,11 @@ public:
     void stop_effect(Game_Object*& object, Context const& context);
 
 private:
-    sf::Vector2f old_position{};
+    sf::Vector2f old_position;
     float x_speed;
-    sf::Texture texture2{};
-    sf::Texture texture3{};
+    float snowball_size;
+    sf::Texture texture2;
+    sf::Texture texture3;
 };
 
 #endif
