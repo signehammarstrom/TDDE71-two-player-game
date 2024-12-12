@@ -8,7 +8,7 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, float size = 150, std::string filename = "saucer_signe.png", std::string filename2 = "saucerbw_signe.png", std::string filename3 = "saucercolor_signe.png"); //x och ypos behövs inte!!
+    Player(double xpos, double ypos, float size, std::string filename = "saucer_signe.png", std::string filename2 = "saucerbw_signe.png", std::string filename3 = "saucercolor_signe.png"); //x och ypos behövs inte!!
     ~Player() = default;
 
     void handle(sf::Event event, Context& context);
@@ -18,10 +18,11 @@ public:
     void stop_effect(Game_Object*& object, Context const& context);
 
 private:
-    sf::Vector2f old_position{};
+    sf::Vector2f old_position;
     float x_speed;
-    sf::Texture texture2{};
-    sf::Texture texture3{};
+    float snowball_size;
+    sf::Texture texture2;
+    sf::Texture texture3;
 };
 
 #endif
