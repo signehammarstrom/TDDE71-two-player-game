@@ -19,48 +19,16 @@
 
 using namespace std;
 
-Slope::Slope(bool side, map<string, vector<float>>& constantMap)
-    :context{}, snow_text{side}, background{side}, progress_bar{side}
+Slope::Slope(bool side, map<string, vector<float>>& constantMap, sf::RenderWindow& window)
+    :context{}, snow_text{nullptr}, background{nullptr}, progress_bar{nullptr}
 {
-    context.side = side;
-    context.snow_count = 0;
-    context.game_finished = false;
-
-    if (side)
-    {
-        context.left_bound = 0;
-        context.right_bound = 1136/2;
-    }
-
-    else
-    {
-        context.left_bound = 1136/2;
-        context.right_bound = 1136;
-    }
-   
-    context.side_tire_size = 60;
-    
+    initialize_context(side, window);
     read_track(context, constantMap);
-    sf::Vector2u window_size {1136, 640};
-    context.player = new Player{(context.left_bound + context.right_bound)/2, static_cast<double>(window_size.y)/6, 80};
-    context.y_speed = 300; 
-    context.base_speed = context.y_speed;
-    context.prev_speed = context.y_speed;
-    context.is_colliding = false;
-    context.coll_count = 0;
 
+    snow_text =  new Snow_Text(context);
+    background = new Background(context);
+    progress_bar = new Progress_Bar(context);
 
-
-    if (!font.loadFromFile("font.ttf"))
-    {
-        throw std::runtime_error { "Kan inte öppna: font.ttf" };
-    }
-
-    text.setFont(font);
-
-    std::string snow_text{"Snowball count: " + std::to_string(context.snow_count)};
-    text.setString(snow_text);
-    sf::FloatRect bounds { text.getGlobalBounds() };
 };
 
 void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
@@ -213,9 +181,9 @@ void Slope::update(sf::Time delta)
             modifier -> update(delta, context); //Här försöker vi uppdatera ett objekt som jag tagit bort via active_temp_mods
         }
 
-        snow_text.update(context);
-        progress_bar.update(context.player, context.goal);
-        background.update(delta, context);
+        snow_text->update(context);
+        progress_bar->update(context.player, context.goal);
+        background ->update(delta, context);
     }
 
 }
@@ -223,7 +191,7 @@ void Slope::update(sf::Time delta)
 
 void Slope::render(sf::RenderWindow& window)
 {
-    background.render(window);
+    background ->render(window);
     context.player->render(window);
 
     for( Game_Object* snowball : context.snowball_lst)
@@ -236,8 +204,71 @@ void Slope::render(sf::RenderWindow& window)
         modifier -> render(window);
     }
 
-    snow_text.render(window);
-    progress_bar.render(window);
+    snow_text->render(window);
+    progress_bar->render(window);
+}
+
+void Slope::initialize_context(bool side, sf::RenderWindow& window)
+{
+    context.window_size = window.getSize();
+    if (side)
+    {
+        context.left_bound = 0;
+        context.right_bound = context.window_size.x/2;
+    }
+    else
+    {
+        context.left_bound = context.window_size.x/2;
+        context.right_bound = context.window_size.x;
+    }
+
+    string line {};
+    ifstream info_file {"context.txt"};
+    if (!info_file.is_open())
+    {
+        throw runtime_error{"context.txt couldn't be opened!"};
+    }
+    else 
+    {
+        while ( getline (info_file, line))
+        {
+            string info_name {""};
+            float variable {0};
+
+            istringstream info(line);
+            info >> info_name >> variable;
+
+            if (!info.fail())
+            {
+                info.clear();
+            }
+            if(info_name == "Snow_count:")
+            {
+                context.snow_count = variable;
+            }
+            if(info_name == "Player_size:")
+            {
+                context.player = new Player{(context.left_bound + 
+                    context.right_bound)/2, static_cast<double>(context.window_size.y)/6, variable};
+            }
+            if(info_name == "Y_speed:")
+            {
+                context.y_speed = variable;
+            }
+            if(info_name == "Side_tire_size:")
+            {
+                context.side_tire_size = variable;
+            }
+        }
+        info_file.close();
+
+    context.base_speed = context.y_speed;
+    context.prev_speed = context.y_speed;
+    context.side = side;
+    context.game_finished = false;
+    context.is_colliding = false;
+    context.coll_count = 0;
+    }
 }
 
 void Slope::read_track(Context& context,  map<std::string, std::vector<float>>& constantMap)

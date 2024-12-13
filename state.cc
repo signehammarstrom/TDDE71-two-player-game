@@ -267,8 +267,8 @@ Game_State::Game_State(sf::RenderWindow& window)
 {
     read_constants();
     create_track();
-    left_slope = new Slope(true, settings.constantMap);
-    right_slope = new Slope(false, settings.constantMap);
+    left_slope = new Slope(true, settings.constantMap, window);
+    right_slope = new Slope(false, settings.constantMap, window);
 
     if (!one.loadFromFile("one_signe.png"))
     {

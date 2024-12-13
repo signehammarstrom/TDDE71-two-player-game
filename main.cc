@@ -10,8 +10,8 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
                         "EPIC HARDCORE VSR Simulator" };
 
-/*sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
-        "EPIC HARDCORE VSR Simulator"};*/
+// sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
+//         "EPIC HARDCORE VSR Simulator"};
 
 int main() {
 

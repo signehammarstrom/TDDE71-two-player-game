@@ -6,25 +6,19 @@
 #include "static_obstacle.h"
 
 
-Snow_Text::Snow_Text(bool side)
+Snow_Text::Snow_Text(Context& context)
 {
-    if (!font.loadFromFile("font.ttf"))
+    if (!font.loadFromFile("gamefont.ttf"))
     {
-        throw std::runtime_error { "Kan inte öppna: font.ttf" };
+        throw std::runtime_error { "Kan inte öppna: gamefont.ttf" };
     }
 
     text.setFont(font);
-
-    double left_bound{0};
-    if (!side)
-    {
-        left_bound = 1136/2;
-    }
-
+    
     std::string snow_text{"Snowball count: " + std::to_string(0)};
     text.setString(snow_text);
     text.setFillColor(sf::Color(255, 20, 147));
-    text.setPosition(left_bound, 0);
+    text.setPosition(context.left_bound, 0);
 }
 void Snow_Text::update(Context& context)
 {
@@ -35,10 +29,9 @@ void Snow_Text::render(sf::RenderWindow& window)
     window.draw(text);
 }
 
-Background::Background(bool side)
+Background::Background(Context& context)
 {
-    double left_bound{0};
-    if(side) //Left slope
+    if(context.side) //Left slope
     {
         if (!texture_background.loadFromFile("leftlane_signe.png"))
             {
@@ -51,20 +44,17 @@ Background::Background(bool side)
             {
                 throw std::runtime_error("Kan inte öppna: rightlane_signe.png");
             }
-            left_bound = 1136/2;
     }
 
     background.setTexture(texture_background);
-    background.setPosition(left_bound, 0);
+    background.setPosition(context.left_bound, 0);
 
     sf::Vector2u texture_size { texture_background.getSize() };
-    float scale {570.0f/texture_size.x};
+    float scale {((context.window_size.x)/2.f)/texture_size.x};
 
     background.setScale(scale, scale);
-
-
     background2.setTexture(texture_background);
-    background2.setPosition(left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
+    background2.setPosition(context.left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
     background2.setScale(scale, scale);
 }
 
@@ -94,21 +84,18 @@ void Background::render(sf::RenderWindow& window)
 }
 
 
-Progress_Bar::Progress_Bar(bool side)
-: width{300}
+Progress_Bar::Progress_Bar(Context& context)
+: height{}
 {
-    background.setSize(sf::Vector2f(20,width));
-    background.setFillColor(sf::Color::Black);
-    double left_bound{0};
-    if (!side)
-    {
-        left_bound = 1136/2;
-    }
-    background.setPosition(left_bound+10, 200);
+    height = context.window_size.y/3;
 
-    foreground.setSize(sf::Vector2f(20,0));
+    background.setSize(sf::Vector2f(context.side_tire_size/5.f,height));
+    background.setFillColor(sf::Color::Black);
+    background.setPosition(context.left_bound + context.side_tire_size, context.window_size.y/6.f);
+    
+    foreground.setSize(sf::Vector2f(context.side_tire_size/5.f,0));
     foreground.setFillColor(sf::Color::Blue);
-    foreground.setPosition(left_bound + 10, 200);
+    foreground.setPosition(context.left_bound  + context.side_tire_size, 200);
 
     total_distance = 0;
 
@@ -121,7 +108,7 @@ void Progress_Bar::update(Game_Object*& player, Game_Object*& goal)
         total_distance = goal->get_position() -  player->get_position();
     }
     float progress {1 - (goal->get_position() -  player->get_position())/total_distance};
-    foreground.setSize(sf::Vector2f(foreground.getSize().x, width * progress));
+    foreground.setSize(sf::Vector2f(foreground.getSize().x, height* progress));
 }
 
 void Progress_Bar::render(sf::RenderWindow &window)

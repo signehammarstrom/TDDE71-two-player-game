@@ -7,7 +7,7 @@
 class Snow_Text
 {
 public:
-    Snow_Text(bool side);
+    Snow_Text(Context& context);
     void update(Context& context);
     void render(sf::RenderWindow& window);
 private:
@@ -20,7 +20,7 @@ private:
 class Background
 {
     public:
-        Background(bool side);
+        Background(Context& context);
         void update(sf::Time delta, Context& context);
         void render(sf::RenderWindow& window);
 
@@ -35,7 +35,7 @@ class Background
 class Progress_Bar {
 
 public:
-    Progress_Bar(bool side);
+    Progress_Bar(Context& context);
 
     // Uppdaterar framsteg (0.0 - 1.0)
     void update(Game_Object*& player, Game_Object*& goal);
@@ -44,7 +44,7 @@ public:
 private:
     sf::RectangleShape background;
     sf::RectangleShape foreground;
-    float width;
+    float height;
     float total_distance;
 
 };

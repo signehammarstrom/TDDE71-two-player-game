@@ -45,6 +45,8 @@ struct Context
 
     bool stuck{};
 
+    sf::Vector2u window_size;
+
     sf::Clock stuck_clock{};
     sf::Time stuck_time{};
 
