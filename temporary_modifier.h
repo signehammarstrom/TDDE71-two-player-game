@@ -17,7 +17,7 @@ class Temporary_Modifier : public Moving_Object
 {
 public:
     Temporary_Modifier(double xpos, double ypos, float size, float xspeed,
-         double speedmodifier, std::string filename);
+         double speedmodifier, sf::Vector2u window_size, std::string filename);
     ~Temporary_Modifier() = default;
 
     double get_speedmodifier() const; 
@@ -37,7 +37,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float size, float xspeed,
-         double speedmodifier, std::string filename = "chalmerist_signe.png");
+         double speedmodifier, sf::Vector2u window_size, std::string filename = "chalmerist_signe.png");
     ~Chalmerist() = default;
 
 private: 
@@ -51,7 +51,7 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, std::string filename = "can_signe.png");
+        double speedmodifier, sf::Vector2u window_size, std::string filename = "can_signe.png");
     ~Can() = default;
 
 private: 
@@ -65,7 +65,7 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, std::string filename = "kir_signe.png");
+        double speedmodifier, sf::Vector2u window_size, std::string filename = "kir_signe.png");
     ~Kir() = default;
 
 private: 

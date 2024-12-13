@@ -12,8 +12,8 @@
 
 // Static_Obstacle
 ///////////////////////////////
-Static_Obstacle::Static_Obstacle(double xpos, double ypos, float size, std::string filename)
-    :Modifier(xpos, ypos, size, filename)
+Static_Obstacle::Static_Obstacle(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
+    :Modifier(xpos, ypos, size, window_size, filename)
 {}
 
 void Static_Obstacle::update(sf::Time delta, Context& context) 
@@ -27,8 +27,8 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
 // Actual Obstacle
 ////////////////////////////////
 
-Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, std::string filename)
-    :Static_Obstacle(xpos, ypos, size, filename)
+Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
+    :Static_Obstacle(xpos, ypos, size, window_size, filename)
 {}
 
 void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& context)
@@ -61,22 +61,22 @@ void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& cont
 // Tire
 ///////////////////////////////
 
-Tire::Tire(double xpos, double ypos, float size, std::string filename)
-    :Actual_Obstacle(xpos, ypos, size, filename)
+Tire::Tire(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
+    :Actual_Obstacle(xpos, ypos, size, window_size, filename)
 {}
 
 // Hole
 ///////////////////////////////
 
-Hole::Hole(double xpos, double ypos, float size, std::string filename)
-    :Actual_Obstacle(xpos, ypos, size, filename)
+Hole::Hole(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
+    :Actual_Obstacle(xpos, ypos, size, window_size, filename)
 {}
 
 // Goal
 ///////////////////////////////
 
-Goal::Goal(double xpos, double ypos, float size, std::string filename)
-    :Static_Obstacle(xpos, ypos, size, filename)
+Goal::Goal(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
+    :Static_Obstacle(xpos, ypos, size, window_size, filename)
 {}
 
 void Goal::perform_collision(Game_Object* const& other, Context& context)

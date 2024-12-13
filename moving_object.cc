@@ -13,8 +13,8 @@
 /*_______________________________________________________________________________________*/
 
 
-Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed, std::string filename)
-   : Modifier(xpos, ypos, size, filename), xspeed{xspeed}, 
+Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed, sf::Vector2u window_size, std::string filename)
+   : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, 
       right_direction{}
 {
    right_direction = rand()%2;
@@ -30,7 +30,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
 
    if(right_direction)
    {
-      if(context.right_bound - old_position.x - context.side_tire_size < dx)
+      if(context.right_bound - old_position.x + context.side_tire_size < dx)
       {
          right_direction = false;
          sprite.move(-distance_x, -distance_y);
@@ -68,8 +68,8 @@ float Moving_Object::get_xspeed() const
 /*_______________________________________________________________________________________*/
 
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
-   std::string filename)
-   : Moving_Object(xpos, ypos, size, xspeed, filename)
+   sf::Vector2u window_size, std::string filename)
+   : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
 {}
 
 void Snowball_Mod::perform_collision([[maybe_unused]]Game_Object* const& other, Context& context)

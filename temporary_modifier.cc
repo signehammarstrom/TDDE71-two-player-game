@@ -16,8 +16,8 @@
 /*_______________________________________________________________________________________*/
 
 Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float size, float xspeed,
-       double speedmodifier, std::string filename)
-    : Moving_Object(xpos, ypos, size, xspeed, filename), speedmodifier{speedmodifier}, time_passed{}
+       double speedmodifier, sf::Vector2u window_size, std::string filename)
+    : Moving_Object(xpos, ypos, size, xspeed,window_size, filename), speedmodifier{speedmodifier}, time_passed{}
 {
    time_passed = sf::Time::Zero;
 }
@@ -65,23 +65,23 @@ void Temporary_Modifier::perform_collision(Game_Object* const& other, Context& c
 /*_______________________________________________________________________________________*/
 
 Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
-         double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
+         double speedmodifier, sf::Vector2u window_size, std::string filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {}
 
 //Can
 /*_______________________________________________________________________________________*/
 
 Can::Can(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
+        double speedmodifier, sf::Vector2u window_size, std::string filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {}
 
 //Kir
 /*_______________________________________________________________________________________*/
 
 Kir::Kir(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, std::string filename)
-    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, filename)
+        double speedmodifier, sf::Vector2u window_size, std::string filename)
+    : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {}
 

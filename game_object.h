@@ -8,7 +8,7 @@ class Game_Object
 {
 public:
 
-    Game_Object(double xpos, double ypos, float size, std::string filename);
+    Game_Object(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename);
     virtual ~Game_Object() = default;
     virtual void update(sf::Time delta, Context& context) = 0;
     void render(sf::RenderWindow& window);

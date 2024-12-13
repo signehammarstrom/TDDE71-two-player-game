@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Game_Object::Game_Object(double x, double y, float size,  string filename)
+Game_Object::Game_Object(double x, double y, float size, sf::Vector2u window_size, string filename)
     : sprite{}, texture{}, scale{}, removed {false}
 {
     if (!texture.loadFromFile(filename))
@@ -15,7 +15,7 @@ Game_Object::Game_Object(double x, double y, float size,  string filename)
     sf::Vector2u texture_size { texture.getSize() };
     sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     sprite.setPosition(x, y);
-    scale = size/texture_size.x;
+    scale = size*window_size.x/(1136*texture_size.x);
     sprite.setScale(scale, scale);
 }
 

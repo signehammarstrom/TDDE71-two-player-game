@@ -221,19 +221,19 @@ void initiate_context(Context& context, sf::RenderWindow& window)
     context.right_bound = screen_width;
     context.snow_count = 3;
 
-    context.player = new Player(window_size.x/2, window_size.y/6, 100);
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 100));
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 100));
+    context.player = new Player(window_size.x/2, window_size.y/6, 100, window_size);
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 100, window_size));
 
-    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 100));
-    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 100));
-    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 100));
-    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 100));
-    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 100));
-    context.mod_lst.push_back(new Can(window_size.x/2, 5*window_size.y, 50, 0, 0.5));
-    context.mod_lst.push_back(new Tire(window_size.x/6, 5.7*window_size.y, 100));
-    context.mod_lst.push_back(new Goal(window_size.x/2, 8*window_size.y, 800));
+    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Can(window_size.x/2, 5*window_size.y, 50, 0, 0.5, window_size));
+    context.mod_lst.push_back(new Tire(window_size.x/6, 5.7*window_size.y, 100, window_size));
+    context.mod_lst.push_back(new Goal(window_size.x/2, 8*window_size.y, 800, window_size));
     
-    context.mod_lst.push_back(new Can(window_size.x/2, 7*window_size.y, 50, 0, 0.5));
+    context.mod_lst.push_back(new Can(window_size.x/2, 7*window_size.y, 50, 0, 0.5, window_size));
 
 }

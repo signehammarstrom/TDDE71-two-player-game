@@ -13,8 +13,8 @@
 
 // Konstruktor & särskilda medlemsfuntkioner
 /*_____________________________________________________*/
-Player::Player(double x, double y, float size, std::string filename, std::string filename2 , std::string filename3 )
-    : Game_Object(x,y, size, filename), x_speed{200}, snowball_size{size/4}
+Player::Player(double x, double y, float size, sf::Vector2u window_size, std::string filename, std::string filename2 , std::string filename3 )
+    : Game_Object(x,y, size, window_size, filename), x_speed{200}, snowball_size{size/4}
 {
     if (!texture2.loadFromFile(filename2))
     {
@@ -35,7 +35,7 @@ void Player::handle(sf::Event event, Context& context)
         sf::Vector2f curr_position {sprite.getPosition()};
         if (context.snow_count > 0)
         {
-            context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, snowball_size));
+            context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, snowball_size, context.window_size));
             context.snow_count = context.snow_count - 1;
         }
     }
