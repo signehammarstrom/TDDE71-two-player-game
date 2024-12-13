@@ -53,9 +53,14 @@ Background::Background(Context& context)
     float scale {((context.window_size.x)/2.f)/texture_size.x};
 
     background.setScale(scale, scale);
+
     background2.setTexture(texture_background);
     background2.setPosition(context.left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
     background2.setScale(scale, scale);
+
+    background3.setTexture(texture_background);
+    background3.setPosition(context.left_bound, background2.getGlobalBounds().top + background2.getGlobalBounds().height);
+    background3.setScale(scale, scale);
 }
 
 void Background::update(sf::Time delta, Context& context) 
@@ -65,14 +70,19 @@ void Background::update(sf::Time delta, Context& context)
     
     background.move({0, -distance});
     background2.move({0, -distance});
+    background3.move({0, -distance});
     
     if (background.getGlobalBounds().top + background.getGlobalBounds().height < 0)
     {
-        background.setPosition(context.left_bound, background2.getGlobalBounds().top + background2.getGlobalBounds().height);
+        background.setPosition(context.left_bound, background3.getGlobalBounds().top + background3.getGlobalBounds().height);
     }
-     if (background2.getGlobalBounds().top + background2.getGlobalBounds().height < 0)
+    if (background2.getGlobalBounds().top + background2.getGlobalBounds().height < 0)
     {
         background2.setPosition(context.left_bound, background.getGlobalBounds().top + background.getGlobalBounds().height);
+    }
+    if (background3.getGlobalBounds().top + background3.getGlobalBounds().height < 0)
+    {
+        background3.setPosition(context.left_bound, background2.getGlobalBounds().top + background2.getGlobalBounds().height);
     }
     
 }
@@ -81,6 +91,7 @@ void Background::render(sf::RenderWindow& window)
 {
     window.draw(background);
     window.draw(background2);
+    window.draw(background3);
 }
 
 

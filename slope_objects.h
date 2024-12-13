@@ -28,6 +28,7 @@ class Background
         sf::Texture texture_background;
         sf::Sprite background;
         sf::Sprite background2;
+        sf::Sprite background3;
 };
 
 

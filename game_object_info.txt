@@ -1,6 +1,6 @@
-Tire 60
-Hole 60
-Chalmerist 40 2 100 0.5
-Kir 100 2 100 2
-Can 20 4 100 0.75
-Snowball 80 1 20
+Tire 6
+Hole 6
+Chalmerist 0.04 2 100 0.5
+Kir 10 2 100 2
+Can 2 4 100 0.75
+Snowball 8 1 20
