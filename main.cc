@@ -6,12 +6,12 @@
 unsigned const screen_width{1136};
 unsigned const screen_height{640};
 
-/*sf::RenderWindow window { sf::VideoMode { screen_width,
+sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
-                        "EPIC HARDCORE VSR Simulator" };*/
+                        "EPIC HARDCORE VSR Simulator" };
 
-sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
-        "EPIC HARDCORE VSR Simulator"};
+/*sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
+        "EPIC HARDCORE VSR Simulator"};*/
 
 int main() {
 
@@ -31,7 +31,7 @@ int main() {
             }
             else if (event.type == sf::Event::KeyReleased)
             {
-                if (event.key.code == sf::Keyboard::Key::Escape)
+                if (event.key.code == sf::Keyboard::Key::Q)
                 {
                     wtf = true;
                 }

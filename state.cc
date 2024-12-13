@@ -28,11 +28,31 @@ State::State(sf::RenderWindow& window)
         throw std::runtime_error("Kan inte öppna: gamefont.ttf");
     }
 
+    set_background();
+}
+
+void State::set_background()
+{
     menu_background.setTexture(menu_background_texture);
     sf::Vector2u texture_size { menu_background_texture.getSize() };
-    float scale {1200.0f/texture_size.x};
-    menu_background.setScale(scale, scale);
-    // window_size = window.getSize();
+    float scaleX {window_size.x / static_cast<float>(texture_size.x)};
+    float scaleY = {window_size.y / static_cast<float>(texture_size.y)};
+
+    menu_background.setScale(scaleX, scaleY);
+    menu_background.setOrigin(texture_size.x / 2.f, texture_size.y / 2.f);
+    menu_background.setPosition(window_size.x / 2.f, window_size.y / 2.f);
+}
+
+void State::resize_window(sf::Event event)
+{
+    sf::Vector2u new_size {event.size.width, event.size.height};
+    window.setSize(new_size);
+    sf::View view {sf::FloatRect(0, 0, event.size.width, event.size.height)};
+    window.setView(view);
+    window_size = window.getSize();
+
+    set_sprites();
+    set_background();
 }
 
 std::vector<std::string> State::read_highscore()
@@ -57,6 +77,12 @@ std::vector<std::string> State::read_highscore()
 
 Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
     : State{window}, left_time{timeL}, right_time{timeR}, highscores{read_highscore()}
+{
+    set_sprites();
+    check_highscore();
+}
+
+void Game_over::set_sprites()
 {
     p2_text.setFont(font);
     p2_text.setString("PLAYER 2 WINS!!!");
@@ -85,13 +111,14 @@ Game_over::Game_over(sf::RenderWindow& window, double timeL, double timeR)
     sf::FloatRect typed_text_bounds {typed_name.getGlobalBounds()};
     typed_name.setOrigin(typed_text_bounds.width / 2, typed_text_bounds.height / 2);
     typed_name.setPosition(window_size.x / 2 + prompt_text_bounds.width / 2 + 20, window_size.y / 2 - 10 );
-
-    check_highscore();
-
 }
 
 void Game_over::handle(sf::Event event, stack<State*>& stack)
 {   
+    if (event.type == sf::Event::Resized)
+    {
+        resize_window(event);
+    }
     bool push_menu{};
     if ( new_highscore )
     {
@@ -167,14 +194,11 @@ void Game_over::check_highscore()
 
 void Game_over::update([[maybe_unused]]sf::Time delta)
 {
-    // window_size = window.getSize();
+
 }
 
 void Game_over::render(sf::RenderWindow& window)
 {
-    // window_size = window.getSize();
-
-     
     window.draw(menu_background);
 
     if ( left_time < right_time )
@@ -253,6 +277,12 @@ Game_State::Game_State(sf::RenderWindow& window)
         throw  runtime_error{"Couldn't open filename: three_signe.png"};
     }
 
+    set_sprites();
+    create_track();
+}
+
+void Game_State::set_sprites()
+{
     // Instruktioner
     text.setFont(font);
     text.setString("GAME OVER!!!\nPress 'Enter' to continue!");
@@ -272,9 +302,6 @@ Game_State::Game_State(sf::RenderWindow& window)
     sf::FloatRect digit_bounds {digit.getLocalBounds()};
     digit.setOrigin(digit_bounds.width / 2, digit_bounds.height / 2);
     digit.setPosition(window_size.x / 2, window_size.y / 2);
-    
-
-    create_track();
 }
 
 Game_State::~Game_State()
@@ -285,6 +312,10 @@ Game_State::~Game_State()
 
 void Game_State::handle(sf::Event event, stack<State*>& stack)
 {
+    if (event.type == sf::Event::Resized)
+    {
+        resize_window(event);
+    }
     if (event.type == sf::Event::KeyPressed)
     {
         if (event.key.code == sf::Keyboard::Down)
@@ -318,7 +349,6 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
 
 void Game_State::update(sf::Time delta)
 {   
-    // window_size = window.getSize();
     if (!game_started)
     {
         if(clock.getElapsedTime().asSeconds() > 3)
@@ -347,8 +377,6 @@ void Game_State::update(sf::Time delta)
 
 void Game_State::render(sf::RenderWindow& window)
 {
-    // window_size = window.getSize();
-    
     left_slope->render(window);
     right_slope->render(window);
 
@@ -439,9 +467,13 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     {
         throw runtime_error("Kan inte öppna: Charcoal_bricks_color1.png");
     }
+    selected_menu = 0;
+    set_sprites();
+}
 
+void Menu_State::set_sprites()
+{
     sf::Vector2u button_size {texture_buttons.getSize()};
-    
 
     vector<string> menu_text{"PLAY", "CONTROLS", "HIGHSCORE"};
 
@@ -475,12 +507,10 @@ Menu_State::Menu_State(sf::RenderWindow& window)
         menu_buttons[i].setOrigin(t_bounds_b.width / 2, t_bounds.height / 2 + 190);
         menu_buttons[i].setPosition(menu[i].getPosition());
     }
-    
-    selected_menu = 0;
 
     // Pulserande text
     text.setFont(font);
-    text.setString("Press 'Enter' to interact!\nUse arrows to navigate!\nPress 'esc' to exit");
+    text.setString("Press 'Enter' to interact!\nUse arrows to navigate!\nPress 'Q' to exit");
     text.setFillColor(sf::Color(0, 255, 255));
     
     // Överskrift
@@ -499,7 +529,6 @@ Menu_State::Menu_State(sf::RenderWindow& window)
     header.setOrigin(header_bounds.width / 2, header_bounds.height / 2);
     header.setPosition(window_size.x / 2, window_size.y / 8);
 }
-
 
 void Menu_State::move_up()
 {
@@ -533,6 +562,11 @@ void Menu_State::move_down()
 
 void Menu_State::handle(sf::Event event, stack<State*>& stack )
 {
+    if (event.type == sf::Event::Resized)
+    {
+        resize_window(event);
+        set_sprites();
+    }
     if (event.type == sf::Event::KeyPressed)
     {
         State* next_state{nullptr};
@@ -572,7 +606,6 @@ void Menu_State::handle(sf::Event event, stack<State*>& stack )
 
 void Menu_State::update(sf::Time delta) //, std::stack<State*>& stack)
 {
-    // window_size = window.getSize();
     elapsed_time += delta.asSeconds();
 
     // Periodiciteten för texten ska vara 1.5 sek
@@ -624,6 +657,12 @@ Highscore::Highscore(sf::RenderWindow& window)
         throw runtime_error("Kan inte öppna: highscore_signe.png");
     }
 
+    set_sprites();
+}
+
+void Highscore::set_sprites()
+{
+
     sf::Vector2u button_size {highscore_texture.getSize()};
 
     std::vector<std::string> highscores {read_highscore()};
@@ -647,7 +686,7 @@ Highscore::Highscore(sf::RenderWindow& window)
     }
 
     instruction.setFont(font);
-    instruction.setString("Press 'Q' to go back");
+    instruction.setString("Press 'esc' to go back");
     instruction.setFillColor(sf::Color(255, 20, 147));
     sf::FloatRect instruction_bounds {instruction.getGlobalBounds()};
     instruction.setOrigin(instruction_bounds.width / 2, instruction_bounds.height / 2);
@@ -656,9 +695,13 @@ Highscore::Highscore(sf::RenderWindow& window)
 
 void Highscore::handle(sf::Event event, stack<State*>& stack)
 {
+    if (event.type == sf::Event::Resized)
+    {
+        resize_window(event);
+    }
     if (event.type == sf::Event::KeyReleased)
     {
-        if (event.key.code == sf::Keyboard::Key::Q)
+        if (event.key.code == sf::Keyboard::Key::Escape)
         {
             State* next_state {new Menu_State{window}};
             delete stack.top();
@@ -670,7 +713,7 @@ void Highscore::handle(sf::Event event, stack<State*>& stack)
 
 void Highscore::update([[maybe_unused]]sf::Time delta)
 {
-    // window_size = window.getSize();
+    
 }
 
 void Highscore::render(sf::RenderWindow& window)
@@ -694,7 +737,11 @@ Controls::Controls(sf::RenderWindow& window)
     :  State{window}
 {   
     // OBS: Att fontinläsningen går bra kontrolleras i States konstruktor
-    
+    set_sprites();
+}
+
+void Controls::set_sprites()
+{    
     // Texter till menyn
     for ( sf::Text& t : text)
     {
@@ -705,7 +752,7 @@ Controls::Controls(sf::RenderWindow& window)
 
 
     // Sätt strängar
-    text[0].setString("Press 'Q' to go back!"); // Överskrift
+    text[0].setString("Press 'esc' to go back!"); // Överskrift
     text[1].setString("PLAYER 1\n........");
     text[2].setString("PLAYER 2\n........");
 
@@ -748,9 +795,13 @@ Controls::Controls(sf::RenderWindow& window)
 
 void Controls::handle(sf::Event event, stack<State*>& stack)
 {
+    if (event.type == sf::Event::Resized)
+    {
+        resize_window(event);
+    }
     if (event.type == sf::Event::KeyReleased)
     {
-        if (event.key.code == sf::Keyboard::Key::Q)
+        if (event.key.code == sf::Keyboard::Key::Escape)
         {
             State* next_state {new Menu_State{window}};
             delete stack.top();

@@ -20,7 +20,10 @@ public:
     virtual void render(sf::RenderWindow& window) = 0;
 
 protected:
+    void set_background();
+    virtual void set_sprites() = 0;
     std::vector<std::string> read_highscore();
+    void resize_window(sf::Event event);
     sf::RenderWindow& window;
     sf::Vector2u window_size;
     sf::Font font;
@@ -45,6 +48,7 @@ public:
 
 private:
     void create_track();
+    void set_sprites() override;
 
     sf::Clock clock;
     bool game_started;
@@ -73,6 +77,7 @@ private:
 
     void check_highscore();
     void sort_highscores();
+    void set_sprites() override;
 
     sf::Text prompt;
     sf::Text typed_name;
@@ -111,6 +116,7 @@ private:
 
     //  Test för periodicitet
     float elapsed_time { 0.0f };
+    void set_sprites() override;
 };
 
 class Highscore : public State
@@ -124,6 +130,7 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
+    void set_sprites() override;
     sf::Text score[6];
     sf::Sprite highscore_sprite[6];
     sf::Texture highscore_texture;
@@ -146,6 +153,7 @@ public:
 private:
     // Texter
     sf::Text text[14];
+    void set_sprites() override;
     // Sprites
     /*
     sf::Texture white_arrow;
