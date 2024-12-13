@@ -65,5 +65,5 @@ playertest: $(OBJSPT)
 .PHONY: clean
 
 clean:
-	rm -f $(OBJS) play $(OBJSPT) playertest
+	rm -f $(OBJS) play $(OBJSPT) playertest 
 # ------------------------------------------------
