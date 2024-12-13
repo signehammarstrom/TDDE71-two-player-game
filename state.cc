@@ -274,10 +274,11 @@ Game_State::Game_State(sf::RenderWindow& window)
     
     digit.setTexture(three);
     sf::Vector2u texture_size { one.getSize() };
-    digit.setScale(80/texture_size.x, 80/texture_size.y);
-    sf::FloatRect digit_bounds {digit.getLocalBounds()};
-    digit.setOrigin(digit_bounds.width / 2, digit_bounds.height / 2);
-    digit.setPosition(window_size.x / 2, window_size.y / 2);
+    float scale {(window_size.x/4.f)/texture_size.x};
+    digit.setScale(scale, scale);
+    // sf::FloatRect digit_bounds {digit.getLocalBounds()};
+    digit.setOrigin(texture_size.x/ 2.f, texture_size.y/ 2.f);
+    digit.setPosition(window_size.x / 2.f, window_size.y / 2.f);
     
 
     clock.restart();
@@ -338,6 +339,7 @@ void Game_State::update(sf::Time delta)
         else if(clock.getElapsedTime().asSeconds() > 1)
         {
             digit.setTexture(two);
+            
         }
     }
     if(game_started)
@@ -365,7 +367,6 @@ void Game_State::render(sf::RenderWindow& window)
     }
     if (!game_started)
     {
-        
         window.draw(digit);
     }
 }
