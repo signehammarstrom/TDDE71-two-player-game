@@ -17,11 +17,11 @@ struct Context
     std::vector<Game_Object*> snowball_lst{}; //aktiva snöbollar
     std::vector<Game_Object*> active_temp_mods{}; //aktiva temporary_modifiers
 
-    double y_speed {};
+    float y_speed {};
 
-    double base_speed{};
+    float base_speed{};
 
-    double prev_speed{};
+    float prev_speed{};
 
     bool side {}; // true ger vänster
 
