@@ -95,7 +95,7 @@ Progress_Bar::Progress_Bar(Context& context)
     
     foreground.setSize(sf::Vector2f(context.side_tire_size/5.f,0));
     foreground.setFillColor(sf::Color::Blue);
-    foreground.setPosition(context.left_bound  + context.side_tire_size, 200);
+    foreground.setPosition(context.left_bound  + context.side_tire_size, context.window_size.y/6.f);
 
     total_distance = 0;
 
