@@ -232,8 +232,8 @@ void initiate_context(Context& context, sf::RenderWindow& window)
     context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 100));
     context.mod_lst.push_back(new Can(window_size.x/2, 5*window_size.y, 50, 0, 0.5));
     context.mod_lst.push_back(new Tire(window_size.x/6, 5.7*window_size.y, 100));
-    context.mod_lst.push_back(new Goal(window_size.x/2, 7*window_size.y, 800));
+    context.mod_lst.push_back(new Goal(window_size.x/2, 8*window_size.y, 800));
     
-    context.mod_lst.push_back(new Can(window_size.x/2, 7.5*window_size.y, 50, 0, 0.5));
+    context.mod_lst.push_back(new Can(window_size.x/2, 7*window_size.y, 50, 0, 0.5));
 
 }
