@@ -10,5 +10,5 @@ När spelaren har "suttit fast" i tre sekunder kommer däcket försvinna.
 
 3. fall 3: ölburk kommer mot spelaren, utan rörelse i xled. Vid träff saktas hastigheten in i 3 sek. 
 
-3. fall 3. en ölburk kommer in på skärmen och träffas av en projektil. 
+4. fall 4. en ölburk kommer in på skärmen och träffas av en projektil. 
 ölburk och projektil försvinner. 

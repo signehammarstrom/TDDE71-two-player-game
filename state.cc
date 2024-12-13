@@ -282,6 +282,10 @@ Game_State::Game_State(sf::RenderWindow& window)
     {
         throw  runtime_error{"Couldn't open filename: three_signe.png"};
     }
+    if (!go.loadFromFile("go.png"))
+    {
+        throw  runtime_error{"Couldn't open filename: three_signe.png"};
+    }
 
     set_sprites();
     create_track();
@@ -361,9 +365,13 @@ void Game_State::update(sf::Time delta)
 {   
     if (!game_started)
     {
-        if(clock.getElapsedTime().asSeconds() > 3)
+        if(clock.getElapsedTime().asSeconds() > 4)
         {
             game_started = true;
+        }
+        else if(clock.getElapsedTime().asSeconds() > 3)
+        {
+            digit.setTexture(go);
         }
         else if (clock.getElapsedTime().asSeconds() > 2)
         {
@@ -372,7 +380,6 @@ void Game_State::update(sf::Time delta)
         else if(clock.getElapsedTime().asSeconds() > 1)
         {
             digit.setTexture(two);
-            
         }
     }
     if(game_started)

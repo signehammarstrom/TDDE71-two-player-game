@@ -60,6 +60,7 @@ private:
     sf::Texture one;
     sf::Texture two;
     sf::Texture three;
+    sf::Texture go;
     sf::Sprite digit;
 
     sf::Text text;
