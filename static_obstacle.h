@@ -19,32 +19,6 @@ public:
 };
 
 
-//Deklaration av den härledda klassen Tire
-/*_____________________________________________________________________*/
-class Tire : public Static_Obstacle
-{
-public:
-    Tire(double xpos, double ypos, float size, std::string filename = "tire_signe.png");
-    ~Tire() = default;
-
-    void perform_collision(Game_Object* const& other, Context& context) override;
-private:
-};
-    
-
-//Deklaration av den härledda klassen Hole
-/*____________________________________________________________________*/
-class Hole : public Static_Obstacle
-{
-public:
-    Hole(double xpos, double ypos, float size, std::string filename = "hole.png");
-    ~Hole() = default;
-
-    void perform_collision(Game_Object* const& other, Context& context) override;
-private:
-};
-
-
 //Deklaration av den härledda klassen Goal
 /*____________________________________________________________________*/
 class Goal : public Static_Obstacle
@@ -54,6 +28,35 @@ public:
     ~Goal() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
+private:
+};
+
+class Actual_Obstacle : public Static_Obstacle
+{
+public:
+    Actual_Obstacle(double xpos, double ypos, float size, std::string filename);
+    void perform_collision(Game_Object* const& other, Context& context) override;
+};
+
+
+//Deklaration av den härledda klassen Tire
+/*_____________________________________________________________________*/
+class Tire : public Actual_Obstacle
+{
+public:
+    Tire(double xpos, double ypos, float size, std::string filename = "tire_signe.png");
+    ~Tire() = default;
+private:
+};
+    
+
+//Deklaration av den härledda klassen Hole
+/*____________________________________________________________________*/
+class Hole : public Actual_Obstacle
+{
+public:
+    Hole(double xpos, double ypos, float size, std::string filename = "hole.png");
+    ~Hole() = default;
 private:
 };
 
