@@ -24,14 +24,14 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
     sprite.move({0, -distance});
 }
 
-// Tire
-///////////////////////////////
+// Actual Obstacle
+////////////////////////////////
 
-Tire::Tire(double xpos, double ypos, float size, std::string filename)
+Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, std::string filename)
     :Static_Obstacle(xpos, ypos, size, filename)
 {}
 
-void Tire::perform_collision(Game_Object* const& other, Context& context)
+void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& context)
 {
     Player* player = dynamic_cast<Player*>(other);
     if (player)
@@ -58,40 +58,19 @@ void Tire::perform_collision(Game_Object* const& other, Context& context)
     snowball = nullptr;
 }
 
+// Tire
+///////////////////////////////
+
+Tire::Tire(double xpos, double ypos, float size, std::string filename)
+    :Actual_Obstacle(xpos, ypos, size, filename)
+{}
+
 // Hole
 ///////////////////////////////
 
 Hole::Hole(double xpos, double ypos, float size, std::string filename)
-    :Static_Obstacle(xpos, ypos, size, filename)
+    :Actual_Obstacle(xpos, ypos, size, filename)
 {}
-
-void Hole::perform_collision(Game_Object* const& other, Context& context)
-{
-    Player* player = dynamic_cast<Player*>(other);
-    if (player)
-    {
-        if (context.y_speed != 0)
-        {
-            context.prev_speed = context.y_speed;
-        }
-        sf::FloatRect objbounds = bounds();
-        sf::FloatRect other_bounds = other->bounds();
-        if (other_bounds.top + other_bounds.height <= objbounds.top + 5)
-        {
-            context.y_speed = 0;
-            context.is_colliding = true;
-            context.coll_count += 1;
-        }
-
-    }
-    Snowball_Projectile* snowball = dynamic_cast<Snowball_Projectile*>(other);
-    if (snowball)
-    {
-        //Oklar implementering, behövs den ens?
-    }
-    player = nullptr;
-    snowball = nullptr;
-}
 
 // Goal
 ///////////////////////////////

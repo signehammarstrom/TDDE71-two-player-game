@@ -10,7 +10,8 @@ sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
                         "EPIC HARDCORE VSR Simulator" };
 
-
+/*sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
+        "EPIC HARDCORE VSR Simulator"};*/
 
 int main() {
 
@@ -27,6 +28,13 @@ int main() {
             if (event.type == sf::Event::Closed)
             {
                 wtf = true;  
+            }
+            else if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == sf::Keyboard::Key::Q)
+                {
+                    wtf = true;
+                }
             }
             states.top()->handle(event, states);
         }
