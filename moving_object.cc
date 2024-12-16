@@ -66,7 +66,8 @@ float Moving_Object::get_xspeed() const
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
    sf::Vector2u window_size, std::string filename)
    : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
-{}
+{
+}
 
 void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {

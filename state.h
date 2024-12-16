@@ -6,13 +6,12 @@
 #include <vector>
 #include <string>
 #include <map>
-
 #include "slope.h"
 #include "settings.h"
 
 #define Max_Menu 3
 
-// STATE
+// Deklaration av State
 /*___________________________________________________________________________________________________________*/
 class State
 {
@@ -37,7 +36,7 @@ protected:
     sf::Texture menu_background_texture;
 }; 
 
-// GAME_STATE
+// Deklaration av Game_State
 /*___________________________________________________________________________________________________________*/
 class Game_State : public State
 {
@@ -69,7 +68,7 @@ private:
     sf::Text text;
 };
 
-// GAME_OVER
+// Deklaration av Game_Over
 /*___________________________________________________________________________________________________________*/
 class Game_Over : public State
 {
@@ -99,7 +98,7 @@ private:
     sf::Text p2_text;
 };
 
-// MENU_STATE
+// Deklaration av Menu_State
 /*___________________________________________________________________________________________________________*/
 class Menu_State : public State
 {
@@ -111,6 +110,7 @@ public:
     void handle(sf::Event event, std::stack<State*>& stack) override;
     void update(sf::Time delta) override;
     void render(sf::RenderWindow& window) override;
+    
     void move_up();
     void move_down();
     
@@ -126,7 +126,7 @@ private:
     float elapsed_time { 0.0f };
 };
 
-// HIGHSCORE
+// Deklarartion av Highscore
 /*___________________________________________________________________________________________________________*/
 class Highscore : public State
 {
@@ -146,7 +146,7 @@ private:
     sf::Text instruction;
 };
 
-// CONTROLS
+// Deklarartion av Controls
 /*___________________________________________________________________________________________________________*/
 class Controls : public State
 {
@@ -162,6 +162,5 @@ private:
     sf::Text text[14];
     void set_sprites() override;
 };
-
 
 #endif

@@ -1,24 +1,21 @@
+#include <SFML/Graphics.hpp>
 #include <stdexcept>
 #include <cmath> 
 #include <fstream>
 #include <vector>
 #include <string>
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include <stdlib.h>
 #include <random>
 #include <time.h>
 #include <map>
 #include <sstream>
-
 #include "state.h"
 
 using namespace std;
 
-
-// STATE
+// State
 /*___________________________________________________________________________________________________________*/
-
 State::State(sf::RenderWindow& window)
 : window {window}, window_size{window.getSize()}
 {
@@ -79,9 +76,8 @@ std::vector<std::string> State::read_highscore()
 }
 
 
-// GAME_STATE
+// Game_State
 /*___________________________________________________________________________________________________________*/
-
 Game_State::Game_State(sf::RenderWindow& window)
 : State{window}, left_slope{}, right_slope{}, settings{}, clock{}, game_started{false}
 {
@@ -345,7 +341,6 @@ void Game_State::read_constants()
         {
             string setting_name {};
             string object {};
-
             istringstream info(line);
             info >> setting_name;
 
@@ -385,9 +380,8 @@ void Game_State::read_constants()
 }
 
 
-// GAME_OVER
+// Game_Over
 /*___________________________________________________________________________________________________________*/
-
 Game_Over::Game_Over(sf::RenderWindow& window, double timeL, double timeR)
     : State{window}, left_time{timeL}, right_time{timeR}, highscores{read_highscore()}
 {
@@ -414,7 +408,8 @@ void Game_Over::handle(sf::Event event, stack<State*>& stack)
             }
             else if (event.text.unicode == '\b' && !name.empty()) 
             {
-                name.pop_back(); // Ta bort sista bokstaven
+                // Ta bort sista bokstaven
+                name.pop_back(); 
             }
             else if (event.text.unicode < 128) 
             { 
@@ -572,9 +567,8 @@ void Game_Over::check_highscore()
 }
 
 
-// MENU_STATE
+// Menu_State
 /*___________________________________________________________________________________________________________*/
-
 Menu_State::Menu_State(sf::RenderWindow& window)
 : State{window}
 {
@@ -634,13 +628,9 @@ void Menu_State::update(sf::Time delta)
 {
     // Inspirerad av källkod från https://gitlab.liu.se/chrho44/tddc76-sfml
     elapsed_time += delta.asSeconds();
-    // Periodiciteten för texten ska vara 1.5 sek
     float const period { 1.0f };
-    // Omskalningsfaktorn ska vara i intervallet [0.95, 1.05], 
-    // använder sin för det periodiska beteendet.
-    // ANM: std::sin() använder radianer medan SFML använder grader.
-
     double const scalar { 1.0 + 0.05*sin( (2 * M_PI) * elapsed_time / period) };
+
     if ( selected_menu == 0)
     {
         menu[0].setScale(scalar, scalar);
@@ -755,7 +745,7 @@ void Menu_State::set_sprites()
 }
 
 
-// HIGHSCORE
+// Highscore
 /*___________________________________________________________________________________________________________*/
 Highscore::Highscore(sf::RenderWindow& window)
     : State{window}
@@ -837,7 +827,7 @@ void Highscore::set_sprites()
 }
 
 
-// CONTROLS
+// Controls
 /*___________________________________________________________________________________________________________*/
 Controls::Controls(sf::RenderWindow& window)
     :  State{window}

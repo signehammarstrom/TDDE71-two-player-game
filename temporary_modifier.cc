@@ -63,7 +63,8 @@ void Temporary_Modifier::remove_if_inactual(Context& context)
 Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
          double speedmodifier, sf::Vector2u window_size, std::string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
-{}
+{
+}
 
 
 //Can
@@ -71,7 +72,8 @@ Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
 Can::Can(double xpos, double ypos, float size, float xspeed,
         double speedmodifier, sf::Vector2u window_size, std::string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
-{}
+{
+}
 
 
 //Kir
@@ -79,5 +81,6 @@ Can::Can(double xpos, double ypos, float size, float xspeed,
 Kir::Kir(double xpos, double ypos, float size, float xspeed,
         double speedmodifier, sf::Vector2u window_size, std::string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
-{}
+{
+}
 

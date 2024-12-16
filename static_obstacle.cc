@@ -28,7 +28,8 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
 /*____________________________________________________________________*/
 Goal::Goal(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
     :Static_Obstacle(xpos, ypos, size, window_size, filename)
-{}
+{
+}
 
 void Goal::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -47,7 +48,8 @@ void Goal::perform_collision(Game_Object* const& other, Context& context)
 /*____________________________________________________________________*/
 Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
     :Static_Obstacle(xpos, ypos, size, window_size, filename)
-{}
+{
+}
 
 void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& context)
 {
@@ -75,13 +77,15 @@ void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& cont
 /*_____________________________________________________________________*/
 Tire::Tire(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
     :Actual_Obstacle(xpos, ypos, size, window_size, filename)
-{}
+{
+}
 
 
 //Hole
 /*____________________________________________________________________*/
 Hole::Hole(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
     :Actual_Obstacle(xpos, ypos, size, window_size, filename)
-{}
+{
+}
 
 

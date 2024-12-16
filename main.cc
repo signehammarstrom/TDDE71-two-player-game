@@ -1,7 +1,7 @@
-#include "state.h"
-#include "slope.h"
 #include <SFML/Graphics.hpp>
 #include <stack>
+#include "state.h"
+#include "slope.h"
 
 unsigned const screen_width{1136};
 unsigned const screen_height{640};
@@ -9,9 +9,6 @@ unsigned const screen_height{640};
 sf::RenderWindow window { sf::VideoMode { screen_width,
                                         screen_height },
                         "EPIC HARDCORE VSR Simulator" };
-
-// sf::RenderWindow window { sf::VideoMode::getDesktopMode(), 
-//         "EPIC HARDCORE VSR Simulator"};
 
 int main() {
 
