@@ -231,7 +231,14 @@ void Game_over::sort_highscores()
 
         if (time > new_highscore_time && !inserted)
         {
-            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            if (name.size() != 0)
+            {
+                highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            }
+            else
+            {
+                highscores.insert(highscores.begin() + i, "Dr.anonymous " + std::to_string(new_highscore_time));
+            }
             inserted = true;
             if (highscores.size() > 6)
             {
