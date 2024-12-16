@@ -1,4 +1,3 @@
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
@@ -9,10 +8,6 @@
 #include "static_obstacle.h"
 #include "temporary_modifier.h"
 
-
-
-// Konstruktor & särskilda medlemsfuntkioner
-/*_____________________________________________________*/
 Player::Player(double x, double y, float size, sf::Vector2u window_size, std::string filename, std::string filename2 , std::string filename3 )
     : Game_Object(x,y, size, window_size, filename), x_speed{200}, snowball_size{size/3}
 {
@@ -23,21 +18,6 @@ Player::Player(double x, double y, float size, sf::Vector2u window_size, std::st
     if (!texture3.loadFromFile(filename3))
     {
         throw std::runtime_error{"Couldn't open filename"};
-    }
-}
-
-// Medlemsfunktioner
-
-void Player::handle(sf::Event event, Context& context)
-{
-    if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
-    {
-        sf::Vector2f curr_position {sprite.getPosition()};
-        if (context.snow_count > 0)
-        {
-            context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, curr_position.y, snowball_size, context.window_size));
-            context.snow_count = context.snow_count - 1;
-        }
     }
 }
 
@@ -81,7 +61,7 @@ void Player::update(sf::Time delta, Context& context)
     }
 }
 
-void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Context& context)
+void Player::perform_collision(Game_Object* const& other, Context& context)
 {
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
@@ -124,8 +104,8 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
             }
         }
         goal = nullptr;
-        
     }
+
     Temporary_Modifier* temp_mod = dynamic_cast<Temporary_Modifier*>(other);
     if (temp_mod)
     {
@@ -140,10 +120,23 @@ void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Contex
             sprite.setTexture(texture2);
         }
         kir = nullptr;
-
     }
     stat_obst = nullptr;
     temp_mod = nullptr;
+}
+
+void Player::handle(sf::Event event, Context& context)
+{
+    if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down )
+    {
+        sf::Vector2f curr_position {sprite.getPosition()};
+        if (context.snow_count > 0)
+        {
+            context.snowball_lst.push_back(new Snowball_Projectile(curr_position.x, 
+                curr_position.y, snowball_size, context.window_size));
+            context.snow_count = context.snow_count - 1;
+        }
+    }
 }
 
 bool Player::out_of_bounds(Context const& context)
@@ -151,21 +144,14 @@ bool Player::out_of_bounds(Context const& context)
     sf::FloatRect playerBounds {bounds()};
     if (context.side)
     {
-        if ((playerBounds.left  < context.left_bound)|| 
-            (playerBounds.left + playerBounds.width + context.side_tire_size > context.right_bound))
-        {
-            return true;
-        }
+        return ((playerBounds.left  < context.left_bound)|| 
+            (playerBounds.left + playerBounds.width + context.side_tire_size > context.right_bound));
     }
     else
     {
-        if ((playerBounds.left  - context.side_tire_size < context.left_bound)|| 
-            (playerBounds.left + playerBounds.width > context.right_bound))
-        {
-            return true;
-        }
+        return ((playerBounds.left  - context.side_tire_size < context.left_bound)|| 
+            (playerBounds.left + playerBounds.width > context.right_bound));
     }
-    return false;
 }
 
 void Player::stop_effect(Game_Object*& object, Context const& context)
@@ -174,7 +160,7 @@ void Player::stop_effect(Game_Object*& object, Context const& context)
     if (temp_mod)
     {
         x_speed = x_speed/temp_mod->get_speedmodifier();
-        if(context.active_temp_mods.size() <= 1)
+        if (context.active_temp_mods.size() <= 1)
         {
             sprite.setTexture(texture);
         }

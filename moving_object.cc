@@ -1,21 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <cmath> //För sinusberäkningar.
+#include <cmath> 
 #include <iostream>
 #include <stdlib.h>
 #include <random>
-
 #include "game_object.h"
 #include "context.h"
 #include "modifier.h"
 #include "moving_object.h"
+
 //Moving_Object
 /*_______________________________________________________________________________________*/
-
-
-Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed, sf::Vector2u window_size, std::string filename)
-   : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, 
-      right_direction{}
+Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed,
+   sf::Vector2u window_size, std::string filename)
+   : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, right_direction{}
 {
    right_direction = rand()%2;
 }
@@ -30,7 +28,7 @@ void Moving_Object::update(sf::Time delta, Context& context)
 
    if(right_direction)
    {
-      if(context.right_bound - old_position.x + context.side_tire_size < dx)
+      if(context.right_bound - old_position.x - context.side_tire_size < dx)
       {
          right_direction = false;
          sprite.move(-distance_x, -distance_y);
@@ -63,16 +61,14 @@ float Moving_Object::get_xspeed() const
 }
 
 
-
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
-
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
    sf::Vector2u window_size, std::string filename)
    : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
 {}
 
-void Snowball_Mod::perform_collision([[maybe_unused]]Game_Object* const& other, Context& context)
+void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {
    context.snow_count += 3;
    remove();

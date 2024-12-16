@@ -1,11 +1,12 @@
-#include "snowball_projectile.h"
 #include <SFML/Graphics.hpp>
+#include "snowball_projectile.h"
 #include "game_object.h"
 #include "modifier.h"
 
 
-Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename)
-:Game_Object(xpos,ypos, size, window_size, filename), y_speed{50}
+Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float size, 
+    sf::Vector2u window_size, std::string filename)
+:Game_Object(xpos, ypos, size, window_size, filename), y_speed{50}
 {}
 
 void Snowball_Projectile::update(sf::Time delta, Context& context)
@@ -15,7 +16,8 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
     sprite.move({0, distance});
 }
 
-void Snowball_Projectile::perform_collision(Game_Object* const& other, [[maybe_unused]]Context& context)
+void Snowball_Projectile::perform_collision(Game_Object* const& other, 
+    Context&)
 {
     Modifier* mod = dynamic_cast<Modifier*>(other);
     if (mod)

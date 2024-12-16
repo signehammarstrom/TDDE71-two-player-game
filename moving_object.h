@@ -3,41 +3,38 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-
 #include "game_object.h"
 #include "modifier.h"
 #include "context.h"
 
-//Moving_Object
+//Deklaration av Moving_Object
 /*_______________________________________________________________________________________*/
-
 class Moving_Object : public Modifier
 {
 public:
     Moving_Object(double xpos, double ypos, float size, float xspeed,
-     sf::Vector2u window_size,std::string filename);
+        sf::Vector2u window_size,std::string filename);
     ~Moving_Object() = default;
+
     virtual void update(sf::Time delta, Context& context);
     float get_xspeed() const;
     
-
 protected:
     float xspeed {};
     bool right_direction{};
 };
 
-//Snowball_Mod
-/*_______________________________________________________________________________________*/
 
+//Deklaration av Snowball_Mod
+/*_______________________________________________________________________________________*/
 class Snowball_Mod : public Moving_Object
 {
 public:
-   Snowball_Mod(double xpos, double ypos, float size, float xspeed,
-   sf::Vector2u window_size, std::string filename = "snowball_pile.png");
-   ~Snowball_Mod() = default;
-    void perform_collision(Game_Object* const& other, Context& context) override;
+    Snowball_Mod(double xpos, double ypos, float size, float xspeed,
+        sf::Vector2u window_size, std::string filename = "snowball_pile.png");
+    ~Snowball_Mod() = default;
 
-private:
+    void perform_collision(Game_Object* const& other, Context& context) override;
 };
 
 #endif

@@ -19,14 +19,19 @@ Game_Object::Game_Object(double x, double y, float size, sf::Vector2u window_siz
     sprite.setPosition(x, y);
 }
 
+void Game_Object::render(sf::RenderWindow& window)
+{
+    window.draw(sprite);
+}
+
 bool Game_Object::collides(Game_Object* const& object) const
 {
     return bounds().intersects(object->bounds());
 }
 
-void Game_Object::render(sf::RenderWindow& window)
+sf::FloatRect Game_Object::bounds() const
 {
-    window.draw(sprite);
+    return sprite.getGlobalBounds();
 }
 
 bool Game_Object::is_removed() const
@@ -37,11 +42,6 @@ bool Game_Object::is_removed() const
 void Game_Object::remove()
 {
     removed = true;
-}
-
-sf::FloatRect Game_Object::bounds() const
-{
-    return sprite.getGlobalBounds();
 }
 
 float Game_Object::get_position() const

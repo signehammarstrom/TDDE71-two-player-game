@@ -1,54 +1,67 @@
 #ifndef SLOPE_OBJECTS_H
 #define SLOPE_OBJECTS_H
+
+#include <SFML/Graphics.hpp>
+#include <vector>
 #include "context.h"
 #include "player.h"
 #include "static_obstacle.h"
 
+//Deklaration av Snow_Text
+/*_______________________________________________________________________________________*/
 class Snow_Text
 {
 public:
     Snow_Text(Context& context);
+    ~Snow_Text() = default;
+
     void update(Context& context);
     void render(sf::RenderWindow& window);
+
 private:
     sf::Font font{};
     sf::Text text{};
-
-
 };
 
+
+//Deklaration av Background
+/*_______________________________________________________________________________________*/
 class Background
 {
     public:
         Background(Context& context);
+        ~Background() = default;
+
         void update(sf::Time delta, Context& context);
         void render(sf::RenderWindow& window);
 
+        void set_graphics(float scale, Context const& context);
+
     private:
         sf::Texture texture_background;
-        sf::Sprite background;
+        std::vector<sf::Sprite> backgrounds;
+        sf::Sprite background1;
         sf::Sprite background2;
         sf::Sprite background3;
 };
 
 
-
-class Progress_Bar {
-
+//Deklaration av Progress_Bar
+/*_______________________________________________________________________________________*/
+class Progress_Bar 
+{
 public:
     Progress_Bar(Context& context);
+    ~Progress_Bar() = default;
 
-    // Uppdaterar framsteg (0.0 - 1.0)
     void update(Game_Object*& player, Game_Object*& goal);
-    void render(sf::RenderWindow &window);
+    void render(sf::RenderWindow& window);
 
 private:
     sf::RectangleShape background;
     sf::RectangleShape foreground;
     float height;
     float total_distance;
-
 };
-
 
 #endif
