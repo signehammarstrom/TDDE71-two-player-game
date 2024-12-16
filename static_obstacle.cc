@@ -9,9 +9,11 @@
 #include "player.h"
 #include "snowball_projectile.h"
 
+using namespace std;
+
 //Static_Obstacle
 /*_____________________________________________________________________*/
-Static_Obstacle::Static_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string& filename)
+Static_Obstacle::Static_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, string& filename)
     :Modifier(xpos, ypos, size, window_size, filename)
 {}
 
@@ -26,7 +28,7 @@ void Static_Obstacle::update(sf::Time delta, Context& context)
 
 //Goal
 /*____________________________________________________________________*/
-Goal::Goal(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename)
+Goal::Goal(double xpos, double ypos, float size, sf::Vector2u& window_size, string filename)
     :Static_Obstacle(xpos, ypos, size, window_size, filename)
 {
 }
@@ -46,7 +48,7 @@ void Goal::perform_collision(Game_Object* const& other, Context& context)
 
 //Actual_Obstacle
 /*____________________________________________________________________*/
-Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string& filename)
+Actual_Obstacle::Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, string& filename)
     :Static_Obstacle(xpos, ypos, size, window_size, filename)
 {
 }
@@ -75,7 +77,7 @@ void Actual_Obstacle::perform_collision(Game_Object* const& other, Context& cont
 
 //Tire
 /*_____________________________________________________________________*/
-Tire::Tire(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename)
+Tire::Tire(double xpos, double ypos, float size, sf::Vector2u& window_size, string filename)
     :Actual_Obstacle(xpos, ypos, size, window_size, filename)
 {
 }
@@ -83,7 +85,7 @@ Tire::Tire(double xpos, double ypos, float size, sf::Vector2u& window_size, std:
 
 //Hole
 /*____________________________________________________________________*/
-Hole::Hole(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename)
+Hole::Hole(double xpos, double ypos, float size, sf::Vector2u& window_size, string filename)
     :Actual_Obstacle(xpos, ypos, size, window_size, filename)
 {
 }

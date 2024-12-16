@@ -9,10 +9,12 @@
 #include "player.h"
 #include "snowball_projectile.h"
 
+using namespace std;
+
 //Temporary_Modifier
 /*_______________________________________________________________________________________*/
 Temporary_Modifier::Temporary_Modifier(double xpos, double ypos, float size, float xspeed,
-   double speedmodifier, sf::Vector2u& window_size, std::string& filename)
+   double speedmodifier, sf::Vector2u& window_size, string& filename)
    : Moving_Object(xpos, ypos, size, xspeed,window_size, filename), 
       speedmodifier{speedmodifier}, time_passed{}
 {
@@ -61,7 +63,7 @@ void Temporary_Modifier::remove_if_inactual(Context& context)
 //Chalmerist
 /*_______________________________________________________________________________________*/
 Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
-         double speedmodifier, sf::Vector2u& window_size, std::string filename)
+         double speedmodifier, sf::Vector2u& window_size, string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {
 }
@@ -70,7 +72,7 @@ Chalmerist::Chalmerist(double xpos, double ypos, float size, float xspeed,
 //Can
 /*_______________________________________________________________________________________*/
 Can::Can(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u& window_size, std::string filename)
+    double speedmodifier, sf::Vector2u& window_size, string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {
 }
@@ -79,7 +81,7 @@ Can::Can(double xpos, double ypos, float size, float xspeed,
 //Kir
 /*_______________________________________________________________________________________*/
 Kir::Kir(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u& window_size, std::string filename)
+    double speedmodifier, sf::Vector2u& window_size, string filename)
     : Temporary_Modifier(xpos, ypos, size, xspeed, speedmodifier, window_size, filename)
 {
 }

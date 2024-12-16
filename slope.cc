@@ -153,7 +153,7 @@ void Slope::render(sf::RenderWindow& window)
     progress_bar->render(window);
 }
 
-void Slope::read_track(Context& context,  map<std::string, std::vector<float>>& constantMap)
+void Slope::read_track(Context& context,  map<string, vector<float>>& constantMap)
 {
     string line {};
     ifstream trackinfo_file {"track.txt"};
@@ -289,7 +289,7 @@ void Slope::remove_inactual(vector<Game_Object*>& objectlist, sf::Time delta)
                     player->stop_effect(objectlist.at(i), context);
                     player = nullptr;
 
-                    std::swap(objectlist.at(i), objectlist.back());
+                    swap(objectlist.at(i), objectlist.back());
                     objectlist.back() = nullptr;
                     objectlist.pop_back();
                 }
@@ -302,7 +302,7 @@ void Slope::remove_inactual(vector<Game_Object*>& objectlist, sf::Time delta)
             {
                 if (objectlist.at(i)->is_removed())
                 {
-                    std::swap(objectlist.at(i), objectlist.back());
+                    swap(objectlist.at(i), objectlist.back());
                     delete objectlist.back(); 
                     objectlist.back() = nullptr;
                     objectlist.pop_back();
@@ -312,7 +312,7 @@ void Slope::remove_inactual(vector<Game_Object*>& objectlist, sf::Time delta)
     }
 }
 
-void Slope::delete_vector(std::vector<Game_Object*>& object_vector, bool del)
+void Slope::delete_vector(vector<Game_Object*>& object_vector, bool del)
 {
     for (Game_Object*& object : object_vector)
     {

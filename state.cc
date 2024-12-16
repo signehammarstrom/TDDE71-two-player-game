@@ -21,11 +21,11 @@ State::State(sf::RenderWindow& window)
 {
     if (!menu_background_texture.loadFromFile("background_signe.png"))
     {
-        throw std::runtime_error("Kan inte öppna: background.png");
+        throw runtime_error("Kan inte öppna: background.png");
     }
     if (!font.loadFromFile("gamefont.ttf"))
     {
-        throw std::runtime_error("Kan inte öppna: gamefont.ttf");
+        throw runtime_error("Kan inte öppna: gamefont.ttf");
     }
 
     set_background();
@@ -55,18 +55,18 @@ void State::resize_window(sf::Event event)
     set_background();
 }
 
-std::vector<std::string> State::read_highscore()
+vector<string> State::read_highscore()
 {
-    std::ifstream file("highscore.txt");
-    std::vector<std::string> scores;
+    ifstream file("highscore.txt");
+    vector<string> scores;
 
     if (!file)
     {
-        throw std::runtime_error("Kan inte öppna: highscore.txt");
+        throw runtime_error("Kan inte öppna: highscore.txt");
     }
 
-    std::string score;
-    while (std::getline(file, score))
+    string score;
+    while (getline(file, score))
     {
         scores.push_back(score);
     }
@@ -492,17 +492,17 @@ void Game_Over::set_sprites()
 void Game_Over::sort_highscores()
 {
     double time {};
-    std::string throwaway;
+    string throwaway;
     bool inserted = false;
 
     for (unsigned int i = 0; i < highscores.size(); i++)
     {
-        std::istringstream iss {highscores.at(i)};
+        istringstream iss {highscores.at(i)};
         iss >> throwaway >> time; 
 
         if (time > new_highscore_time && !inserted)
         {
-            highscores.insert(highscores.begin() + i, name + " " + std::to_string(new_highscore_time));
+            highscores.insert(highscores.begin() + i, name + " " + to_string(new_highscore_time));
             inserted = true;
             if (highscores.size() > 6)
             {
@@ -512,11 +512,11 @@ void Game_Over::sort_highscores()
         }
     }
 
-    std::ofstream outFile("highscore.txt");
+    ofstream outFile("highscore.txt");
 
     if (!outFile)
     {
-        throw std::runtime_error("Kan inte öppna: highscore.txt");
+        throw runtime_error("Kan inte öppna: highscore.txt");
     }
 
     for (unsigned int i = 0; i < highscores.size(); ++i) 
@@ -534,8 +534,8 @@ void Game_Over::sort_highscores()
 void Game_Over::check_highscore()
 {
 
-    std::istringstream iss {highscores.back()};
-    std::string throwaway{};
+    istringstream iss {highscores.back()};
+    string throwaway{};
     double worst_time{};
 
     if (!(iss >> throwaway >> worst_time))
@@ -798,7 +798,7 @@ void Highscore::set_sprites()
 
     sf::Vector2u button_size {highscore_texture.getSize()};
 
-    std::vector<std::string> highscores {read_highscore()};
+    vector<string> highscores {read_highscore()};
 
     for (unsigned int i = 0; i < highscores.size() ; ++i)
     {

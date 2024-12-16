@@ -9,10 +9,12 @@
 #include "modifier.h"
 #include "moving_object.h"
 
+using namespace std;
+
 //Moving_Object
 /*_______________________________________________________________________________________*/
 Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed,
-   sf::Vector2u& window_size, std::string& filename)
+   sf::Vector2u& window_size, string& filename)
    : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, right_direction{}
 {
    right_direction = rand()%2;
@@ -64,7 +66,7 @@ float Moving_Object::get_xspeed() const
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
-   sf::Vector2u& window_size, std::string filename)
+   sf::Vector2u& window_size, string filename)
    : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
 {
 }

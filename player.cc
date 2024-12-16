@@ -8,17 +8,19 @@
 #include "static_obstacle.h"
 #include "temporary_modifier.h"
 
+using namespace std;
+
 Player::Player(double x, double y, float size, float x_speed, sf::Vector2u& window_size, 
-    std::string filename, std::string filename2 , std::string filename3 )
+    string filename, string filename2 , string filename3 )
     : Game_Object(x,y, size, window_size, filename), x_speed{x_speed}, snowball_size{size/3}
 {
     if (!texture2.loadFromFile(filename2))
     {
-        throw std::runtime_error{"Couldn't open filename"};
+        throw runtime_error{"Couldn't open filename"};
     }
     if (!texture3.loadFromFile(filename3))
     {
-        throw std::runtime_error{"Couldn't open filename"};
+        throw runtime_error{"Couldn't open filename"};
     }
     
 }
@@ -81,10 +83,10 @@ void Player::perform_collision(Game_Object* const& other, Context& context)
                 sf::FloatRect pbounds = bounds();
                 sf::FloatRect other_bounds = other->bounds();
 
-                float overlap_X = std::min(pbounds.left + pbounds.width, other_bounds.left + other_bounds.width) 
-                    - std::max(pbounds.left, other_bounds.left);
-                float overlap_Y = std::min(pbounds.top + pbounds.height, other_bounds.top + other_bounds.height) 
-                    - std::max(pbounds.top, other_bounds.top);
+                float overlap_X = min(pbounds.left + pbounds.width, other_bounds.left + other_bounds.width) 
+                    - max(pbounds.left, other_bounds.left);
+                float overlap_Y = min(pbounds.top + pbounds.height, other_bounds.top + other_bounds.height) 
+                    - max(pbounds.top, other_bounds.top);
                 
                 if (overlap_X < overlap_Y)
                 {
