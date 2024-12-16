@@ -1,21 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <cmath> //För sinusberäkningar.
+#include <cmath> 
 #include <iostream>
 #include <stdlib.h>
 #include <random>
-
 #include "game_object.h"
 #include "context.h"
 #include "modifier.h"
 #include "moving_object.h"
+
 //Moving_Object
 /*_______________________________________________________________________________________*/
-
-
-Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed, sf::Vector2u window_size, std::string filename)
-   : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, 
-      right_direction{}
+Moving_Object::Moving_Object(double xpos, double ypos, float size, float xspeed,
+   sf::Vector2u window_size, std::string filename)
+   : Modifier(xpos, ypos, size, window_size, filename), xspeed{xspeed}, right_direction{}
 {
    right_direction = rand()%2;
 }
@@ -63,10 +61,8 @@ float Moving_Object::get_xspeed() const
 }
 
 
-
 //Snowball_Mod
 /*_______________________________________________________________________________________*/
-
 Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed, 
    sf::Vector2u window_size, std::string filename)
    : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
