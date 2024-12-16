@@ -9,7 +9,7 @@
 #include "temporary_modifier.h"
 
 Player::Player(double x, double y, float size, sf::Vector2u window_size, std::string filename, std::string filename2 , std::string filename3 )
-    : Game_Object(x,y, size, window_size, filename), x_speed{200}, snowball_size{size/4}
+    : Game_Object(x,y, size, window_size, filename), x_speed{200}, snowball_size{size/3}
 {
     if (!texture2.loadFromFile(filename2))
     {

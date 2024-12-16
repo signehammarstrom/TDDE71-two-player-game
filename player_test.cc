@@ -214,26 +214,26 @@ void initiate_context(Context& context, sf::RenderWindow& window)
     context.y_speed = 300;     
     context.base_speed = context.y_speed;
     context.prev_speed = context.y_speed;                   
-    sf::Vector2u window_size { window.getSize() };
+    context.window_size = window.getSize() ;
     context.side = false;
     context.side_tire_size = 0;
     context.left_bound = 0;
     context.right_bound = screen_width;
     context.snow_count = 3;
 
-    context.player = new Player(window_size.x/2, window_size.y/6, 100, window_size);
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Tire(window_size.x/2, window_size.y+100, 100, window_size));
+    context.player = new Player(context.window_size.x/2, context.window_size.y/6, 0.1, context.window_size);
+    context.mod_lst.push_back(new Tire(context.window_size.x/2, context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Tire(context.window_size.x/2, context.window_size.y+100, 0.1, context.window_size));
 
-    context.mod_lst.push_back(new Tire(window_size.x/6, 3*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Tire(3*window_size.x/6, 3*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Tire(2*window_size.x/6, 3*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Tire(4*window_size.x/6, 3*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Tire(5*window_size.x/6, 3*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Can(window_size.x/2, 5*window_size.y, 50, 0, 0.5, window_size));
-    context.mod_lst.push_back(new Tire(window_size.x/6, 5.7*window_size.y, 100, window_size));
-    context.mod_lst.push_back(new Goal(window_size.x/2, 8*window_size.y, 800, window_size));
+    context.mod_lst.push_back(new Tire(context.window_size.x/6, 3*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Tire(3*context.window_size.x/6, 3*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Tire(2*context.window_size.x/6, 3*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Tire(4*context.window_size.x/6, 3*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Tire(5*context.window_size.x/6, 3*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Can(context.window_size.x/2, 5*context.window_size.y, 0.05, 0, 0.5, context.window_size));
+    context.mod_lst.push_back(new Tire(context.window_size.x/6, 5.7*context.window_size.y, 0.1, context.window_size));
+    context.mod_lst.push_back(new Goal(context.window_size.x/2, 8*context.window_size.y, 1, context.window_size));
     
-    context.mod_lst.push_back(new Can(window_size.x/2, 7*window_size.y, 50, 0, 0.5, window_size));
+    context.mod_lst.push_back(new Can(context.window_size.x/2, 7*context.window_size.y, 0.05, 0, 0.5, context.window_size));
 
 }

@@ -13,7 +13,6 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
 {
     float distance {delta.asSeconds() * (y_speed + context.y_speed)};
     sf::Vector2f old_position {sprite.getPosition()};
-    
     sprite.move({0, distance});
 }
 

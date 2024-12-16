@@ -1,6 +1,6 @@
 Tire 6
 Hole 6
-Chalmerist 0.04 2 100 0.5
-Kir 10 2 100 2
-Can 2 4 100 0.75
+Chalmerist 4 4 100 0.5
+Kir 10 4 100 2
+Can 2 6 100 0.75
 Snowball 8 1 20
