@@ -17,7 +17,7 @@ void Snowball_Projectile::update(sf::Time delta, Context& context)
 }
 
 void Snowball_Projectile::perform_collision(Game_Object* const& other, 
-    [[maybe_unused]]Context& context)
+    Context&)
 {
     Modifier* mod = dynamic_cast<Modifier*>(other);
     if (mod)

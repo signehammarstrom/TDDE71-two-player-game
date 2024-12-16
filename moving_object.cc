@@ -68,7 +68,7 @@ Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed,
    : Moving_Object(xpos, ypos, size, xspeed, window_size, filename)
 {}
 
-void Snowball_Mod::perform_collision([[maybe_unused]]Game_Object* const& other, Context& context)
+void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
 {
    context.snow_count += 3;
    remove();

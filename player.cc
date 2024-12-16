@@ -61,7 +61,7 @@ void Player::update(sf::Time delta, Context& context)
     }
 }
 
-void Player::perform_collision(Game_Object* const& other, [[maybe_unused]]Context& context)
+void Player::perform_collision(Game_Object* const& other, Context& context)
 {
     Static_Obstacle* stat_obst = dynamic_cast<Static_Obstacle*>(other);
     if (stat_obst)
