@@ -1,4 +1,4 @@
-Track_length: 25000
+Track_length: 2000
 Seed: 202
 StatObjs: Hole Tire
 MovObjs: Kir Can Chalmerist Snowball

@@ -8,8 +8,9 @@
 #include "static_obstacle.h"
 #include "temporary_modifier.h"
 
-Player::Player(double x, double y, float size, sf::Vector2u window_size, std::string filename, std::string filename2 , std::string filename3 )
-    : Game_Object(x,y, size, window_size, filename), x_speed{200}, snowball_size{size/3}
+Player::Player(double x, double y, float size, float x_speed, sf::Vector2u& window_size, 
+    std::string filename, std::string filename2 , std::string filename3 )
+    : Game_Object(x,y, size, window_size, filename), x_speed{x_speed}, snowball_size{size/3}
 {
     if (!texture2.loadFromFile(filename2))
     {
@@ -19,6 +20,7 @@ Player::Player(double x, double y, float size, sf::Vector2u window_size, std::st
     {
         throw std::runtime_error{"Couldn't open filename"};
     }
+    
 }
 
 void Player::update(sf::Time delta, Context& context)

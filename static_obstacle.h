@@ -12,7 +12,7 @@
 class Static_Obstacle : public Modifier
 {
 public:
-    Static_Obstacle(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename);
+    Static_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string& filename);
     ~Static_Obstacle() = default;
 
     void update(sf::Time delta, Context& context) override;
@@ -24,7 +24,7 @@ public:
 class Goal : public Static_Obstacle
 {
 public:
-    Goal(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename = "finish.png");
+    Goal(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename = "finish.png");
     ~Goal() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
@@ -36,7 +36,7 @@ public:
 class Actual_Obstacle : public Static_Obstacle
 {
 public:
-    Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename);
+    Actual_Obstacle(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string& filename);
     ~Actual_Obstacle() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
@@ -48,7 +48,7 @@ public:
 class Tire : public Actual_Obstacle
 {
 public:
-    Tire(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename = "tire_signe.png");
+    Tire(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename = "tire_signe.png");
     ~Tire() = default;
 };
     
@@ -58,7 +58,7 @@ public:
 class Hole : public Actual_Obstacle
 {
 public:
-    Hole(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename = "hole.png");
+    Hole(double xpos, double ypos, float size, sf::Vector2u& window_size, std::string filename = "hole.png");
     ~Hole() = default;
 };
 

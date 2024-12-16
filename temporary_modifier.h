@@ -14,7 +14,7 @@ class Temporary_Modifier : public Moving_Object
 {
 public:
     Temporary_Modifier(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u window_size, std::string filename);
+        double speedmodifier, sf::Vector2u& window_size, std::string& filename);
     ~Temporary_Modifier() = default;
 
     void perform_collision(Game_Object* const& other, Context& context) override;
@@ -34,7 +34,7 @@ class Chalmerist : public Temporary_Modifier
 {
 public: 
     Chalmerist(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u window_size, std::string filename = "chalmerist_signe.png");
+        double speedmodifier, sf::Vector2u& window_size, std::string filename = "chalmerist_signe.png");
     ~Chalmerist() = default;
 };
 
@@ -45,7 +45,7 @@ class Can : public Temporary_Modifier
 {
 public: 
     Can(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u window_size, std::string filename = "can_signe.png");
+        double speedmodifier, sf::Vector2u& window_size, std::string filename = "can_signe.png");
     ~Can() = default;
 };
 
@@ -56,7 +56,7 @@ class Kir : public Temporary_Modifier
 {
 public: 
     Kir(double xpos, double ypos, float size, float xspeed,
-        double speedmodifier, sf::Vector2u window_size, std::string filename = "kir_signe.png");
+        double speedmodifier, sf::Vector2u& window_size, std::string filename = "kir_signe.png");
     ~Kir() = default;
 };
 

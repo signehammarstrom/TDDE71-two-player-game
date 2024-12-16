@@ -14,6 +14,8 @@
 #include "moving_object.h"
 #include "temporary_modifier.h"
 
+// implementation av kollisionshantering är tagen från föreläsning 8, med modifieringar för att passa detta spel
+// https://gitlab.liu.se/chrho44/tddc76-sfml/-/raw/main/handout_slides.pdf?ref_type=heads
 
 using namespace std;
 
@@ -244,7 +246,7 @@ void Slope::initialize_context(bool side, sf::RenderWindow& window)
             if (info_name == "Player_size:")
             {
                 context.player = new Player{(context.left_bound + context.right_bound)/2,
-                    static_cast<double>(context.window_size.y)/6, variable, context.window_size};
+                    static_cast<double>(context.window_size.y)/6, variable, 0.75f* context.y_speed ,context.window_size};
             }
             if (info_name == "Y_speed:")
             {

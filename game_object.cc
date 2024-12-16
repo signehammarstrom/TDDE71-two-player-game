@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Game_Object::Game_Object(double x, double y, float size, sf::Vector2u window_size, string filename)
+Game_Object::Game_Object(double x, double y, float size, sf::Vector2u& window_size, string& filename)
     : sprite{}, texture{}, scale{}, removed {false}
 {
     if (!texture.loadFromFile(filename))

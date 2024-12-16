@@ -4,11 +4,15 @@
 #include <SFML/Graphics.hpp>
 #include "context.h"
 
+// Sättet kollisionshanteringen är implementerad på, med bounds och collides
+// är tagen från föreläsning 8.
+// https://gitlab.liu.se/chrho44/tddc76-sfml/-/raw/main/handout_slides.pdf?ref_type=heads
+
 class Game_Object
 {
 public:
-
-    Game_Object(double xpos, double ypos, float size, sf::Vector2u window_size, std::string filename);
+    Game_Object(double xpos, double ypos, float size
+        , sf::Vector2u& window_size, std::string& filename);
     virtual ~Game_Object() = default;
 
     virtual void update(sf::Time delta, Context& context) = 0;

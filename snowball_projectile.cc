@@ -5,7 +5,7 @@
 
 
 Snowball_Projectile::Snowball_Projectile(double xpos, double ypos, float size, 
-    sf::Vector2u window_size, std::string filename)
+    sf::Vector2u& window_size, std::string filename)
 :Game_Object(xpos, ypos, size, window_size, filename), y_speed{50}
 {}
 

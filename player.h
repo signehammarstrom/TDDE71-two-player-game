@@ -8,7 +8,7 @@
 class Player : public Game_Object
 {
 public:
-    Player(double xpos, double ypos, float size, sf::Vector2u window_size, 
+    Player(double xpos, double ypos, float size, float x_speed, sf::Vector2u& window_size, 
         std::string filename = "saucer_signe.png", std::string filename2 = "saucerbw_signe.png", 
         std::string filename3 = "saucercolor_signe.png"); 
     ~Player() = default;

@@ -34,15 +34,11 @@ class Background
 
         void update(sf::Time delta, Context& context);
         void render(sf::RenderWindow& window);
-
         void set_graphics(float scale, Context const& context);
 
     private:
         sf::Texture texture_background;
-        std::vector<sf::Sprite> backgrounds;
-        sf::Sprite background1;
-        sf::Sprite background2;
-        sf::Sprite background3;
+        std::vector<sf::Sprite> backgrounds; 
 };
 
 
@@ -58,6 +54,7 @@ public:
     void render(sf::RenderWindow& window);
 
 private:
+    void set_graphics(sf::RectangleShape& graphics, Context const& context, sf::Color color);
     sf::RectangleShape background;
     sf::RectangleShape foreground;
     float height;

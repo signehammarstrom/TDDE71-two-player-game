@@ -38,6 +38,7 @@ void Snow_Text::render(sf::RenderWindow& window)
 /*_______________________________________________________________________________________*/
 Background::Background(Context& context)
     :texture_background{}, backgrounds{}
+
 {
     if(context.side) 
     {
@@ -53,30 +54,36 @@ Background::Background(Context& context)
                 throw runtime_error("Kan inte öppna: rightlane_signe.png");
             }
     }
-
-    backgrounds = {background1 ,background2, background3};
+    sf::Sprite bg{};
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        backgrounds.push_back(bg);
+    }
 
     sf::Vector2u texture_size { texture_background.getSize() };
-    float scale {((context.window_size.x)/2.f)/texture_size.x};
+    float scale {((context.window_size.x)/1.99f)/texture_size.x};
+    
     set_graphics(scale, context);
 }
 
 void Background::set_graphics(float scale, Context const& context)
 {
-    for(unsigned int i = 0; i < backgrounds.size(); i++)
+    for(unsigned int i = 0; i < 3; i++)
     {
-        backgrounds.at(i).setTexture(texture_background);
+        sf::Sprite bg {};
+        bg.setTexture(texture_background);
         if (i == 0)
         {
-            backgrounds.at(i).setPosition(context.left_bound, 0);
+            bg.setPosition(context.left_bound, 0);
         }
         else 
         {
-            backgrounds.at(i).setPosition(context.left_bound, 
-                backgrounds.at(i-1).getGlobalBounds().top + backgrounds.at(i-1).getGlobalBounds().height);
+            bg.setPosition(context.left_bound, 
+                backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height);
             
         }
-        backgrounds.at(i).setScale(scale, scale);
+        bg.setScale(scale, scale);
+        backgrounds.push_back(bg);
     }
 }
 
@@ -92,7 +99,7 @@ void Background::update(sf::Time delta, Context& context)
             if (i == 0)
             {
                 backgrounds.at(i).setPosition(context.left_bound, 
-                    backgrounds.at(2).getGlobalBounds().top + backgrounds.at(2).getGlobalBounds().height-2);
+                    backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height-2 );
             }
             else 
             {
@@ -116,19 +123,11 @@ void Background::render(sf::RenderWindow& window)
 //Progress_Bar
 /*_______________________________________________________________________________________*/
 Progress_Bar::Progress_Bar(Context& context)
-: height{}
+:  background{}, foreground{}, height{}, total_distance{0}
 {
     height = context.window_size.y/3;
-
-    background.setSize(sf::Vector2f(context.side_tire_size/5.f,height));
-    background.setFillColor(sf::Color::Black);
-    background.setPosition(context.left_bound + context.side_tire_size, context.window_size.y/6.f);
-    
-    foreground.setSize(sf::Vector2f(context.side_tire_size/5.f,0));
-    foreground.setFillColor(sf::Color::Blue);
-    foreground.setPosition(context.left_bound  + context.side_tire_size, context.window_size.y/6.f);
-
-    total_distance = 0;
+    set_graphics(background, context, sf::Color::Black);
+    set_graphics(foreground, context, sf::Color::Blue);
 }
 
 void Progress_Bar::update(Game_Object*& player, Game_Object*& goal) 
@@ -145,4 +144,11 @@ void Progress_Bar::render(sf::RenderWindow &window)
 {
     window.draw(background);
     window.draw(foreground);
+}
+
+void Progress_Bar::set_graphics(sf::RectangleShape& graphics, Context const& context, sf::Color color)
+{
+    graphics.setSize(sf::Vector2f(context.side_tire_size/5.f,height));
+    graphics.setFillColor(color);
+    graphics.setPosition(context.left_bound + context.side_tire_size, context.window_size.y/6.f);
 }
