@@ -13,10 +13,10 @@ Game_Object::Game_Object(double x, double y, float size, sf::Vector2u window_siz
     }
     sprite.setTexture(texture);
     sf::Vector2u texture_size { texture.getSize() };
-    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-    sprite.setPosition(x, y);
     scale = size*window_size.x/(texture_size.x);
     sprite.setScale(scale, scale);
+    sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    sprite.setPosition(x, y);
 }
 
 bool Game_Object::collides(Game_Object* const& object) const
