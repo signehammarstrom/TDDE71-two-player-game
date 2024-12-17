@@ -221,7 +221,7 @@ void initiate_context(Context& context, sf::RenderWindow& window)
     context.right_bound = screen_width;
     context.snow_count = 3;
 
-    context.player = new Player(context.window_size.x/2, context.window_size.y/6, 0.1, context.window_size);
+    context.player = new Player(context.window_size.x/2, context.window_size.y/6, 0.1, 200, context.window_size);
     context.mod_lst.push_back(new Tire(context.window_size.x/2, context.window_size.y, 0.1, context.window_size));
     context.mod_lst.push_back(new Tire(context.window_size.x/2, context.window_size.y+100, 0.1, context.window_size));
 

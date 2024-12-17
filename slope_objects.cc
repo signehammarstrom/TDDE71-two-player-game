@@ -80,7 +80,6 @@ void Background::set_graphics(float scale, Context const& context)
         {
             bg.setPosition(context.left_bound, 
                 backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height);
-            
         }
         bg.setScale(scale, scale);
         backgrounds.push_back(bg);
@@ -99,7 +98,7 @@ void Background::update(sf::Time delta, Context& context)
             if (i == 0)
             {
                 backgrounds.at(i).setPosition(context.left_bound, 
-                    backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height-2 );
+                    backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height );
             }
             else 
             {

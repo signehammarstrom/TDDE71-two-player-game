@@ -1,5 +1,5 @@
 
 Snow_count: 0
-Y_speed: 300
+Y_speed: 500
 Player_size: 0.08
 Side_tire_size: 60

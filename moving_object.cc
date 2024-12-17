@@ -71,7 +71,7 @@ Snowball_Mod::Snowball_Mod(double xpos, double ypos, float size, float xspeed,
 {
 }
 
-void Snowball_Mod::perform_collision(Game_Object* const& other, Context& context)
+void Snowball_Mod::perform_collision(Game_Object* const&, Context& context)
 {
    context.snow_count += 3;
    remove();
