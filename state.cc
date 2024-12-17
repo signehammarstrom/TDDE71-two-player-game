@@ -151,8 +151,10 @@ void Game_State::handle(sf::Event event, stack<State*>& stack)
 
 void Game_State::update(sf::Time delta)
 {   
+    int y {};
     if (!game_started)
     {
+        y = 1;
         if(clock.getElapsedTime().asSeconds() > 4)
         {
             game_started = true;
@@ -172,6 +174,12 @@ void Game_State::update(sf::Time delta)
     }
     if(game_started)
     {
+        if (y == 1)
+        {
+            left_slope->context.clock.restart();
+            right_slope -> context.clock.restart();
+            y = 0;
+        }
         if(left_slope->context.game_finished == false || right_slope->context.game_finished == false)
         {
             left_slope->update(delta);

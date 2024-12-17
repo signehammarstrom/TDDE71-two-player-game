@@ -61,7 +61,7 @@ Background::Background(Context& context)
     }
 
     sf::Vector2u texture_size { texture_background.getSize() };
-    float scale {((context.window_size.x)/1.99f)/texture_size.x};
+    float scale {((context.window_size.x)/2.0f)/texture_size.x};
     
     set_graphics(scale, context);
 }
@@ -98,7 +98,7 @@ void Background::update(sf::Time delta, Context& context)
             if (i == 0)
             {
                 backgrounds.at(i).setPosition(context.left_bound, 
-                    backgrounds.back().getGlobalBounds().top + backgrounds.back().getGlobalBounds().height );
+                    backgrounds.back().getGlobalBounds().top - 10 + backgrounds.back().getGlobalBounds().height );
             }
             else 
             {
