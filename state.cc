@@ -510,7 +510,14 @@ void Game_Over::sort_highscores()
 
         if (time > new_highscore_time && !inserted)
         {
-            highscores.insert(highscores.begin() + i, name + " " + to_string(new_highscore_time));
+            if (name.size() != 0)
+            {
+                highscores.insert(highscores.begin() + i, name + " " + to_string(new_highscore_time));
+            }
+            else
+            {
+                highscores.insert(highscores.begin() + i, "Dr.anonymous " + to_string(new_highscore_time));
+            }
             inserted = true;
             if (highscores.size() > 6)
             {
